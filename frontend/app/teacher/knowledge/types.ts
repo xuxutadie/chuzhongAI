@@ -1,0 +1,11 @@
+export type Item<T>={id:string;owner_id:number;parent_id:string|null;revision:number;archived:number;data:T};
+export type Page<T>={items:T[];total:number;offset:number;limit:number};
+export type Scope={grade:string;edition:string;semester:string;chapter_version_ids:string[];knowledge_point_ids:string[];prerequisite_ids:string[]};
+export type Source={file_id:string;kind:'page'|'paragraph';index:number;region?:number[]|null};
+export type Book={title:string;grade:string;edition:string;semester:string;file_ids:string[]};
+export type Chapter={title:string;textbook_id:string;chapter_id:string;grade:string;edition:string;semester:string;knowledge_point_ids:string[];prerequisite_ids:string[];sources:Source[];notes:string;status:string;current_version_id?:string};
+export type Question={prompt:string;response_type:'single'|'multiple'|'boolean'|'short'|'worked';options:{id:string;text:string}[];answer:{value?:string|number|boolean;values?:string[]};explanation:string;rubric:{point:string}[];asset_ids:string[];needs_figure:boolean;scope:Scope;difficulty:'regular'|'advanced'|'challenge';sources:Source[];status?:string;checks?:string[];current_version_id?:string};
+export type FileData={title:string;asset:boolean;size:number;extraction:null|{index_kind:string;chapter_suggestions?:{title:string;index:number}[];sources:{index:number;text:string;asset_refs:string[];warnings:string[];formulas?:string[]}[]}};
+export type Job={id:string;kind:string;state:string;revision:number;completed_units:number;total_units:number;errors:{position:number;message:string}[];result_ids:string[];generation?:{scope:Scope;purpose:string}|null};
+export type SetData={title:string;purpose:string;question_version_ids:string[];status:string;scope:Scope};
+export type Catalog={id:string;title:string;grade:string;edition:string;semester:string;knowledge_points:{id:string;title:string}[]};

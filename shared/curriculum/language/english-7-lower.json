@@ -1,0 +1,1626 @@
+{
+  "id": "english-7-lower",
+  "subject": "英语",
+  "semester": "下册",
+  "edition": "人教版（2024审定）",
+  "grade": 7,
+  "sourceFile": "最新【人教版】7年级英语课本•下册.pdf",
+  "units": [
+    {
+      "id": "english-7-lower-u1",
+      "title": "Unit 1 Animal Friends",
+      "page": 1,
+      "pdfPage": 8,
+      "focus": "动物描述、疑问词与复数",
+      "writingPrompt": "描述一种喜欢的动物，写出特征、喜欢的原因和保护方式。",
+      "skills": [
+        {
+          "id": "english-7-lower-u1-k1",
+          "title": "动物与形容词",
+          "guide": "giraffe 是长颈鹿，典型外形特征为 long neck。 cute 描述可爱的样子，不表示危险或饥饿。"
+        },
+        {
+          "id": "english-7-lower-u1-k2",
+          "title": "复数",
+          "guide": "elephant 的复数直接加 s。 sheep 单复数同形，不能按普通规则加 s。"
+        },
+        {
+          "id": "english-7-lower-u1-k3",
+          "title": "疑问词",
+          "guide": "Because 引出原因，提问用 Why。 In the forest 是地点，所以用 Where 提问。"
+        },
+        {
+          "id": "english-7-lower-u1-k4",
+          "title": "动物阅读",
+          "guide": "原因在 because 后，不能概括为动物不吃东西。 安静观察、不打扰鸟巢体现尊重动物。"
+        }
+      ],
+      "questions": [
+        {
+          "id": "english-7-lower-u1-d1",
+          "skillId": "english-7-lower-u1-k1",
+          "prompt": "A giraffe has a ____ neck.",
+          "options": [
+            {
+              "id": "a",
+              "text": "long"
+            },
+            {
+              "id": "b",
+              "text": "short"
+            },
+            {
+              "id": "c",
+              "text": "round"
+            }
+          ],
+          "answer": "a",
+          "explanation": "giraffe 是长颈鹿，典型外形特征为 long neck。"
+        },
+        {
+          "id": "english-7-lower-u1-d2",
+          "skillId": "english-7-lower-u1-k2",
+          "prompt": "One elephant, three ____.",
+          "options": [
+            {
+              "id": "a",
+              "text": "elephant"
+            },
+            {
+              "id": "b",
+              "text": "elephants"
+            },
+            {
+              "id": "c",
+              "text": "elephantes"
+            }
+          ],
+          "answer": "b",
+          "explanation": "elephant 的复数直接加 s。"
+        },
+        {
+          "id": "english-7-lower-u1-d3",
+          "skillId": "english-7-lower-u1-k3",
+          "prompt": "____ do you like pandas? — Because they are cute.",
+          "options": [
+            {
+              "id": "a",
+              "text": "Where"
+            },
+            {
+              "id": "b",
+              "text": "When"
+            },
+            {
+              "id": "c",
+              "text": "Why"
+            }
+          ],
+          "answer": "c",
+          "explanation": "Because 引出原因，提问用 Why。"
+        },
+        {
+          "id": "english-7-lower-u1-d4",
+          "skillId": "english-7-lower-u1-k4",
+          "prompt": "读：The zoo asks visitors not to feed the animals because some human food can harm them. Why should visitors not feed them?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Some human food may harm them."
+            },
+            {
+              "id": "b",
+              "text": "All animals dislike food."
+            },
+            {
+              "id": "c",
+              "text": "Visitors must buy more snacks."
+            }
+          ],
+          "answer": "a",
+          "explanation": "原因在 because 后，不能概括为动物不吃东西。"
+        }
+      ],
+      "retestQuestions": [
+        {
+          "id": "english-7-lower-u1-r1",
+          "skillId": "english-7-lower-u1-k1",
+          "prompt": "The baby rabbit is small and cute. cute 的意思是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "危险的"
+            },
+            {
+              "id": "b",
+              "text": "可爱的"
+            },
+            {
+              "id": "c",
+              "text": "饥饿的"
+            }
+          ],
+          "answer": "b",
+          "explanation": "cute 描述可爱的样子，不表示危险或饥饿。"
+        },
+        {
+          "id": "english-7-lower-u1-r2",
+          "skillId": "english-7-lower-u1-k2",
+          "prompt": "Two ____ are eating grass.（两只羊）",
+          "options": [
+            {
+              "id": "a",
+              "text": "sheeps"
+            },
+            {
+              "id": "b",
+              "text": "sheepes"
+            },
+            {
+              "id": "c",
+              "text": "sheep"
+            }
+          ],
+          "answer": "c",
+          "explanation": "sheep 单复数同形，不能按普通规则加 s。"
+        },
+        {
+          "id": "english-7-lower-u1-r3",
+          "skillId": "english-7-lower-u1-k3",
+          "prompt": "____ do these animals live? — In the forest.",
+          "options": [
+            {
+              "id": "a",
+              "text": "Where"
+            },
+            {
+              "id": "b",
+              "text": "Why"
+            },
+            {
+              "id": "c",
+              "text": "Who"
+            }
+          ],
+          "answer": "a",
+          "explanation": "In the forest 是地点，所以用 Where 提问。"
+        },
+        {
+          "id": "english-7-lower-u1-r4",
+          "skillId": "english-7-lower-u1-k4",
+          "prompt": "读：Mei watches birds quietly and keeps away from their nests. What shows respect for the birds?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Taking eggs home."
+            },
+            {
+              "id": "b",
+              "text": "Keeping away from their nests."
+            },
+            {
+              "id": "c",
+              "text": "Making loud noises."
+            }
+          ],
+          "answer": "b",
+          "explanation": "安静观察、不打扰鸟巢体现尊重动物。"
+        }
+      ]
+    },
+    {
+      "id": "english-7-lower-u2",
+      "title": "Unit 2 No Rules, No Order",
+      "page": 9,
+      "pdfPage": 17,
+      "focus": "祈使句与规则表达",
+      "writingPrompt": "为教室写两条规则，并说明一条规则的作用。",
+      "skills": [
+        {
+          "id": "english-7-lower-u2-k1",
+          "title": "祈使句",
+          "guide": "祈使句以动词原形开头，be quiet 表示保持安静。 否定祈使句用 Don't 加动词原形。"
+        },
+        {
+          "id": "english-7-lower-u2-k2",
+          "title": "must 与 mustn't",
+          "guide": "骑车时戴头盔有明确的保护目的，must 表示必须。 mustn't 表示禁止；不必是 don't have to。"
+        },
+        {
+          "id": "english-7-lower-u2-k3",
+          "title": "have to",
+          "guide": "一般现在时第三人称单数用 has to。 don't have to 表示没有义务，不等于禁止。"
+        },
+        {
+          "id": "english-7-lower-u2-k4",
+          "title": "规则阅读",
+          "guide": "so 后面说明规则目的，紧急时保证通行。 must return 表示必须归还，within a week 是一周内。"
+        }
+      ],
+      "questions": [
+        {
+          "id": "english-7-lower-u2-d1",
+          "skillId": "english-7-lower-u2-k1",
+          "prompt": "在图书馆提醒别人安静，正确的是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "Please quiet be."
+            },
+            {
+              "id": "b",
+              "text": "Please be quiet."
+            },
+            {
+              "id": "c",
+              "text": "Please is quiet."
+            }
+          ],
+          "answer": "b",
+          "explanation": "祈使句以动词原形开头，be quiet 表示保持安静。"
+        },
+        {
+          "id": "english-7-lower-u2-d2",
+          "skillId": "english-7-lower-u2-k2",
+          "prompt": "To protect your head when riding a bike, you ____ wear a helmet.",
+          "options": [
+            {
+              "id": "a",
+              "text": "can't"
+            },
+            {
+              "id": "b",
+              "text": "mustn't"
+            },
+            {
+              "id": "c",
+              "text": "must"
+            }
+          ],
+          "answer": "c",
+          "explanation": "骑车时戴头盔有明确的保护目的，must 表示必须。"
+        },
+        {
+          "id": "english-7-lower-u2-d3",
+          "skillId": "english-7-lower-u2-k3",
+          "prompt": "She ____ follow the school rules.",
+          "options": [
+            {
+              "id": "a",
+              "text": "has to"
+            },
+            {
+              "id": "b",
+              "text": "have to"
+            },
+            {
+              "id": "c",
+              "text": "having to"
+            }
+          ],
+          "answer": "a",
+          "explanation": "一般现在时第三人称单数用 has to。"
+        },
+        {
+          "id": "english-7-lower-u2-d4",
+          "skillId": "english-7-lower-u2-k4",
+          "prompt": "读：Keep the door clear so everyone can leave quickly in an emergency. Why keep it clear?",
+          "options": [
+            {
+              "id": "a",
+              "text": "To make the room darker."
+            },
+            {
+              "id": "b",
+              "text": "To let people leave safely and quickly."
+            },
+            {
+              "id": "c",
+              "text": "To stop people leaving."
+            }
+          ],
+          "answer": "b",
+          "explanation": "so 后面说明规则目的，紧急时保证通行。"
+        }
+      ],
+      "retestQuestions": [
+        {
+          "id": "english-7-lower-u2-r1",
+          "skillId": "english-7-lower-u2-k1",
+          "prompt": "禁止奔跑，正确的是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "Not runs."
+            },
+            {
+              "id": "b",
+              "text": "Doesn't run."
+            },
+            {
+              "id": "c",
+              "text": "Don't run."
+            }
+          ],
+          "answer": "c",
+          "explanation": "否定祈使句用 Don't 加动词原形。"
+        },
+        {
+          "id": "english-7-lower-u2-r2",
+          "skillId": "english-7-lower-u2-k2",
+          "prompt": "You mustn't use your phone during the test. 这表示？",
+          "options": [
+            {
+              "id": "a",
+              "text": "考试时禁止使用手机"
+            },
+            {
+              "id": "b",
+              "text": "考试时不必用手机"
+            },
+            {
+              "id": "c",
+              "text": "考试时必须使用手机"
+            }
+          ],
+          "answer": "a",
+          "explanation": "mustn't 表示禁止；不必是 don't have to。"
+        },
+        {
+          "id": "english-7-lower-u2-r3",
+          "skillId": "english-7-lower-u2-k3",
+          "prompt": "We don't have to wear uniforms on Saturday. 这表示？",
+          "options": [
+            {
+              "id": "a",
+              "text": "周六禁止穿校服"
+            },
+            {
+              "id": "b",
+              "text": "周六不必穿校服"
+            },
+            {
+              "id": "c",
+              "text": "周六必须穿校服"
+            }
+          ],
+          "answer": "b",
+          "explanation": "don't have to 表示没有义务，不等于禁止。"
+        },
+        {
+          "id": "english-7-lower-u2-r4",
+          "skillId": "english-7-lower-u2-k4",
+          "prompt": "读：Students may borrow two books. They must return them within a week. What is required?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Borrowing ten books."
+            },
+            {
+              "id": "b",
+              "text": "Keeping the books forever."
+            },
+            {
+              "id": "c",
+              "text": "Returning the books within a week."
+            }
+          ],
+          "answer": "c",
+          "explanation": "must return 表示必须归还，within a week 是一周内。"
+        }
+      ]
+    },
+    {
+      "id": "english-7-lower-u3",
+      "title": "Unit 3 Keep Fit",
+      "page": 17,
+      "pdfPage": 25,
+      "focus": "物主代词与频度副词",
+      "writingPrompt": "写出你喜欢的运动、运动频率和一个具体计划。",
+      "skills": [
+        {
+          "id": "english-7-lower-u3-k1",
+          "title": "物主代词",
+          "guide": "名词前用形容词性物主代词 my；mine 后不再跟名词。 句末独立指代她的球拍，用名词性物主代词 hers。"
+        },
+        {
+          "id": "english-7-lower-u3-k2",
+          "title": "频率含义",
+          "guide": "always 表示动作一贯发生，与 never 相反。 never 是否定频度副词，表示从未或从不。"
+        },
+        {
+          "id": "english-7-lower-u3-k3",
+          "title": "频率问答",
+          "guide": "Twice a week 是频率，用 How often 提问。 主语 I 的一般现在时肯定句用 walk；usually 表频率。"
+        },
+        {
+          "id": "english-7-lower-u3-k4",
+          "title": "运动阅读",
+          "guide": "列出了三天，每周三次。 before 指跑步前，after 指跑步后，按时间先后判断。"
+        }
+      ],
+      "questions": [
+        {
+          "id": "english-7-lower-u3-d1",
+          "skillId": "english-7-lower-u3-k1",
+          "prompt": "This ball is mine. It is ____ ball.",
+          "options": [
+            {
+              "id": "a",
+              "text": "me"
+            },
+            {
+              "id": "b",
+              "text": "I"
+            },
+            {
+              "id": "c",
+              "text": "my"
+            }
+          ],
+          "answer": "c",
+          "explanation": "名词前用形容词性物主代词 my；mine 后不再跟名词。"
+        },
+        {
+          "id": "english-7-lower-u3-d2",
+          "skillId": "english-7-lower-u3-k2",
+          "prompt": "I always warm up before exercise. always 表示？",
+          "options": [
+            {
+              "id": "a",
+              "text": "总是"
+            },
+            {
+              "id": "b",
+              "text": "从不"
+            },
+            {
+              "id": "c",
+              "text": "偶尔"
+            }
+          ],
+          "answer": "a",
+          "explanation": "always 表示动作一贯发生，与 never 相反。"
+        },
+        {
+          "id": "english-7-lower-u3-d3",
+          "skillId": "english-7-lower-u3-k3",
+          "prompt": "____ do you swim? — Twice a week.",
+          "options": [
+            {
+              "id": "a",
+              "text": "How old"
+            },
+            {
+              "id": "b",
+              "text": "How often"
+            },
+            {
+              "id": "c",
+              "text": "How many"
+            }
+          ],
+          "answer": "b",
+          "explanation": "Twice a week 是频率，用 How often 提问。"
+        },
+        {
+          "id": "english-7-lower-u3-d4",
+          "skillId": "english-7-lower-u3-k4",
+          "prompt": "读：Rui runs on Monday, Wednesday and Friday. How often does Rui run?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Every day."
+            },
+            {
+              "id": "b",
+              "text": "Once a week."
+            },
+            {
+              "id": "c",
+              "text": "Three times a week."
+            }
+          ],
+          "answer": "c",
+          "explanation": "列出了三天，每周三次。"
+        }
+      ],
+      "retestQuestions": [
+        {
+          "id": "english-7-lower-u3-r1",
+          "skillId": "english-7-lower-u3-k1",
+          "prompt": "This racket belongs to Lily. It is ____.",
+          "options": [
+            {
+              "id": "a",
+              "text": "hers"
+            },
+            {
+              "id": "b",
+              "text": "her"
+            },
+            {
+              "id": "c",
+              "text": "she"
+            }
+          ],
+          "answer": "a",
+          "explanation": "句末独立指代她的球拍，用名词性物主代词 hers。"
+        },
+        {
+          "id": "english-7-lower-u3-r2",
+          "skillId": "english-7-lower-u3-k2",
+          "prompt": "I never play tennis. never 表示？",
+          "options": [
+            {
+              "id": "a",
+              "text": "通常"
+            },
+            {
+              "id": "b",
+              "text": "从不"
+            },
+            {
+              "id": "c",
+              "text": "经常"
+            }
+          ],
+          "answer": "b",
+          "explanation": "never 是否定频度副词，表示从未或从不。"
+        },
+        {
+          "id": "english-7-lower-u3-r3",
+          "skillId": "english-7-lower-u3-k3",
+          "prompt": "I usually ____ to school.",
+          "options": [
+            {
+              "id": "a",
+              "text": "walks"
+            },
+            {
+              "id": "b",
+              "text": "walking"
+            },
+            {
+              "id": "c",
+              "text": "walk"
+            }
+          ],
+          "answer": "c",
+          "explanation": "主语 I 的一般现在时肯定句用 walk；usually 表频率。"
+        },
+        {
+          "id": "english-7-lower-u3-r4",
+          "skillId": "english-7-lower-u3-k4",
+          "prompt": "读：Before running, Ann warms up. After running, she drinks water. What does she do first?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Warms up."
+            },
+            {
+              "id": "b",
+              "text": "Drinks water."
+            },
+            {
+              "id": "c",
+              "text": "Goes to sleep."
+            }
+          ],
+          "answer": "a",
+          "explanation": "before 指跑步前，after 指跑步后，按时间先后判断。"
+        }
+      ]
+    },
+    {
+      "id": "english-7-lower-u4",
+      "title": "Unit 4 Eat Well",
+      "page": 25,
+      "pdfPage": 33,
+      "focus": "可数不可数名词与选择疑问句",
+      "writingPrompt": "写一份简短菜单，正确使用食物名称及数量表达。",
+      "skills": [
+        {
+          "id": "english-7-lower-u4-k1",
+          "title": "可数与不可数名词",
+          "guide": "apple 是可数名词，two 后用复数 apples。 bread 通常作不可数名词，不能直接加 s 表示数量。"
+        },
+        {
+          "id": "english-7-lower-u4-k2",
+          "title": "数量表达",
+          "guide": "milk 不可数，此处可用 some；many 修饰可数复数。 不可数名词通过容器量词计量，two glasses of water。"
+        },
+        {
+          "id": "english-7-lower-u4-k3",
+          "title": "选择问句",
+          "guide": "or 连接两个选项，直接说出所选食物。 选择疑问句通常具体回答所选项，不只回答 yes。"
+        },
+        {
+          "id": "english-7-lower-u4-k4",
+          "title": "饮食阅读",
+          "guide": "instead of 表示替代，喝的是 water。 区分菜单提供的食物与实际点的食物，only 限定只点汤。"
+        }
+      ],
+      "questions": [
+        {
+          "id": "english-7-lower-u4-d1",
+          "skillId": "english-7-lower-u4-k1",
+          "prompt": "I'd like two ____.",
+          "options": [
+            {
+              "id": "a",
+              "text": "apples"
+            },
+            {
+              "id": "b",
+              "text": "rice"
+            },
+            {
+              "id": "c",
+              "text": "milk"
+            }
+          ],
+          "answer": "a",
+          "explanation": "apple 是可数名词，two 后用复数 apples。"
+        },
+        {
+          "id": "english-7-lower-u4-d2",
+          "skillId": "english-7-lower-u4-k2",
+          "prompt": "There is ____ milk in the glass.",
+          "options": [
+            {
+              "id": "a",
+              "text": "many"
+            },
+            {
+              "id": "b",
+              "text": "some"
+            },
+            {
+              "id": "c",
+              "text": "two"
+            }
+          ],
+          "answer": "b",
+          "explanation": "milk 不可数，此处可用 some；many 修饰可数复数。"
+        },
+        {
+          "id": "english-7-lower-u4-d3",
+          "skillId": "english-7-lower-u4-k3",
+          "prompt": "Would you like rice or noodles? 的恰当回答是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "Yes, it is."
+            },
+            {
+              "id": "b",
+              "text": "No, I don't."
+            },
+            {
+              "id": "c",
+              "text": "Noodles, please."
+            }
+          ],
+          "answer": "c",
+          "explanation": "or 连接两个选项，直接说出所选食物。"
+        },
+        {
+          "id": "english-7-lower-u4-d4",
+          "skillId": "english-7-lower-u4-k4",
+          "prompt": "读：Jun eats vegetables at lunch and drinks water instead of sugary drinks. What does he drink?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Water."
+            },
+            {
+              "id": "b",
+              "text": "Sugary drinks."
+            },
+            {
+              "id": "c",
+              "text": "Nothing."
+            }
+          ],
+          "answer": "a",
+          "explanation": "instead of 表示替代，喝的是 water。"
+        }
+      ],
+      "retestQuestions": [
+        {
+          "id": "english-7-lower-u4-r1",
+          "skillId": "english-7-lower-u4-k1",
+          "prompt": "Which noun is usually uncountable when referring to food?",
+          "options": [
+            {
+              "id": "a",
+              "text": "carrot"
+            },
+            {
+              "id": "b",
+              "text": "bread"
+            },
+            {
+              "id": "c",
+              "text": "egg"
+            }
+          ],
+          "answer": "b",
+          "explanation": "bread 通常作不可数名词，不能直接加 s 表示数量。"
+        },
+        {
+          "id": "english-7-lower-u4-r2",
+          "skillId": "english-7-lower-u4-k2",
+          "prompt": "I'd like two ____ of water.",
+          "options": [
+            {
+              "id": "a",
+              "text": "waters"
+            },
+            {
+              "id": "b",
+              "text": "glass"
+            },
+            {
+              "id": "c",
+              "text": "glasses"
+            }
+          ],
+          "answer": "c",
+          "explanation": "不可数名词通过容器量词计量，two glasses of water。"
+        },
+        {
+          "id": "english-7-lower-u4-r3",
+          "skillId": "english-7-lower-u4-k3",
+          "prompt": "Do you prefer apples or bananas? 的恰当回答是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "Apples."
+            },
+            {
+              "id": "b",
+              "text": "Yes."
+            },
+            {
+              "id": "c",
+              "text": "I am twelve."
+            }
+          ],
+          "answer": "a",
+          "explanation": "选择疑问句通常具体回答所选项，不只回答 yes。"
+        },
+        {
+          "id": "english-7-lower-u4-r4",
+          "skillId": "english-7-lower-u4-k4",
+          "prompt": "读：Today's menu has tomato soup, rice and fish. Nina orders soup only. What does she order?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Rice and fish."
+            },
+            {
+              "id": "b",
+              "text": "Tomato soup."
+            },
+            {
+              "id": "c",
+              "text": "Everything on the menu."
+            }
+          ],
+          "answer": "b",
+          "explanation": "区分菜单提供的食物与实际点的食物，only 限定只点汤。"
+        }
+      ]
+    },
+    {
+      "id": "english-7-lower-u5",
+      "title": "Unit 5 Here and Now",
+      "page": 33,
+      "pdfPage": 41,
+      "focus": "现在进行时的结构与用法",
+      "writingPrompt": "用英语描述此刻两个人分别正在做什么。",
+      "skills": [
+        {
+          "id": "english-7-lower-u5-k1",
+          "title": "进行时结构",
+          "guide": "现在进行时用 be 加 doing；children 是复数，be 用 are。 I 搭配 am，write 去 e 加 ing 成 writing。"
+        },
+        {
+          "id": "english-7-lower-u5-k2",
+          "title": "动词变化",
+          "guide": "run 的重读闭音节形式需要双写末尾 n 再加 ing。 make 去掉不发音的 e 再加 ing。"
+        },
+        {
+          "id": "english-7-lower-u5-k3",
+          "title": "疑问与否定",
+          "guide": "用 be 提问时，简略回答也用对应的 be。 are not doing 否定正在进行的动作，不能直接推出从不。"
+        },
+        {
+          "id": "english-7-lower-u5-k4",
+          "title": "活动阅读",
+          "guide": "明确主语 Li，对应 having breakfast；同一时刻不同地点活动可不同。 从三个并列句中定位 washing dishes 对应的人物。"
+        }
+      ],
+      "questions": [
+        {
+          "id": "english-7-lower-u5-d1",
+          "skillId": "english-7-lower-u5-k1",
+          "prompt": "Look! The children ____ in the yard.",
+          "options": [
+            {
+              "id": "a",
+              "text": "plays"
+            },
+            {
+              "id": "b",
+              "text": "are playing"
+            },
+            {
+              "id": "c",
+              "text": "is playing"
+            }
+          ],
+          "answer": "b",
+          "explanation": "现在进行时用 be 加 doing；children 是复数，be 用 are。"
+        },
+        {
+          "id": "english-7-lower-u5-d2",
+          "skillId": "english-7-lower-u5-k2",
+          "prompt": "run 的现在分词是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "runing"
+            },
+            {
+              "id": "b",
+              "text": "runs"
+            },
+            {
+              "id": "c",
+              "text": "running"
+            }
+          ],
+          "answer": "c",
+          "explanation": "run 的重读闭音节形式需要双写末尾 n 再加 ing。"
+        },
+        {
+          "id": "english-7-lower-u5-d3",
+          "skillId": "english-7-lower-u5-k3",
+          "prompt": "Is she reading now? 的肯定回答是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "Yes, she is."
+            },
+            {
+              "id": "b",
+              "text": "Yes, she does."
+            },
+            {
+              "id": "c",
+              "text": "Yes, she can."
+            }
+          ],
+          "answer": "a",
+          "explanation": "用 be 提问时，简略回答也用对应的 be。"
+        },
+        {
+          "id": "english-7-lower-u5-d4",
+          "skillId": "english-7-lower-u5-k4",
+          "prompt": "读：At the same moment, Li is having breakfast in Beijing while Sam is going to bed in another city. What is Li doing?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Going to bed."
+            },
+            {
+              "id": "b",
+              "text": "Having breakfast."
+            },
+            {
+              "id": "c",
+              "text": "Calling Sam."
+            }
+          ],
+          "answer": "b",
+          "explanation": "明确主语 Li，对应 having breakfast；同一时刻不同地点活动可不同。"
+        }
+      ],
+      "retestQuestions": [
+        {
+          "id": "english-7-lower-u5-r1",
+          "skillId": "english-7-lower-u5-k1",
+          "prompt": "I ____ a letter now.",
+          "options": [
+            {
+              "id": "a",
+              "text": "write yesterday"
+            },
+            {
+              "id": "b",
+              "text": "is writing"
+            },
+            {
+              "id": "c",
+              "text": "am writing"
+            }
+          ],
+          "answer": "c",
+          "explanation": "I 搭配 am，write 去 e 加 ing 成 writing。"
+        },
+        {
+          "id": "english-7-lower-u5-r2",
+          "skillId": "english-7-lower-u5-k2",
+          "prompt": "make 的现在分词是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "making"
+            },
+            {
+              "id": "b",
+              "text": "makeing"
+            },
+            {
+              "id": "c",
+              "text": "makes"
+            }
+          ],
+          "answer": "a",
+          "explanation": "make 去掉不发音的 e 再加 ing。"
+        },
+        {
+          "id": "english-7-lower-u5-r3",
+          "skillId": "english-7-lower-u5-k3",
+          "prompt": "They are not sleeping. 这表示？",
+          "options": [
+            {
+              "id": "a",
+              "text": "他们从不睡觉"
+            },
+            {
+              "id": "b",
+              "text": "他们此刻没有在睡觉"
+            },
+            {
+              "id": "c",
+              "text": "他们昨天没睡觉"
+            }
+          ],
+          "answer": "b",
+          "explanation": "are not doing 否定正在进行的动作，不能直接推出从不。"
+        },
+        {
+          "id": "english-7-lower-u5-r4",
+          "skillId": "english-7-lower-u5-k4",
+          "prompt": "读：Mum is cooking. Dad is washing dishes. I am setting the table. Who is washing dishes?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Mum."
+            },
+            {
+              "id": "b",
+              "text": "I am."
+            },
+            {
+              "id": "c",
+              "text": "Dad."
+            }
+          ],
+          "answer": "c",
+          "explanation": "从三个并列句中定位 washing dishes 对应的人物。"
+        }
+      ]
+    },
+    {
+      "id": "english-7-lower-u6",
+      "title": "Unit 6 Rain or Shine",
+      "page": 41,
+      "pdfPage": 49,
+      "focus": "天气表达与正在发生的活动",
+      "writingPrompt": "用两三句英语播报天气，并描述适合当前天气的活动。",
+      "skills": [
+        {
+          "id": "english-7-lower-u6-k1",
+          "title": "天气词汇",
+          "guide": "Rain is falling 明确表示正在下雨，应选 rainy。 snow 是雪，描述下雪的天气可用 snowy。"
+        },
+        {
+          "id": "english-7-lower-u6-k2",
+          "title": "天气问答",
+          "guide": "询问天气用描述天气的形容词回答。 两种常用天气问句意思相同。"
+        },
+        {
+          "id": "english-7-lower-u6-k3",
+          "title": "一般与进行",
+          "guide": "often 表示经常发生，用一般现在时，it 对应 snows。 Look 和 now 指向此刻正在下雨，用 is raining。"
+        },
+        {
+          "id": "english-7-lower-u6-k4",
+          "title": "天气阅读",
+          "guide": "原文 sitting in the shade 指坐在阴凉处。 slippery 表示湿滑，决定停止攀登是出于路况。"
+        }
+      ],
+      "questions": [
+        {
+          "id": "english-7-lower-u6-d1",
+          "skillId": "english-7-lower-u6-k1",
+          "prompt": "Rain is falling. The weather is ____.",
+          "options": [
+            {
+              "id": "a",
+              "text": "sunny"
+            },
+            {
+              "id": "b",
+              "text": "dry"
+            },
+            {
+              "id": "c",
+              "text": "rainy"
+            }
+          ],
+          "answer": "c",
+          "explanation": "Rain is falling 明确表示正在下雨，应选 rainy。"
+        },
+        {
+          "id": "english-7-lower-u6-d2",
+          "skillId": "english-7-lower-u6-k2",
+          "prompt": "What's the weather like? 的正确回答是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "It's windy."
+            },
+            {
+              "id": "b",
+              "text": "I'm reading."
+            },
+            {
+              "id": "c",
+              "text": "At school."
+            }
+          ],
+          "answer": "a",
+          "explanation": "询问天气用描述天气的形容词回答。"
+        },
+        {
+          "id": "english-7-lower-u6-d3",
+          "skillId": "english-7-lower-u6-k3",
+          "prompt": "It often ____ here in winter.",
+          "options": [
+            {
+              "id": "a",
+              "text": "is snowing now"
+            },
+            {
+              "id": "b",
+              "text": "snows"
+            },
+            {
+              "id": "c",
+              "text": "snow"
+            }
+          ],
+          "answer": "b",
+          "explanation": "often 表示经常发生，用一般现在时，it 对应 snows。"
+        },
+        {
+          "id": "english-7-lower-u6-d4",
+          "skillId": "english-7-lower-u6-k4",
+          "prompt": "读：It is hot and sunny. Dan is sitting in the shade and drinking water. Where is Dan?",
+          "options": [
+            {
+              "id": "a",
+              "text": "On the ice."
+            },
+            {
+              "id": "b",
+              "text": "In heavy snow."
+            },
+            {
+              "id": "c",
+              "text": "In the shade."
+            }
+          ],
+          "answer": "c",
+          "explanation": "原文 sitting in the shade 指坐在阴凉处。"
+        }
+      ],
+      "retestQuestions": [
+        {
+          "id": "english-7-lower-u6-r1",
+          "skillId": "english-7-lower-u6-k1",
+          "prompt": "There is snow outside. It is ____.",
+          "options": [
+            {
+              "id": "a",
+              "text": "snowy"
+            },
+            {
+              "id": "b",
+              "text": "rainy"
+            },
+            {
+              "id": "c",
+              "text": "hot"
+            }
+          ],
+          "answer": "a",
+          "explanation": "snow 是雪，描述下雪的天气可用 snowy。"
+        },
+        {
+          "id": "english-7-lower-u6-r2",
+          "skillId": "english-7-lower-u6-k2",
+          "prompt": "How's the weather in your city? 与哪句意思相近？",
+          "options": [
+            {
+              "id": "a",
+              "text": "Where is your city?"
+            },
+            {
+              "id": "b",
+              "text": "What's the weather like in your city?"
+            },
+            {
+              "id": "c",
+              "text": "What time is it?"
+            }
+          ],
+          "answer": "b",
+          "explanation": "两种常用天气问句意思相同。"
+        },
+        {
+          "id": "english-7-lower-u6-r3",
+          "skillId": "english-7-lower-u6-k3",
+          "prompt": "Look outside! It ____ now.",
+          "options": [
+            {
+              "id": "a",
+              "text": "rains yesterday"
+            },
+            {
+              "id": "b",
+              "text": "rain"
+            },
+            {
+              "id": "c",
+              "text": "is raining"
+            }
+          ],
+          "answer": "c",
+          "explanation": "Look 和 now 指向此刻正在下雨，用 is raining。"
+        },
+        {
+          "id": "english-7-lower-u6-r4",
+          "skillId": "english-7-lower-u6-k4",
+          "prompt": "读：The rain has made the path slippery. The group decides to stop climbing. Why do they stop?",
+          "options": [
+            {
+              "id": "a",
+              "text": "The path is slippery."
+            },
+            {
+              "id": "b",
+              "text": "They see no clouds."
+            },
+            {
+              "id": "c",
+              "text": "The weather is too dry."
+            }
+          ],
+          "answer": "a",
+          "explanation": "slippery 表示湿滑，决定停止攀登是出于路况。"
+        }
+      ]
+    },
+    {
+      "id": "english-7-lower-u7",
+      "title": "Unit 7 A Day to Remember",
+      "page": 49,
+      "pdfPage": 57,
+      "focus": "一般过去时与活动叙述",
+      "writingPrompt": "按事情的先后顺序写一次难忘的活动，注意动词过去式。",
+      "skills": [
+        {
+          "id": "english-7-lower-u7-k1",
+          "title": "过去式 be",
+          "guide": "yesterday 表示过去；we 对应 were。 单数主语 the trip，过去用 was。"
+        },
+        {
+          "id": "english-7-lower-u7-k2",
+          "title": "动词过去式",
+          "guide": "规则动词 visit 的过去式加 ed。 go 的过去式是不规则变化 went。"
+        },
+        {
+          "id": "english-7-lower-u7-k3",
+          "title": "过去疑问",
+          "guide": "Did 已表达过去，后面的实义动词用原形 feed。 Did 提问用 did/didn't 回答。"
+        },
+        {
+          "id": "english-7-lower-u7-k4",
+          "title": "日记阅读",
+          "guide": "morning 早于 noon，先摘菜再烹饪。 showed him how 表示农民指导了方法，随后成功。"
+        }
+      ],
+      "questions": [
+        {
+          "id": "english-7-lower-u7-d1",
+          "skillId": "english-7-lower-u7-k1",
+          "prompt": "We ____ at the farm yesterday.",
+          "options": [
+            {
+              "id": "a",
+              "text": "were"
+            },
+            {
+              "id": "b",
+              "text": "are"
+            },
+            {
+              "id": "c",
+              "text": "was"
+            }
+          ],
+          "answer": "a",
+          "explanation": "yesterday 表示过去；we 对应 were。"
+        },
+        {
+          "id": "english-7-lower-u7-d2",
+          "skillId": "english-7-lower-u7-k2",
+          "prompt": "Yesterday I ____ my grandparents.",
+          "options": [
+            {
+              "id": "a",
+              "text": "visit"
+            },
+            {
+              "id": "b",
+              "text": "visited"
+            },
+            {
+              "id": "c",
+              "text": "visiting"
+            }
+          ],
+          "answer": "b",
+          "explanation": "规则动词 visit 的过去式加 ed。"
+        },
+        {
+          "id": "english-7-lower-u7-d3",
+          "skillId": "english-7-lower-u7-k3",
+          "prompt": "Did you ____ the animals?",
+          "options": [
+            {
+              "id": "a",
+              "text": "fed"
+            },
+            {
+              "id": "b",
+              "text": "feeds"
+            },
+            {
+              "id": "c",
+              "text": "feed"
+            }
+          ],
+          "answer": "c",
+          "explanation": "Did 已表达过去，后面的实义动词用原形 feed。"
+        },
+        {
+          "id": "english-7-lower-u7-d4",
+          "skillId": "english-7-lower-u7-k4",
+          "prompt": "读：Yesterday we picked vegetables in the morning and cooked them at noon. What happened first?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Picking vegetables."
+            },
+            {
+              "id": "b",
+              "text": "Cooking them."
+            },
+            {
+              "id": "c",
+              "text": "Eating dinner."
+            }
+          ],
+          "answer": "a",
+          "explanation": "morning 早于 noon，先摘菜再烹饪。"
+        }
+      ],
+      "retestQuestions": [
+        {
+          "id": "english-7-lower-u7-r1",
+          "skillId": "english-7-lower-u7-k1",
+          "prompt": "The trip ____ exciting last Sunday.",
+          "options": [
+            {
+              "id": "a",
+              "text": "is"
+            },
+            {
+              "id": "b",
+              "text": "was"
+            },
+            {
+              "id": "c",
+              "text": "were"
+            }
+          ],
+          "answer": "b",
+          "explanation": "单数主语 the trip，过去用 was。"
+        },
+        {
+          "id": "english-7-lower-u7-r2",
+          "skillId": "english-7-lower-u7-k2",
+          "prompt": "We ____ to the museum last week.",
+          "options": [
+            {
+              "id": "a",
+              "text": "go"
+            },
+            {
+              "id": "b",
+              "text": "going"
+            },
+            {
+              "id": "c",
+              "text": "went"
+            }
+          ],
+          "answer": "c",
+          "explanation": "go 的过去式是不规则变化 went。"
+        },
+        {
+          "id": "english-7-lower-u7-r3",
+          "skillId": "english-7-lower-u7-k3",
+          "prompt": "Did she enjoy the trip? 的否定回答是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "No, she didn't."
+            },
+            {
+              "id": "b",
+              "text": "No, she doesn't."
+            },
+            {
+              "id": "c",
+              "text": "No, she isn't."
+            }
+          ],
+          "answer": "a",
+          "explanation": "Did 提问用 did/didn't 回答。"
+        },
+        {
+          "id": "english-7-lower-u7-r4",
+          "skillId": "english-7-lower-u7-k4",
+          "prompt": "读：At first, Bo found planting difficult. A farmer showed him how, and he finally succeeded. What helped Bo?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Giving up immediately."
+            },
+            {
+              "id": "b",
+              "text": "The farmer's guidance."
+            },
+            {
+              "id": "c",
+              "text": "Buying a new phone."
+            }
+          ],
+          "answer": "b",
+          "explanation": "showed him how 表示农民指导了方法，随后成功。"
+        }
+      ]
+    },
+    {
+      "id": "english-7-lower-u8",
+      "title": "Unit 8 Once upon a Time",
+      "page": 57,
+      "pdfPage": 65,
+      "focus": "过去时否定与故事复述",
+      "writingPrompt": "用 First、Then、Finally 复述一个小故事，并写出你的理解。",
+      "skills": [
+        {
+          "id": "english-7-lower-u8-k1",
+          "title": "不规则过去式",
+          "guide": "become 的过去式为 became，不能按规则加 ed。 see 的过去式是不规则的 saw。"
+        },
+        {
+          "id": "english-7-lower-u8-k2",
+          "title": "过去否定",
+          "guide": "didn't 后用动词原形 know。 过去否定用 didn't 加原形 find，不重复使用过去式 found。"
+        },
+        {
+          "id": "english-7-lower-u8-k3",
+          "title": "故事顺序",
+          "guide": "Then 引出第二件事；First 和 Finally 分别标记首尾。 First/then/finally 属于顺序标志，有助于组织叙述。"
+        },
+        {
+          "id": "english-7-lower-u8-k4",
+          "title": "寓意与证据",
+          "guide": "结局来自一个放松努力、一个坚持；不能扩大成所有快跑者都输。 无人监督仍归还失物体现诚实，依据是具体行为。"
+        }
+      ],
+      "questions": [
+        {
+          "id": "english-7-lower-u8-d1",
+          "skillId": "english-7-lower-u8-k1",
+          "prompt": "The duckling ____ a swan.",
+          "options": [
+            {
+              "id": "a",
+              "text": "becomed"
+            },
+            {
+              "id": "b",
+              "text": "became"
+            },
+            {
+              "id": "c",
+              "text": "become"
+            }
+          ],
+          "answer": "b",
+          "explanation": "become 的过去式为 became，不能按规则加 ed。"
+        },
+        {
+          "id": "english-7-lower-u8-d2",
+          "skillId": "english-7-lower-u8-k2",
+          "prompt": "He didn't ____ the answer.",
+          "options": [
+            {
+              "id": "a",
+              "text": "knew"
+            },
+            {
+              "id": "b",
+              "text": "knows"
+            },
+            {
+              "id": "c",
+              "text": "know"
+            }
+          ],
+          "answer": "c",
+          "explanation": "didn't 后用动词原形 know。"
+        },
+        {
+          "id": "english-7-lower-u8-d3",
+          "skillId": "english-7-lower-u8-k3",
+          "prompt": "First, the bird fell. Then, a girl helped it. Finally, it flew away. 第二件事是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "A girl helped it."
+            },
+            {
+              "id": "b",
+              "text": "The bird fell."
+            },
+            {
+              "id": "c",
+              "text": "It flew away."
+            }
+          ],
+          "answer": "a",
+          "explanation": "Then 引出第二件事；First 和 Finally 分别标记首尾。"
+        },
+        {
+          "id": "english-7-lower-u8-d4",
+          "skillId": "english-7-lower-u8-k4",
+          "prompt": "读：A fast runner laughed at a slow runner, then stopped trying. The slow runner kept going and won. Which lesson is supported?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Fast runners always lose."
+            },
+            {
+              "id": "b",
+              "text": "Keep trying instead of becoming careless."
+            },
+            {
+              "id": "c",
+              "text": "Never join a race."
+            }
+          ],
+          "answer": "b",
+          "explanation": "结局来自一个放松努力、一个坚持；不能扩大成所有快跑者都输。"
+        }
+      ],
+      "retestQuestions": [
+        {
+          "id": "english-7-lower-u8-r1",
+          "skillId": "english-7-lower-u8-k1",
+          "prompt": "The child ____ a small bird yesterday.",
+          "options": [
+            {
+              "id": "a",
+              "text": "seed"
+            },
+            {
+              "id": "b",
+              "text": "see"
+            },
+            {
+              "id": "c",
+              "text": "saw"
+            }
+          ],
+          "answer": "c",
+          "explanation": "see 的过去式是不规则的 saw。"
+        },
+        {
+          "id": "english-7-lower-u8-r2",
+          "skillId": "english-7-lower-u8-k2",
+          "prompt": "将 She found the key. 改为否定句，正确的是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "She didn't find the key."
+            },
+            {
+              "id": "b",
+              "text": "She didn't found the key."
+            },
+            {
+              "id": "c",
+              "text": "She not found the key."
+            }
+          ],
+          "answer": "a",
+          "explanation": "过去否定用 didn't 加原形 find，不重复使用过去式 found。"
+        },
+        {
+          "id": "english-7-lower-u8-r3",
+          "skillId": "english-7-lower-u8-k3",
+          "prompt": "复述故事时，哪组连接词能清楚标明先后？",
+          "options": [
+            {
+              "id": "a",
+              "text": "Red, blue, green."
+            },
+            {
+              "id": "b",
+              "text": "First, then, finally."
+            },
+            {
+              "id": "c",
+              "text": "Here, there, everywhere."
+            }
+          ],
+          "answer": "b",
+          "explanation": "First/then/finally 属于顺序标志，有助于组织叙述。"
+        },
+        {
+          "id": "english-7-lower-u8-r4",
+          "skillId": "english-7-lower-u8-k4",
+          "prompt": "读：A child returned a lost purse even though no one was watching. What quality does this show?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Laziness."
+            },
+            {
+              "id": "b",
+              "text": "Carelessness."
+            },
+            {
+              "id": "c",
+              "text": "Honesty."
+            }
+          ],
+          "answer": "c",
+          "explanation": "无人监督仍归还失物体现诚实，依据是具体行为。"
+        }
+      ]
+    }
+  ]
+}

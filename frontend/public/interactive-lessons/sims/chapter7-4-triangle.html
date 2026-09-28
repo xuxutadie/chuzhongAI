@@ -1,0 +1,1784 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第四章 三角形 - 互动教学</title>
+<style>
+  /* ========== 全局样式 ========== */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Microsoft YaHei", "PingFang SC", "Helvetica Neue", sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf3 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+    line-height: 1.6;
+  }
+
+  /* ========== 顶部标题栏 ========== */
+  .header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 32px 40px;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+    margin-bottom: 24px;
+    text-align: center;
+  }
+  .header h1 { font-size: 28px; margin-bottom: 8px; letter-spacing: 2px; }
+  .header p { font-size: 15px; opacity: 0.9; }
+
+  /* ========== 主容器 ========== */
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  /* ========== 标签页导航 ========== */
+  .tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+/* 被 iframe 嵌入时：隐藏大标题、压缩 tabs */
+body.embedded .header { display: none; }
+body.embedded .tabs { padding: 6px 12px; gap: 4px; }
+body.embedded .tab-btn { padding: 6px 14px; font-size: 13px; border-radius: 18px; }
+
+  .tab-btn {
+    flex: 1;
+    min-width: 200px;
+    padding: 14px 18px;
+    border: none;
+    background: white;
+    color: #667eea;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .tab-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(102,126,234,0.2); }
+  .tab-btn.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 4px 14px rgba(102,126,234,0.4);
+  }
+
+  /* ========== 内容卡片 ========== */
+  .section {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    display: none;
+    animation: fadeIn 0.4s ease;
+  }
+  .section.active { display: block; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .section h2 {
+    color: #764ba2;
+    font-size: 22px;
+    margin-bottom: 8px;
+    border-left: 4px solid #667eea;
+    padding-left: 12px;
+  }
+  .section .subtitle {
+    color: #888;
+    font-size: 14px;
+    margin-bottom: 24px;
+    padding-left: 16px;
+  }
+
+  /* ========== 知识点提示框 ========== */
+  .tip-box {
+    background: linear-gradient(135deg, #e0e7ff 0%, #f3e8ff 100%);
+    border-left: 4px solid #764ba2;
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin: 16px 0;
+    font-size: 14px;
+    color: #4a5568;
+  }
+  .tip-box strong { color: #667eea; }
+
+  /* ========== 通用按钮 ========== */
+  .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.25s ease;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(102,126,234,0.35); }
+  .btn-secondary { background: #edf2f7; color: #4a5568; }
+  .btn-secondary:hover { background: #e2e8f0; }
+  .btn-success { background: #48bb78; color: white; }
+  .btn-danger { background: #f56565; color: white; }
+
+  /* ========== 环节1：三角形信息卡片 ========== */
+  .info-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .info-card {
+    background: #f7fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+  }
+  .info-card .label { font-size: 13px; color: #718096; margin-bottom: 4px; }
+  .info-card .value { font-size: 18px; font-weight: 700; color: #667eea; }
+  .type-display {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 14px 20px;
+    border-radius: 10px;
+    margin: 16px 0;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .preset-btns { display: flex; gap: 10px; flex-wrap: wrap; margin: 12px 0; }
+  .preset-btn {
+    padding: 8px 18px;
+    border: 2px solid #cbd5e0;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+  .preset-btn:hover { border-color: #667eea; color: #667eea; }
+  .preset-btn.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-color: transparent;
+  }
+
+  /* ========== Canvas 包装 ========== */
+  .canvas-wrapper {
+    background: white;
+    border: 2px solid #f0f0f5;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 420px;
+  }
+  .canvas-wrapper-short { min-height: 320px; }
+  canvas { max-width: 100%; touch-action: none; }
+
+  /* ========== 环节2：输入与练习 ========== */
+  .control-panel {
+    background: #f7fafc;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 16px 0;
+  }
+  .input-row { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; }
+  .input-row label { font-weight: 600; color: #4a5568; min-width: 70px; }
+  .input-row input[type="number"] {
+    padding: 8px 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    width: 100px;
+  }
+  .input-row input[type="number"]:focus { outline: none; border-color: #667eea; }
+  .result-box {
+    padding: 16px 20px;
+    border-radius: 10px;
+    margin: 16px 0;
+    font-size: 15px;
+    display: none;
+  }
+  .result-box.success { background: #c6f6d5; color: #22543d; display: block; }
+  .result-box.fail { background: #fed7d7; color: #742a2a; display: block; }
+  .quiz-card {
+    background: #f7fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 16px 0;
+  }
+  .quiz-question { font-size: 15px; margin-bottom: 14px; color: #2d3748; }
+  .quiz-btns { display: flex; gap: 10px; }
+  .quiz-btn {
+    padding: 8px 20px;
+    border: 2px solid #cbd5e0;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+  .quiz-btn:hover { border-color: #667eea; color: #667eea; }
+  .quiz-feedback {
+    margin-top: 12px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    display: none;
+  }
+  .quiz-feedback.correct { background: #c6f6d5; color: #22543d; display: block; }
+  .quiz-feedback.wrong { background: #fed7d7; color: #742a2a; display: block; }
+
+  /* ========== 环节3：滑块 ========== */
+  .slider-group { margin-bottom: 16px; }
+  .slider-group label { display: block; font-weight: 600; margin-bottom: 8px; color: #4a5568; }
+  .slider-group input[type="range"] { width: 100%; accent-color: #667eea; }
+  .slider-value { color: #764ba2; font-weight: 700; font-size: 18px; }
+
+  /* ========== 环节4：方法切换 ========== */
+  .method-tabs {
+    display: flex;
+    gap: 8px;
+    margin: 16px 0;
+  }
+  .method-tab {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid #e2e8f0;
+    background: white;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 700;
+    color: #4a5568;
+    transition: all 0.25s;
+    text-align: center;
+  }
+  .method-tab:hover { border-color: #667eea; color: #667eea; }
+  .method-tab.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-color: transparent;
+  }
+  .method-info {
+    background: linear-gradient(135deg, #e0e7ff 0%, #f3e8ff 100%);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 14px;
+    color: #4a5568;
+  }
+  .method-info strong { color: #667eea; }
+
+  @media (max-width: 768px) {
+    body { padding: 8px; }
+    .section { padding: 16px; }
+    .canvas-wrapper, .canvas-wrapper-short { min-height: 0; padding: 8px; }
+    .info-cards { grid-template-columns: 1fr; }
+    .tab-btn { min-width: 100%; }
+    .method-tabs { flex-direction: column; }
+  }
+</style>
+<link rel="stylesheet" href="./blueprint-theme.css">
+</head>
+<body data-theme="blueprint">
+<div class="container">
+  <!-- 顶部标题栏 -->
+  <div class="header">
+    <h1>📐 第四章 三角形</h1>
+    <p>北师大版 · 七年级数学下册 · 互动教学模拟</p>
+  </div>
+
+  <!-- 标签页导航 -->
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="section1">🔺 认识三角形</button>
+    <button class="tab-btn" data-tab="section2">📏 三边关系</button>
+    <button class="tab-btn" data-tab="section3">🌡️ 内角和定理</button>
+    <button class="tab-btn" data-tab="section4">🔄 全等三角形</button>
+  </div>
+
+  <!-- ============ 环节1：认识三角形 ============ -->
+  <div class="section active" id="section1">
+    <h2>环节一：认识三角形 —— 基本要素与分类</h2>
+    <p class="subtitle">拖动顶点 A、B、C 改变三角形形状，观察边长、内角与内角和的变化</p>
+
+    <div class="tip-box">
+      <strong>📌 知识点：</strong>
+      <b>三角形</b>是由三条不在同一直线上的线段首尾顺次相接组成的平面图形。
+      三要素：<b>三个顶点</b>、<b>三条边</b>、<b>三个内角</b>。
+      记作：△ABC，边 a=BC（顶点A的对边），b=AC，c=AB。
+      <b>三角形内角和恒等于 180°</b>。
+    </div>
+
+    <div class="preset-btns">
+      <button class="preset-btn active" data-shape="acute">锐角三角形</button>
+      <button class="preset-btn" data-shape="right">直角三角形</button>
+      <button class="preset-btn" data-shape="obtuse">钝角三角形</button>
+      <button class="preset-btn" data-shape="isosceles">等腰三角形</button>
+      <button class="preset-btn" data-shape="equilateral">等边三角形</button>
+    </div>
+
+    <div class="canvas-wrapper">
+      <canvas id="canvas1"></canvas>
+    </div>
+
+    <div class="info-cards">
+      <div class="info-card">
+        <div class="label">边 a (BC)</div>
+        <div class="value" id="side-a">--</div>
+      </div>
+      <div class="info-card">
+        <div class="label">边 b (AC)</div>
+        <div class="value" id="side-b">--</div>
+      </div>
+      <div class="info-card">
+        <div class="label">边 c (AB)</div>
+        <div class="value" id="side-c">--</div>
+      </div>
+      <div class="info-card">
+        <div class="label">∠A</div>
+        <div class="value" id="angle-a">--</div>
+      </div>
+      <div class="info-card">
+        <div class="label">∠B</div>
+        <div class="value" id="angle-b">--</div>
+      </div>
+      <div class="info-card">
+        <div class="label">∠C</div>
+        <div class="value" id="angle-c">--</div>
+      </div>
+    </div>
+
+    <div class="type-display" id="type-display">三角形类型：锐角三角形</div>
+
+    <div class="info-card" style="background: linear-gradient(135deg, #e0e7ff 0%, #f3e8ff 100%); border: none;">
+      <div class="label">三角形内角和 ∠A + ∠B + ∠C</div>
+      <div class="value" id="angle-sum" style="font-size: 24px; color: #764ba2;">180°</div>
+    </div>
+
+    <p style="font-size: 13px; color: #888; margin-top: 12px;">
+      💡 操作提示：用鼠标拖动顶点 A、B、C 即可改变三角形形状；点击上方按钮可快速切换到典型三角形。
+    </p>
+  </div>
+
+  <!-- ============ 环节2：三角形三边关系 ============ -->
+  <div class="section" id="section2">
+    <h2>环节二：三角形三边关系</h2>
+    <p class="subtitle">输入三条边长，判断能否组成三角形，并观看线段拼接动画</p>
+
+    <div class="tip-box">
+      <strong>📌 知识点：</strong>
+      <b>三角形三边关系定理</b>：三角形任意两边之和大于第三边，任意两边之差小于第三边。
+      即：<b>a + b &gt; c，a + c &gt; b，b + c &gt; a</b>。
+      简记："<b>两边之和大于第三边</b>"。判断时只需检查较短两边之和是否大于最长边即可。
+    </div>
+
+    <div class="control-panel">
+      <div class="input-row">
+        <label>边 a：</label>
+        <input type="number" id="input-a" value="5" min="0.1" step="0.1">
+        <label>边 b：</label>
+        <input type="number" id="input-b" value="6" min="0.1" step="0.1">
+        <label>边 c：</label>
+        <input type="number" id="input-c" value="7" min="0.1" step="0.1">
+      </div>
+      <div class="preset-btns">
+        <button class="preset-btn" data-tri="3,4,5">3, 4, 5（直角三角形）</button>
+        <button class="preset-btn" data-tri="2,3,6">2, 3, 6（不能组成）</button>
+        <button class="preset-btn" data-tri="5,5,8">5, 5, 8（等腰）</button>
+        <button class="preset-btn" data-tri="4,4,4">4, 4, 4（等边）</button>
+      </div>
+      <button class="btn btn-primary" id="check-btn" style="margin-top: 10px;">🔍 判断能否组成三角形</button>
+    </div>
+
+    <div class="result-box" id="result-box"></div>
+
+    <div class="canvas-wrapper canvas-wrapper-short">
+      <canvas id="canvas2"></canvas>
+    </div>
+
+    <button class="btn btn-secondary" id="animate-btn" style="margin: 10px 0;">▶ 播放拼接动画</button>
+
+    <div class="quiz-card">
+      <h3 style="color: #764ba2; margin-bottom: 12px;">📝 练习题（判断能否组成三角形）</h3>
+      <div id="quiz-list-2"></div>
+      <button class="btn btn-secondary" id="next-quiz-2" style="margin-top: 14px;">换一组题</button>
+    </div>
+  </div>
+
+  <!-- ============ 环节3：三角形内角和 ============ -->
+  <div class="section" id="section3">
+    <h2>环节三：三角形内角和定理</h2>
+    <p class="subtitle">三个内角用不同颜色标注，点击"拼一拼"观察拼成 180° 平角的过程</p>
+
+    <div class="tip-box">
+      <strong>📌 知识点：</strong>
+      <b>三角形内角和定理</b>：三角形三个内角的和等于 180°。
+      <br><b>证明思路</b>（剪拼法）：将三个内角剪下，可以拼成一个平角（180°），从而证明内角和为 180°。
+      也可过顶点作平行线，利用平行线性质证明。
+    </div>
+
+    <div class="control-panel">
+      <div class="slider-group">
+        <label>三角形形状调节（拖动滑块改变顶点 A 的位置）</label>
+        <input type="range" id="shape-slider" min="0" max="100" value="50">
+        <div>当前形状：<span class="slider-value" id="shape-label">普通锐角三角形</span></div>
+      </div>
+    </div>
+
+    <div class="canvas-wrapper">
+      <canvas id="canvas3"></canvas>
+    </div>
+
+    <div class="info-cards">
+      <div class="info-card">
+        <div class="label">∠A（红）</div>
+        <div class="value" id="angle3-a" style="color: #e53e3e;">--</div>
+      </div>
+      <div class="info-card">
+        <div class="label">∠B（蓝）</div>
+        <div class="value" id="angle3-b" style="color: #3182ce;">--</div>
+      </div>
+      <div class="info-card">
+        <div class="label">∠C（绿）</div>
+        <div class="value" id="angle3-c" style="color: #38a169;">--</div>
+      </div>
+    </div>
+
+    <div class="info-card" style="background: linear-gradient(135deg, #e0e7ff 0%, #f3e8ff 100%); border: none;">
+      <div class="label">内角和 ∠A + ∠B + ∠C</div>
+      <div class="value" id="angle3-sum" style="font-size: 24px; color: #764ba2;">180°</div>
+    </div>
+
+    <button class="btn btn-primary" id="puzzle-btn" style="margin-top: 16px;">✂ 拼一拼（动画演示内角和为 180°）</button>
+    <button class="btn btn-secondary" id="reset-puzzle-btn" style="margin-top: 16px; margin-left: 8px;">↩ 重置</button>
+
+    <p style="font-size: 13px; color: #888; margin-top: 12px;">
+      💡 动画原理：将三个内角剪下，依次平移到一条直线上，正好拼成一个 180° 的平角。
+    </p>
+  </div>
+
+  <!-- ============ 环节4：全等三角形 ============ -->
+  <div class="section" id="section4">
+    <h2>环节四：全等三角形 —— 判定方法</h2>
+    <p class="subtitle">切换 SSS / SAS / ASA 三种判定方法，观察两个三角形全等变换的过程</p>
+
+    <div class="tip-box">
+      <strong>📌 知识点：</strong>
+      <b>全等三角形</b>：能够完全重合的两个三角形。对应边相等、对应角相等。
+      记作：△ABC ≌ △DEF。
+      <br><b>三种判定方法</b>：
+      <b>SSS</b>（边边边）—— 三边对应相等；
+      <b>SAS</b>（边角边）—— 两边及其夹角对应相等；
+      <b>ASA</b>（角边角）—— 两角及其夹边对应相等。
+    </div>
+
+    <div class="method-tabs">
+      <div class="method-tab active" data-method="SSS">SSS<br><small>边边边</small></div>
+      <div class="method-tab" data-method="SAS">SAS<br><small>边角边</small></div>
+      <div class="method-tab" data-method="ASA">ASA<br><small>角边角</small></div>
+    </div>
+
+    <div class="method-info" id="method-info">
+      <strong>SSS（边边边）：</strong>三边对应相等的两个三角形全等。
+      图中红色边为对应相等的边，三个边都对应相等，故 △ABC ≌ △A'B'C'。
+    </div>
+
+    <div class="canvas-wrapper">
+      <canvas id="canvas4"></canvas>
+    </div>
+
+    <button class="btn btn-primary" id="congruent-anim-btn" style="margin: 10px 0;">▶ 播放全等变换动画</button>
+    <button class="btn btn-secondary" id="congruent-reset-btn" style="margin: 10px 0 0 8px;">↩ 重置</button>
+
+    <div class="quiz-card">
+      <h3 style="color: #764ba2; margin-bottom: 12px;">📝 判断题（能否判定全等）</h3>
+      <div id="quiz-list-4"></div>
+      <button class="btn btn-secondary" id="next-quiz-4" style="margin-top: 14px;">换一组题</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+ * 第四章 三角形 - 互动教学脚本
+ * 所有函数均不使用全局 event 变量，通过 querySelector 匹配元素
+ * ============================================================ */
+
+/* ---------- 通用工具 ---------- */
+
+// Canvas 高 DPI 处理：根据 devicePixelRatio 设置真实分辨率
+function setupCanvas(canvas, cssW, cssH) {
+  var dpr = window.devicePixelRatio || 1;
+  canvas.width = cssW * dpr;
+  canvas.height = cssH * dpr;
+  // 窄屏按原始宽高比整体缩放，避免只压缩宽度造成图形变形。
+  canvas.style.width = '100%';
+  canvas.style.maxWidth = cssW + 'px';
+  canvas.style.height = 'auto';
+  canvas.dataset.logicalWidth = String(cssW);
+  canvas.dataset.logicalHeight = String(cssH);
+  var ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  return ctx;
+}
+
+// 计算两点间距离
+function dist(p1, p2) {
+  var dx = p2.x - p1.x, dy = p2.y - p1.y;
+  return Math.sqrt(dx * dx + dy * dy);
+}
+
+// 计算三角形内角（用余弦定理）
+// 顶点 P 处的内角 = arccos((邻边1² + 邻边2² - 对边²) / (2 * 邻边1 * 邻边2))
+function angleAt(P, A, B) {
+  // P 是顶点，A、B 是相邻两顶点
+  var a = dist(P, A); // 邻边1
+  var b = dist(P, B); // 邻边2
+  var c = dist(A, B); // 对边
+  if (a < 0.0001 || b < 0.0001) return 0;
+  var cosVal = (a * a + b * b - c * c) / (2 * a * b);
+  // 防止浮点误差超出 [-1, 1]
+  cosVal = Math.max(-1, Math.min(1, cosVal));
+  return Math.acos(cosVal) * 180 / Math.PI;
+}
+
+// 拖拽时保留足够边长和面积，避免重合/近共线造成无意义的角度结果。
+function isUsableTriangle(triangle) {
+  var minimumSide = Math.min(
+    dist(triangle.A, triangle.B),
+    dist(triangle.A, triangle.C),
+    dist(triangle.B, triangle.C)
+  );
+  var doubleArea = Math.abs(
+    (triangle.B.x - triangle.A.x) * (triangle.C.y - triangle.A.y)
+    - (triangle.B.y - triangle.A.y) * (triangle.C.x - triangle.A.x)
+  );
+  return minimumSide >= 24 && doubleArea >= 1200;
+}
+
+// 角度转弧度
+function toRad(deg) { return deg * Math.PI / 180; }
+
+// 获取鼠标在 canvas 上的 CSS 坐标
+function getMousePos(canvas, evt) {
+  var rect = canvas.getBoundingClientRect();
+  var logicalWidth = Number(canvas.dataset.logicalWidth) || rect.width;
+  var logicalHeight = Number(canvas.dataset.logicalHeight) || rect.height;
+  return {
+    x: (evt.clientX - rect.left) * logicalWidth / rect.width,
+    y: (evt.clientY - rect.top) * logicalHeight / rect.height
+  };
+}
+
+// 固定逻辑坐标画布在窄屏会整体缩小；反向补偿字号，保证学生仍能看清标注。
+function canvasFont(canvas, baseSize, weight) {
+  var rect = canvas.getBoundingClientRect();
+  var logicalWidth = Number(canvas.dataset.logicalWidth) || rect.width || 1;
+  var displayScale = rect.width > 0 ? rect.width / logicalWidth : 1;
+  var logicalSize = Math.max(baseSize, 12 / Math.max(displayScale, 0.01));
+  return (weight ? weight + ' ' : '') + logicalSize.toFixed(2) + 'px Microsoft YaHei';
+}
+
+// 触控命中区至少保持 22 CSS 像素半径，不受画布视觉缩放影响。
+function canvasHitRadius(canvas, minimumCssRadius) {
+  var rect = canvas.getBoundingClientRect();
+  var logicalWidth = Number(canvas.dataset.logicalWidth) || rect.width || 1;
+  var displayScale = rect.width > 0 ? rect.width / logicalWidth : 1;
+  return Math.max(18, minimumCssRadius / Math.max(displayScale, 0.01));
+}
+
+/* ---------- 通用：标签页切换 ---------- */
+// 切换显示指定的内容环节
+function switchSection(sectionId) {
+  // 隐藏所有环节
+  document.querySelectorAll('.section').forEach(function(sec) {
+    sec.classList.remove('active');
+  });
+  // 取消所有标签按钮高亮
+  document.querySelectorAll('.tab-btn').forEach(function(btn) {
+    btn.classList.remove('active');
+  });
+  // 显示目标环节并高亮对应按钮
+  document.getElementById(sectionId).classList.add('active');
+  var targetBtn = document.querySelector('.tab-btn[data-tab="' + sectionId + '"]');
+  if (targetBtn) targetBtn.classList.add('active');
+
+  // 切换到对应环节时重绘 Canvas
+  if (sectionId === 'section1') drawTriangle1();
+  else if (sectionId === 'section2') drawTriangle2();
+  else if (sectionId === 'section3') drawTriangle3();
+  else if (sectionId === 'section4') drawTriangle4();
+}
+
+// 为标签按钮绑定点击事件（不依赖全局 event）
+document.querySelectorAll('.tab-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var targetId = this.getAttribute('data-tab');
+    switchSection(targetId);
+  });
+});
+
+/* ============================================================
+ * 环节1：认识三角形 —— 可拖拽顶点
+ * ============================================================ */
+
+// 三角形三个顶点坐标（CSS 坐标系）
+var tri1 = {
+  A: { x: 150, y: 60 },
+  B: { x: 60,  y: 320 },
+  C: { x: 380, y: 320 }
+};
+var canvas1, ctx1;
+var dragging1 = null; // 当前正在拖拽的顶点
+
+// 初始化环节1的 Canvas
+function initCanvas1() {
+  canvas1 = document.getElementById('canvas1');
+  ctx1 = setupCanvas(canvas1, 440, 380);
+  // 指针按下：鼠标和触屏都可拖动顶点
+  canvas1.addEventListener('pointerdown', function(e) {
+    var pos = getMousePos(canvas1, e);
+    ['A', 'B', 'C'].forEach(function(v) {
+      if (dist(pos, tri1[v]) < canvasHitRadius(canvas1, 22)) dragging1 = v;
+    });
+    if (!dragging1) return;
+    try {
+      canvas1.setPointerCapture(e.pointerId);
+    } catch (captureError) {
+      // 合成测试事件可能没有可捕获的真实指针，不影响坐标拖拽逻辑。
+    }
+    e.preventDefault();
+  });
+  // 指针移动：若正在拖拽则更新顶点位置
+  canvas1.addEventListener('pointermove', function(e) {
+    if (!dragging1) return;
+    var pos = getMousePos(canvas1, e);
+    // 限制在画布范围内，并防止三个顶点共线
+    pos.x = Math.max(20, Math.min(420, pos.x));
+    pos.y = Math.max(20, Math.min(360, pos.y));
+    var candidate = {
+      A: { x: tri1.A.x, y: tri1.A.y },
+      B: { x: tri1.B.x, y: tri1.B.y },
+      C: { x: tri1.C.x, y: tri1.C.y }
+    };
+    candidate[dragging1] = pos;
+    if (!isUsableTriangle(candidate)) {
+      e.preventDefault();
+      return;
+    }
+    tri1[dragging1] = pos;
+    // 取消预设按钮高亮
+    document.querySelectorAll('#section1 .preset-btn').forEach(function(b) { b.classList.remove('active'); });
+    drawTriangle1();
+    e.preventDefault();
+  });
+  // 指针松开或被系统取消：停止拖拽
+  canvas1.addEventListener('pointerup', function() { dragging1 = null; });
+  canvas1.addEventListener('pointercancel', function() { dragging1 = null; });
+}
+
+// 绘制三角形1
+function drawTriangle1() {
+  if (!ctx1) return;
+  ctx1.clearRect(0, 0, 440, 380);
+  // 背景
+  ctx1.fillStyle = '#fafbff';
+  ctx1.fillRect(0, 0, 440, 380);
+
+  // 三角形填充
+  ctx1.beginPath();
+  ctx1.moveTo(tri1.A.x, tri1.A.y);
+  ctx1.lineTo(tri1.B.x, tri1.B.y);
+  ctx1.lineTo(tri1.C.x, tri1.C.y);
+  ctx1.closePath();
+  ctx1.fillStyle = 'rgba(102, 126, 234, 0.15)';
+  ctx1.fill();
+  ctx1.strokeStyle = '#667eea';
+  ctx1.lineWidth = 2.5;
+  ctx1.stroke();
+
+  // 标注边长（在边的中点附近）
+  drawSideLabel(ctx1, tri1.B, tri1.C, 'a = ' + dist(tri1.B, tri1.C).toFixed(1), '#e53e3e');
+  drawSideLabel(ctx1, tri1.A, tri1.C, 'b = ' + dist(tri1.A, tri1.C).toFixed(1), '#3182ce');
+  drawSideLabel(ctx1, tri1.A, tri1.B, 'c = ' + dist(tri1.A, tri1.B).toFixed(1), '#38a169');
+
+  // 绘制三个顶点（可拖拽手柄）
+  ['A', 'B', 'C'].forEach(function(v) {
+    var p = tri1[v];
+    ctx1.beginPath();
+    ctx1.arc(p.x, p.y, 8, 0, Math.PI * 2);
+    ctx1.fillStyle = '#764ba2';
+    ctx1.fill();
+    ctx1.strokeStyle = 'white';
+    ctx1.lineWidth = 2;
+    ctx1.stroke();
+    // 顶点字母
+    ctx1.fillStyle = '#2d3748';
+    ctx1.font = canvasFont(canvas1, 16, 'bold');
+    ctx1.textAlign = 'center';
+    ctx1.textBaseline = 'middle';
+    // 字母位置稍微偏离顶点
+    var offset = { A: { x: 0, y: -18 }, B: { x: -14, y: 10 }, C: { x: 14, y: 10 } };
+    ctx1.fillText(v, p.x + offset[v].x, p.y + offset[v].y);
+  });
+
+  // 更新右侧信息面板
+  updateInfo1();
+}
+
+// 在边的中点绘制标签
+function drawSideLabel(ctx, p1, p2, text, color) {
+  var mx = (p1.x + p2.x) / 2;
+  var my = (p1.y + p2.y) / 2;
+  // 计算法向量（垂直于边的方向）
+  var dx = p2.x - p1.x, dy = p2.y - p1.y;
+  var len = Math.sqrt(dx * dx + dy * dy);
+  var nx = -dy / len, ny = dx / len;
+  // 偏移到边的外侧
+  var offsetX = nx * 14, offsetY = ny * 14;
+  ctx1.fillStyle = color;
+  ctx1.font = canvasFont(ctx.canvas, 13, 'bold');
+  ctx1.textAlign = 'center';
+  ctx1.textBaseline = 'middle';
+  ctx1.fillText(text, mx + offsetX, my + offsetY);
+}
+
+// 更新环节1的信息面板
+function updateInfo1() {
+  var a = dist(tri1.B, tri1.C);
+  var b = dist(tri1.A, tri1.C);
+  var c = dist(tri1.A, tri1.B);
+  var angA = angleAt(tri1.A, tri1.B, tri1.C);
+  var angB = angleAt(tri1.B, tri1.A, tri1.C);
+  var angC = angleAt(tri1.C, tri1.A, tri1.B);
+  var sum = angA + angB + angC;
+
+  document.getElementById('side-a').textContent = a.toFixed(2);
+  document.getElementById('side-b').textContent = b.toFixed(2);
+  document.getElementById('side-c').textContent = c.toFixed(2);
+  document.getElementById('angle-a').textContent = angA.toFixed(1) + '°';
+  document.getElementById('angle-b').textContent = angB.toFixed(1) + '°';
+  document.getElementById('angle-c').textContent = angC.toFixed(1) + '°';
+  document.getElementById('angle-sum').textContent = sum.toFixed(1) + '° (≈180°)';
+
+  // 判断三角形类型
+  var type = classifyTriangle(angA, angB, angC, a, b, c);
+  document.getElementById('type-display').textContent = '三角形类型：' + type;
+}
+
+// 根据角度和边长判断三角形类型
+function classifyTriangle(angA, angB, angC, a, b, c) {
+  var angles = [angA, angB, angC];
+  var maxAng = Math.max.apply(null, angles);
+  // 按角分类
+  var byAngle;
+  if (Math.abs(maxAng - 90) < 0.5) byAngle = '直角三角形';
+  else if (maxAng > 90) byAngle = '钝角三角形';
+  else byAngle = '锐角三角形';
+  // 按边分类
+  var bySide = '不等边三角形';
+  var tol = 0.5;
+  if (Math.abs(a - b) < tol && Math.abs(b - c) < tol) bySide = '等边三角形';
+  else if (Math.abs(a - b) < tol || Math.abs(b - c) < tol || Math.abs(a - c) < tol) bySide = '等腰三角形';
+  return byAngle + ' · ' + bySide;
+}
+
+// 切换预设形状
+function setShape(shape) {
+  if (shape === 'acute') {
+    tri1.A = { x: 150, y: 60 };
+    tri1.B = { x: 60,  y: 320 };
+    tri1.C = { x: 380, y: 320 };
+  } else if (shape === 'right') {
+    // 直角三角形：∠C = 90°
+    tri1.A = { x: 80,  y: 60 };
+    tri1.B = { x: 80,  y: 320 };
+    tri1.C = { x: 380, y: 320 };
+  } else if (shape === 'obtuse') {
+    // 钝角三角形：∠A > 90°
+    tri1.A = { x: 220, y: 240 };
+    tri1.B = { x: 40,  y: 320 };
+    tri1.C = { x: 400, y: 320 };
+  } else if (shape === 'isosceles') {
+    // 等腰三角形：AB = AC
+    tri1.A = { x: 220, y: 60 };
+    tri1.B = { x: 80,  y: 320 };
+    tri1.C = { x: 360, y: 320 };
+  } else if (shape === 'equilateral') {
+    // 等边三角形
+    tri1.A = { x: 220, y: 60 };
+    tri1.B = { x: 95,  y: 280 };
+    tri1.C = { x: 345, y: 280 };
+  }
+  drawTriangle1();
+}
+
+// 绑定预设按钮事件
+document.querySelectorAll('#section1 .preset-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var shape = this.getAttribute('data-shape');
+    document.querySelectorAll('#section1 .preset-btn').forEach(function(b) { b.classList.remove('active'); });
+    this.classList.add('active');
+    setShape(shape);
+  });
+});
+
+/* ============================================================
+ * 环节2：三角形三边关系
+ * ============================================================ */
+
+var canvas2, ctx2;
+var tri2AnimProgress = 1; // 默认直接展示完整图，播放按钮仍可从 0 开始演示
+var tri2AnimTimer = null;
+
+// 初始化环节2
+function initCanvas2() {
+  canvas2 = document.getElementById('canvas2');
+  ctx2 = setupCanvas(canvas2, 440, 280);
+  drawTriangle2();
+}
+
+// 根据三边长计算三角形顶点坐标（B 在原点，C 在 x 轴正方向）
+function computeTriVertices(a, b, c) {
+  // a = BC, b = AC, c = AB
+  // B 在 (0,0)，C 在 (a,0)
+  // A 满足 |AB| = c, |AC| = b
+  // 设 A = (x, y)，则 x² + y² = c², (x-a)² + y² = b²
+  // 解得 x = (c² + a² - b²) / (2a)
+  var x = (c * c + a * a - b * b) / (2 * a);
+  var y2 = c * c - x * x;
+  var y = Math.sqrt(Math.max(0, y2));
+  return {
+    A: { x: x, y: -y }, // y 向上为负（canvas y 向下为正）
+    B: { x: 0, y: 0 },
+    C: { x: a, y: 0 }
+  };
+}
+
+// 判断能否组成三角形
+function canFormTriangle(a, b, c) {
+  return (a + b > c) && (a + c > b) && (b + c > a);
+}
+
+// 检查并显示结果
+function checkTriangle() {
+  var a = parseFloat(document.getElementById('input-a').value);
+  var b = parseFloat(document.getElementById('input-b').value);
+  var c = parseFloat(document.getElementById('input-c').value);
+  var box = document.getElementById('result-box');
+
+  if (isNaN(a) || isNaN(b) || isNaN(c) || a <= 0 || b <= 0 || c <= 0) {
+    box.className = 'result-box fail';
+    box.innerHTML = '✗ 输入无效：请输入三条正数边长。';
+    tri2AnimProgress = 0;
+    drawTriangle2();
+    return;
+  }
+
+  if (canFormTriangle(a, b, c)) {
+    box.className = 'result-box success';
+    box.innerHTML = '✓ 能组成三角形！<br>' +
+      '验证三边关系：<br>' +
+      'a + b = ' + (a + b).toFixed(2) + ' > c = ' + c.toFixed(2) + ' ✓<br>' +
+      'a + c = ' + (a + c).toFixed(2) + ' > b = ' + b.toFixed(2) + ' ✓<br>' +
+      'b + c = ' + (b + c).toFixed(2) + ' > a = ' + a.toFixed(2) + ' ✓<br>' +
+      '<b>结论：任意两边之和大于第三边，能组成三角形。</b>';
+  } else {
+    box.className = 'result-box fail';
+    // 找出最长边
+    var sides = [['a', a], ['b', b], ['c', c]];
+    sides.sort(function(x, y) { return y[1] - x[1]; });
+    var longest = sides[0];
+    var sumOther = sides[1][1] + sides[2][1];
+    box.innerHTML = '✗ 不能组成三角形！<br>' +
+      '最长边为 ' + longest[0] + ' = ' + longest[1].toFixed(2) + '<br>' +
+      '其余两边之和 = ' + sides[1][0] + ' + ' + sides[2][0] + ' = ' + sumOther.toFixed(2) + '<br>' +
+      '因为 ' + sumOther.toFixed(2) + ' ≤ ' + longest[1].toFixed(2) + '（两边之和不大于第三边），<br>' +
+      '<b>结论：较短两边之和小于或等于最长边，不能组成三角形。</b>';
+  }
+  tri2AnimProgress = 1;
+  drawTriangle2();
+}
+
+// 绘制环节2：根据动画进度拼接三条边
+function drawTriangle2() {
+  if (!ctx2) return;
+  ctx2.clearRect(0, 0, 440, 280);
+  ctx2.fillStyle = '#fafbff';
+  ctx2.fillRect(0, 0, 440, 280);
+
+  var a = parseFloat(document.getElementById('input-a').value);
+  var b = parseFloat(document.getElementById('input-b').value);
+  var c = parseFloat(document.getElementById('input-c').value);
+
+  if (isNaN(a) || isNaN(b) || isNaN(c) || a <= 0 || b <= 0 || c <= 0) {
+    ctx2.fillStyle = '#888';
+    ctx2.font = canvasFont(canvas2, 14);
+    ctx2.textAlign = 'center';
+    ctx2.fillText('请输入有效的三条边长', 220, 140);
+    return;
+  }
+
+  // 缩放因子，使三角形适应画布
+  var maxSide = Math.max(a, b, c);
+  var scale = Math.min(360 / maxSide, 200 / maxSide) * 0.9;
+  var sa = a * scale, sb = b * scale, sc = c * scale;
+
+  if (!canFormTriangle(a, b, c)) {
+    // 不能组成三角形：三条线段无法闭合
+    drawNonTriangle(sa, sb, sc, tri2AnimProgress);
+    return;
+  }
+
+  // 能组成三角形：计算顶点位置
+  var verts = computeTriVertices(sa, sb, sc);
+  // 平移到画布中央
+  var offsetX = 220 - (verts.B.x + verts.C.x) / 2;
+  var offsetY = 180 - verts.A.y / 2;
+  var A = { x: verts.A.x + offsetX, y: verts.A.y + offsetY };
+  var B = { x: verts.B.x + offsetX, y: verts.B.y + offsetY };
+  var C = { x: verts.C.x + offsetX, y: verts.C.y + offsetY };
+
+  // 根据动画进度决定画到哪一步
+  // 0~0.33: 画边 c (AB)
+  // 0.33~0.66: 加上边 b (AC)
+  // 0.66~1: 加上边 a (BC)，闭合
+  var p = tri2AnimProgress;
+  ctx2.lineWidth = 3;
+  ctx2.lineCap = 'round';
+
+  // 边 c (AB) - 绿色
+  ctx2.strokeStyle = '#38a169';
+  ctx2.beginPath();
+  ctx2.moveTo(B.x, B.y);
+  var endC = p < 0.33 ? lerpPoint(B, A, p / 0.33) : A;
+  ctx2.lineTo(endC.x, endC.y);
+  ctx2.stroke();
+  drawLabel2(ctx2, B, endC, 'c=' + c, '#38a169');
+
+  if (p >= 0.33) {
+    // 边 b (AC) - 蓝色
+    ctx2.strokeStyle = '#3182ce';
+    ctx2.beginPath();
+    ctx2.moveTo(A.x, A.y);
+    var endB = p < 0.66 ? lerpPoint(A, C, (p - 0.33) / 0.33) : C;
+    ctx2.lineTo(endB.x, endB.y);
+    ctx2.stroke();
+    drawLabel2(ctx2, A, endB, 'b=' + b, '#3182ce');
+  }
+
+  if (p >= 0.66) {
+    // 边 a (BC) - 红色
+    ctx2.strokeStyle = '#e53e3e';
+    ctx2.beginPath();
+    ctx2.moveTo(C.x, C.y);
+    var endA = p < 1 ? lerpPoint(C, B, (p - 0.66) / 0.34) : B;
+    ctx2.lineTo(endA.x, endA.y);
+    ctx2.stroke();
+    drawLabel2(ctx2, C, endA, 'a=' + a, '#e53e3e');
+  }
+
+  // 动画完成时显示顶点字母
+  if (p >= 1) {
+    drawVertex2(ctx2, A, 'A');
+    drawVertex2(ctx2, B, 'B');
+    drawVertex2(ctx2, C, 'C');
+  }
+}
+
+// 线性插值两点
+function lerpPoint(p1, p2, t) {
+  t = Math.max(0, Math.min(1, t));
+  return { x: p1.x + (p2.x - p1.x) * t, y: p1.y + (p2.y - p1.y) * t };
+}
+
+// 在边中点标注
+function drawLabel2(ctx, p1, p2, text, color) {
+  var mx = (p1.x + p2.x) / 2;
+  var my = (p1.y + p2.y) / 2;
+  ctx.fillStyle = color;
+  ctx.font = canvasFont(ctx.canvas, 12, 'bold');
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(text, mx, my - 12);
+}
+
+// 绘制顶点
+function drawVertex2(ctx, p, name) {
+  ctx.beginPath();
+  ctx.arc(p.x, p.y, 6, 0, Math.PI * 2);
+  ctx.fillStyle = '#764ba2';
+  ctx.fill();
+  ctx.fillStyle = '#2d3748';
+  ctx.font = canvasFont(ctx.canvas, 14, 'bold');
+  ctx.textAlign = 'center';
+  ctx.fillText(name, p.x, p.y - 12);
+}
+
+// 不能组成三角形时的绘制
+function drawNonTriangle(a, b, c, progress) {
+  // 三条线段按顺序摆放，最后一条无法连接
+  var startX = 40, startY = 140;
+  // 第一条边 c
+  var p1 = { x: startX, y: startY };
+  var p2 = { x: startX + c, y: startY };
+  // 第二条边 b（从 p2 出发，转一定角度）
+  var p3 = { x: p2.x + b * Math.cos(-Math.PI / 3), y: p2.y + b * Math.sin(-Math.PI / 3) };
+  // 第三条边 a 应该回到 p1，但长度不够或太长
+  var actualDist = dist(p3, p1);
+
+  ctx2.lineWidth = 3;
+  ctx2.lineCap = 'round';
+
+  // 画第一条边
+  ctx2.strokeStyle = '#38a169';
+  ctx2.beginPath();
+  ctx2.moveTo(p1.x, p1.y);
+  var e1 = progress < 0.33 ? lerpPoint(p1, p2, progress / 0.33) : p2;
+  ctx2.lineTo(e1.x, e1.y);
+  ctx2.stroke();
+
+  // 画第二条边
+  if (progress >= 0.33) {
+    ctx2.strokeStyle = '#3182ce';
+    ctx2.beginPath();
+    ctx2.moveTo(p2.x, p2.y);
+    var e2 = progress < 0.66 ? lerpPoint(p2, p3, (progress - 0.33) / 0.33) : p3;
+    ctx2.lineTo(e2.x, e2.y);
+    ctx2.stroke();
+  }
+
+  // 画第三条边（虚线，表示无法闭合）
+  if (progress >= 0.66) {
+    ctx2.strokeStyle = '#e53e3e';
+    ctx2.setLineDash([6, 4]);
+    ctx2.beginPath();
+    ctx2.moveTo(p3.x, p3.y);
+    var e3 = progress < 1 ? lerpPoint(p3, p1, (progress - 0.66) / 0.34) : p1;
+    ctx2.lineTo(e3.x, e3.y);
+    ctx2.stroke();
+    ctx2.setLineDash([]);
+  }
+
+  // 标注
+  if (progress >= 1) {
+    ctx2.fillStyle = '#742a2a';
+    ctx2.font = canvasFont(canvas2, 14, 'bold');
+    ctx2.textAlign = 'center';
+    ctx2.fillText('✗ 第三条边无法首尾相接，不能组成三角形', 220, 240);
+  }
+}
+
+// 播放拼接动画
+function playTriangle2Anim() {
+  if (tri2AnimTimer) clearInterval(tri2AnimTimer);
+  tri2AnimProgress = 0;
+  tri2AnimTimer = setInterval(function() {
+    tri2AnimProgress += 0.03;
+    if (tri2AnimProgress >= 1) {
+      tri2AnimProgress = 1;
+      clearInterval(tri2AnimTimer);
+      tri2AnimTimer = null;
+    }
+    drawTriangle2();
+  }, 40);
+}
+
+// 绑定环节2按钮
+document.getElementById('check-btn').addEventListener('click', checkTriangle);
+document.getElementById('animate-btn').addEventListener('click', playTriangle2Anim);
+document.querySelectorAll('#section2 .preset-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var sides = this.getAttribute('data-tri').split(',').map(function(s) { return parseFloat(s); });
+    document.getElementById('input-a').value = sides[0];
+    document.getElementById('input-b').value = sides[1];
+    document.getElementById('input-c').value = sides[2];
+    checkTriangle();
+  });
+});
+
+/* ---------- 环节2 练习题 ---------- */
+// 练习题题库
+var quizBank2 = [
+  { sides: [3, 4, 5], answer: true },
+  { sides: [2, 3, 6], answer: false },
+  { sides: [5, 5, 8], answer: true },
+  { sides: [1, 2, 3], answer: false },
+  { sides: [4, 5, 10], answer: false },
+  { sides: [6, 7, 8], answer: true },
+  { sides: [3, 3, 6], answer: false },
+  { sides: [5, 12, 13], answer: true },
+  { sides: [4, 4, 4], answer: true },
+  { sides: [2, 8, 3], answer: false }
+];
+var currentQuiz2 = []; // 当前5题
+
+// 随机抽5题
+function generateQuiz2() {
+  var shuffled = quizBank2.slice().sort(function() { return Math.random() - 0.5; });
+  currentQuiz2 = shuffled.slice(0, 5);
+  renderQuiz2();
+}
+
+// 渲染练习题
+function renderQuiz2() {
+  var list = document.getElementById('quiz-list-2');
+  list.innerHTML = '';
+  currentQuiz2.forEach(function(item, idx) {
+    var div = document.createElement('div');
+    div.style.marginBottom = '16px';
+    div.innerHTML =
+      '<div class="quiz-question">' + (idx + 1) + '. 边长 ' + item.sides.join(', ') + ' 能否组成三角形？</div>' +
+      '<div class="quiz-btns">' +
+        '<button class="quiz-btn" data-idx="' + idx + '" data-ans="true">能</button>' +
+        '<button class="quiz-btn" data-idx="' + idx + '" data-ans="false">不能</button>' +
+      '</div>' +
+      '<div class="quiz-feedback" id="quiz2-fb-' + idx + '"></div>';
+    list.appendChild(div);
+  });
+  // 绑定按钮事件
+  list.querySelectorAll('.quiz-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var idx = parseInt(this.getAttribute('data-idx'), 10);
+      var ans = this.getAttribute('data-ans') === 'true';
+      var fb = document.getElementById('quiz2-fb-' + idx);
+      var item = currentQuiz2[idx];
+      var a = item.sides[0], b = item.sides[1], c = item.sides[2];
+      if (ans === item.answer) {
+        fb.className = 'quiz-feedback correct';
+        if (item.answer) {
+          fb.innerHTML = '✓ 正确！' + a + '+' + b + '=' + (a + b) + '>' + c + '，' +
+            a + '+' + c + '=' + (a + c) + '>' + b + '，' + b + '+' + c + '=' + (b + c) + '>' + a + '，能组成三角形。';
+        } else {
+          fb.innerHTML = '✓ 正确！因为较短两边之和不大于最长边，不能组成三角形。';
+        }
+      } else {
+        fb.className = 'quiz-feedback wrong';
+        fb.innerHTML = '✗ 答错了。再想想"两边之和大于第三边"的判定条件。';
+      }
+    });
+  });
+}
+
+document.getElementById('next-quiz-2').addEventListener('click', generateQuiz2);
+
+/* ============================================================
+ * 环节3：三角形内角和定理
+ * ============================================================ */
+
+var canvas3, ctx3;
+var tri3Shape = 0.5; // 0~1，滑块控制
+var puzzleAnimProgress = 0; // 拼合动画进度
+var puzzleAnimTimer = null;
+
+// 初始化环节3
+function initCanvas3() {
+  canvas3 = document.getElementById('canvas3');
+  ctx3 = setupCanvas(canvas3, 440, 380);
+}
+
+// 根据滑块值计算三角形顶点
+function getTri3Vertices() {
+  // B、C 固定在底部，A 随滑块变化
+  var B = { x: 80, y: 320 };
+  var C = { x: 360, y: 320 };
+  // A 的 x 坐标在 60~380 之间，y 控制高度（影响角度）
+  var ax = 80 + tri3Shape * 280;
+  var ay = 80 + (1 - Math.abs(tri3Shape - 0.5) * 2) * 60; // 中间时最高
+  var A = { x: ax, y: ay };
+  return { A: A, B: B, C: C };
+}
+
+// 绘制环节3
+function drawTriangle3() {
+  if (!ctx3) return;
+  ctx3.clearRect(0, 0, 440, 380);
+  ctx3.fillStyle = '#fafbff';
+  ctx3.fillRect(0, 0, 440, 380);
+
+  // 如果正在播放拼合动画，则绘制拼合过程
+  if (puzzleAnimProgress > 0) {
+    drawPuzzleAnim();
+    return;
+  }
+
+  var v = getTri3Vertices();
+  // 绘制三角形填充
+  ctx3.beginPath();
+  ctx3.moveTo(v.A.x, v.A.y);
+  ctx3.lineTo(v.B.x, v.B.y);
+  ctx3.lineTo(v.C.x, v.C.y);
+  ctx3.closePath();
+  ctx3.fillStyle = 'rgba(102, 126, 234, 0.1)';
+  ctx3.fill();
+  ctx3.strokeStyle = '#667eea';
+  ctx3.lineWidth = 2;
+  ctx3.stroke();
+
+  // 三个内角用不同颜色扇形标注
+  var angA = angleAt(v.A, v.B, v.C);
+  var angB = angleAt(v.B, v.A, v.C);
+  var angC = angleAt(v.C, v.A, v.B);
+
+  drawAngleArc(ctx3, v.A, v.B, v.C, '#e53e3e', '∠A=' + angA.toFixed(1) + '°');
+  drawAngleArc(ctx3, v.B, v.A, v.C, '#3182ce', '∠B=' + angB.toFixed(1) + '°');
+  drawAngleArc(ctx3, v.C, v.A, v.B, '#38a169', '∠C=' + angC.toFixed(1) + '°');
+
+  // 顶点
+  ['A', 'B', 'C'].forEach(function(name) {
+    var p = v[name];
+    ctx3.beginPath();
+    ctx3.arc(p.x, p.y, 6, 0, Math.PI * 2);
+    ctx3.fillStyle = '#764ba2';
+    ctx3.fill();
+    ctx3.fillStyle = '#2d3748';
+    ctx3.font = canvasFont(canvas3, 14, 'bold');
+    ctx3.textAlign = 'center';
+    ctx3.fillText(name, p.x, p.y - 14);
+  });
+
+  // 更新信息
+  document.getElementById('angle3-a').textContent = angA.toFixed(1) + '°';
+  document.getElementById('angle3-b').textContent = angB.toFixed(1) + '°';
+  document.getElementById('angle3-c').textContent = angC.toFixed(1) + '°';
+  document.getElementById('angle3-sum').textContent = (angA + angB + angC).toFixed(1) + '° (≈180°)';
+
+  // 更新形状标签
+  var maxAng = Math.max(angA, angB, angC);
+  var label;
+  if (Math.abs(maxAng - 90) < 1) label = '直角三角形';
+  else if (maxAng > 90) label = '钝角三角形';
+  else label = '锐角三角形';
+  document.getElementById('shape-label').textContent = label;
+}
+
+// 绘制角度扇形
+// vertex: 角的顶点；p1, p2: 角的两边端点
+function drawAngleArc(ctx, vertex, p1, p2, color, label) {
+  var a1 = Math.atan2(p1.y - vertex.y, p1.x - vertex.x);
+  var a2 = Math.atan2(p2.y - vertex.y, p2.x - vertex.x);
+  var radius = 28;
+  ctx.beginPath();
+  ctx.moveTo(vertex.x, vertex.y);
+  // 确保画的是内侧的小角
+  var start = a1, end = a2;
+  var diff = end - start;
+  while (diff > Math.PI) diff -= 2 * Math.PI;
+  while (diff < -Math.PI) diff += 2 * Math.PI;
+  ctx.arc(vertex.x, vertex.y, radius, start, start + diff, diff < 0);
+  ctx.closePath();
+  ctx.fillStyle = color + '40'; // 半透明
+  ctx.fill();
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+}
+
+// 拼合动画绘制：将三个内角剪下并拼接到一条直线上，证明内角和 = 180°
+function drawPuzzleAnim() {
+  var v = getTri3Vertices();
+  var angA = angleAt(v.A, v.B, v.C);
+  var angB = angleAt(v.B, v.A, v.C);
+  var angC = angleAt(v.C, v.A, v.B);
+
+  var p = puzzleAnimProgress;
+  var baseY = 270;        // 基线 y 坐标
+  var baseStartX = 80;    // 第一个角的起点 x 坐标
+  var r = 38;             // 角的半径
+
+  var aRad = toRad(angA), bRad = toRad(angB), cRad = toRad(angC);
+
+  // 计算三个角在基线上的目标顶点位置（依次拼接）
+  // 第一个角顶点在 (baseStartX, baseY)，从水平向右开始向上张开 angA
+  // 第二个角顶点 = 第一个角终边的端点
+  // 第三个角顶点 = 第二个角终边的端点
+  var pos1 = { x: baseStartX, y: baseY };
+  var pos2 = { x: pos1.x + r * Math.cos(aRad),       y: pos1.y - r * Math.sin(aRad) };
+  var pos3 = { x: pos2.x + r * Math.cos(aRad + bRad), y: pos2.y - r * Math.sin(aRad + bRad) };
+
+  // 阶段1 (0~0.3): 显示原三角形并高亮三个内角
+  if (p < 0.3) {
+    // 绘制三角形轮廓
+    ctx3.beginPath();
+    ctx3.moveTo(v.A.x, v.A.y);
+    ctx3.lineTo(v.B.x, v.B.y);
+    ctx3.lineTo(v.C.x, v.C.y);
+    ctx3.closePath();
+    ctx3.strokeStyle = '#667eea';
+    ctx3.lineWidth = 2;
+    ctx3.stroke();
+    // 高亮三个角
+    drawAngleArc(ctx3, v.A, v.B, v.C, '#e53e3e', '');
+    drawAngleArc(ctx3, v.B, v.A, v.C, '#3182ce', '');
+    drawAngleArc(ctx3, v.C, v.A, v.B, '#38a169', '');
+    // 提示
+    ctx3.fillStyle = '#4a5568';
+    ctx3.font = canvasFont(canvas3, 14);
+    ctx3.textAlign = 'center';
+    ctx3.fillText('第一步：观察三角形三个内角（红 ∠A、蓝 ∠B、绿 ∠C）', 220, 40);
+  } else {
+    // 阶段2 (0.3~1): 三个角依次出现在基线上拼接
+    var t = (p - 0.3) / 0.7; // 0~1
+
+    // 绘制基线（虚线表示 180° 平角）
+    ctx3.strokeStyle = '#a0aec0';
+    ctx3.lineWidth = 1.5;
+    ctx3.setLineDash([5, 4]);
+    ctx3.beginPath();
+    ctx3.moveTo(20, baseY);
+    ctx3.lineTo(420, baseY);
+    ctx3.stroke();
+    ctx3.setLineDash([]);
+
+    // 三个角按进度依次出现（每个角的张开程度随进度从 0 到 1）
+    if (t > 0) {
+      var p1 = Math.min(1, t / 0.33);
+      drawAngleOnLine(ctx3, pos1, angA, '#e53e3e', 0, p1);
+    }
+    if (t > 0.33) {
+      var p2 = Math.min(1, (t - 0.33) / 0.33);
+      drawAngleOnLine(ctx3, pos2, angB, '#3182ce', angA, p2);
+    }
+    if (t > 0.66) {
+      var p3 = Math.min(1, (t - 0.66) / 0.34);
+      drawAngleOnLine(ctx3, pos3, angC, '#38a169', angA + angB, p3);
+    }
+
+    // 提示文字
+    ctx3.fillStyle = '#4a5568';
+    ctx3.font = canvasFont(canvas3, 14);
+    ctx3.textAlign = 'center';
+    if (t < 1) {
+      ctx3.fillText('第二步：将三个角依次拼到一条直线上', 220, 40);
+    } else {
+      ctx3.fillStyle = '#22543d';
+      ctx3.font = canvasFont(canvas3, 16, 'bold');
+      ctx3.fillText('三个内角拼成了 180° 的平角！', 220, 40);
+      ctx3.fillStyle = '#667eea';
+      ctx3.font = canvasFont(canvas3, 13);
+      ctx3.fillText('∠A + ∠B + ∠C = ' + angA.toFixed(1) + '° + ' + angB.toFixed(1) + '° + ' + angC.toFixed(1) + '° = 180°', 220, 65);
+    }
+  }
+}
+
+// 在基线上绘制一个角（用于拼合动画）
+// vertex: 角的顶点位置；angDeg: 角的度数；color: 颜色
+// baseAngleDeg: 起始边相对于水平方向的角度（度）
+// progress: 0~1，表示这个角"张开"的进度
+function drawAngleOnLine(ctx, vertex, angDeg, color, baseAngleDeg, progress) {
+  var r = 38;
+  var baseRad = toRad(baseAngleDeg);
+  var curAngRad = toRad(angDeg) * progress; // 当前进度下张开的弧度
+
+  // 画扇形填充
+  ctx.beginPath();
+  ctx.moveTo(vertex.x, vertex.y);
+  // canvas 中 y 轴向下，向上张开用负角度方向
+  ctx.arc(vertex.x, vertex.y, r, -baseRad, -baseRad - curAngRad, true);
+  ctx.closePath();
+  ctx.fillStyle = color + '40';
+  ctx.fill();
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // 画起始边（始终可见）
+  ctx.beginPath();
+  ctx.moveTo(vertex.x, vertex.y);
+  ctx.lineTo(vertex.x + r * Math.cos(-baseRad), vertex.y - r * Math.sin(-baseRad));
+  ctx.stroke();
+
+  // 画终边（随进度旋转）
+  ctx.beginPath();
+  ctx.moveTo(vertex.x, vertex.y);
+  ctx.lineTo(vertex.x + r * Math.cos(-baseRad - curAngRad), vertex.y - r * Math.sin(-baseRad - curAngRad));
+  ctx.stroke();
+}
+
+// 播放拼合动画
+function playSumAnimation() {
+  if (puzzleAnimTimer) clearInterval(puzzleAnimTimer);
+  puzzleAnimProgress = 0.01;
+  puzzleAnimTimer = setInterval(function() {
+    puzzleAnimProgress += 0.02;
+    if (puzzleAnimProgress >= 1) {
+      puzzleAnimProgress = 1;
+      clearInterval(puzzleAnimTimer);
+      puzzleAnimTimer = null;
+    }
+    drawTriangle3();
+  }, 40);
+}
+
+// 重置拼合动画
+function resetPuzzle() {
+  if (puzzleAnimTimer) {
+    clearInterval(puzzleAnimTimer);
+    puzzleAnimTimer = null;
+  }
+  puzzleAnimProgress = 0;
+  drawTriangle3();
+}
+
+// 滑块事件
+document.getElementById('shape-slider').addEventListener('input', function() {
+  tri3Shape = this.value / 100;
+  puzzleAnimProgress = 0; // 改变形状时重置动画
+  drawTriangle3();
+});
+
+document.getElementById('puzzle-btn').addEventListener('click', playSumAnimation);
+document.getElementById('reset-puzzle-btn').addEventListener('click', resetPuzzle);
+
+/* ============================================================
+ * 环节4：全等三角形
+ * ============================================================ */
+
+var canvas4, ctx4;
+var currentMethod = 'SSS';
+var congruentAnimProgress = 0; // 全等变换动画进度
+var congruentAnimTimer = null;
+
+// 初始化环节4
+function initCanvas4() {
+  canvas4 = document.getElementById('canvas4');
+  ctx4 = setupCanvas(canvas4, 440, 320);
+}
+
+// 左侧三角形（固定）
+function getLeftTriangle() {
+  return {
+    A: { x: 60, y: 80 },
+    B: { x: 30, y: 240 },
+    C: { x: 200, y: 240 }
+  };
+}
+
+// 右侧三角形（变换前）
+function getRightTriangle() {
+  return {
+    A: { x: 360, y: 80 },
+    B: { x: 290, y: 240 },
+    C: { x: 410, y: 240 }
+  };
+}
+
+// 选择判定方法
+function selectMethod(method) {
+  currentMethod = method;
+  document.querySelectorAll('#section4 .method-tab').forEach(function(tab) {
+    tab.classList.remove('active');
+  });
+  var activeTab = document.querySelector('#section4 .method-tab[data-method="' + method + '"]');
+  if (activeTab) activeTab.classList.add('active');
+
+  // 更新说明文字
+  var info = document.getElementById('method-info');
+  if (method === 'SSS') {
+    info.innerHTML = '<strong>SSS（边边边）：</strong>三边对应相等的两个三角形全等。<br>图中三条边分别对应相等（同色），故 △ABC ≌ △A\'B\'C\'。';
+  } else if (method === 'SAS') {
+    info.innerHTML = '<strong>SAS（边角边）：</strong>两边及其夹角对应相等的两个三角形全等。<br>图中两组对应边及它们的夹角对应相等（同色），故 △ABC ≌ △A\'B\'C\'。';
+  } else if (method === 'ASA') {
+    info.innerHTML = '<strong>ASA（角边角）：</strong>两角及其夹边对应相等的两个三角形全等。<br>图中两组对应角及它们的夹边对应相等（同色），故 △ABC ≌ △A\'B\'C\'。';
+  }
+
+  congruentAnimProgress = 0;
+  drawTriangle4();
+}
+
+// 绘制环节4
+function drawTriangle4() {
+  if (!ctx4) return;
+  ctx4.clearRect(0, 0, 440, 320);
+  ctx4.fillStyle = '#fafbff';
+  ctx4.fillRect(0, 0, 440, 320);
+
+  var left = getLeftTriangle();
+  var right = getRightTriangle();
+
+  // 根据动画进度计算右侧三角形的当前位置（向左平移并重叠）
+  var p = congruentAnimProgress;
+  // 右侧三角形平移到与左侧重合
+  var dx = left.A.x - right.A.x;
+  var dy = left.A.y - right.A.y;
+  var curRight = {
+    A: { x: right.A.x + dx * p, y: right.A.y + dy * p },
+    B: { x: right.B.x + dx * p, y: right.B.y + dy * p },
+    C: { x: right.C.x + dx * p, y: right.C.y + dy * p }
+  };
+
+  // 根据方法确定高亮的边/角
+  var highlights = getMethodHighlights();
+
+  // 绘制左侧三角形
+  drawTriWithHighlights(ctx4, left, highlights, 'left');
+
+  // 绘制右侧三角形（变换中）
+  drawTriWithHighlights(ctx4, curRight, highlights, 'right');
+
+  // 标注顶点字母
+  ctx4.fillStyle = '#2d3748';
+  ctx4.font = canvasFont(canvas4, 13, 'bold');
+  ctx4.textAlign = 'center';
+  ctx4.fillText('A', left.A.x, left.A.y - 10);
+  ctx4.fillText('B', left.B.x - 10, left.B.y + 5);
+  ctx4.fillText('C', left.C.x + 10, left.C.y + 5);
+
+  if (p < 1) {
+    ctx4.fillStyle = '#667eea';
+    ctx4.fillText("A'", curRight.A.x, curRight.A.y - 10);
+    ctx4.fillText("B'", curRight.B.x - 10, curRight.B.y + 5);
+    ctx4.fillText("C'", curRight.C.x + 10, curRight.C.y + 5);
+  }
+
+  // 标题
+  ctx4.fillStyle = '#4a5568';
+  ctx4.font = canvasFont(canvas4, 14, 'bold');
+  ctx4.textAlign = 'center';
+  ctx4.fillText(currentMethod + ' 判定方法 · ' + (p >= 1 ? '两个三角形完全重合（全等）' : '两个三角形'), 220, 20);
+
+  // 图例
+  drawLegend4(ctx4, highlights);
+}
+
+// 根据方法返回需要高亮的边/角
+function getMethodHighlights() {
+  // 边: AB, AC, BC；角: A, B, C
+  if (currentMethod === 'SSS') {
+    return {
+      edges: { AB: '#e53e3e', AC: '#3182ce', BC: '#38a169' },
+      angles: {}
+    };
+  } else if (currentMethod === 'SAS') {
+    // 两边及夹角：AB、AC 和夹角 A
+    return {
+      edges: { AB: '#e53e3e', AC: '#3182ce' },
+      angles: { A: '#f6ad55' }
+    };
+  } else if (currentMethod === 'ASA') {
+    // 两角及夹边：∠A、∠C 和夹边 AC
+    return {
+      edges: { AC: '#3182ce' },
+      angles: { A: '#f6ad55', C: '#ed8936' }
+    };
+  }
+  return { edges: {}, angles: {} };
+}
+
+// 绘制三角形并高亮指定边/角
+function drawTriWithHighlights(ctx, tri, highlights, side) {
+  var alpha = side === 'right' ? 0.7 : 1;
+
+  // 填充
+  ctx.beginPath();
+  ctx.moveTo(tri.A.x, tri.A.y);
+  ctx.lineTo(tri.B.x, tri.B.y);
+  ctx.lineTo(tri.C.x, tri.C.y);
+  ctx.closePath();
+  ctx.fillStyle = side === 'right' ? 'rgba(118, 75, 162, 0.1)' : 'rgba(102, 126, 234, 0.1)';
+  ctx.fill();
+
+  // 绘制各边（高亮的边用对应颜色加粗）
+  drawEdge(ctx, tri.A, tri.B, highlights.edges.AB, alpha);
+  drawEdge(ctx, tri.A, tri.C, highlights.edges.AC, alpha);
+  drawEdge(ctx, tri.B, tri.C, highlights.edges.BC, alpha);
+
+  // 绘制高亮的角度
+  if (highlights.angles.A) drawAngleArc(ctx, tri.A, tri.B, tri.C, highlights.angles.A, '');
+  if (highlights.angles.B) drawAngleArc(ctx, tri.B, tri.A, tri.C, highlights.angles.B, '');
+  if (highlights.angles.C) drawAngleArc(ctx, tri.C, tri.A, tri.B, highlights.angles.C, '');
+}
+
+// 绘制一条边
+function drawEdge(ctx, p1, p2, color, alpha) {
+  if (color) {
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 4;
+  } else {
+    ctx.strokeStyle = 'rgba(102, 126, 234, ' + alpha + ')';
+    ctx.lineWidth = 2;
+  }
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  ctx.moveTo(p1.x, p1.y);
+  ctx.lineTo(p2.x, p2.y);
+  ctx.stroke();
+}
+
+// 绘制图例
+function drawLegend4(ctx, highlights) {
+  var y = 305;
+  var x = 20;
+  ctx.font = canvasFont(ctx.canvas, 12);
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+
+  var items = [];
+  if (highlights.edges.AB) items.push({ color: highlights.edges.AB, label: '边AB=A\'B\'' });
+  if (highlights.edges.AC) items.push({ color: highlights.edges.AC, label: '边AC=A\'C\'' });
+  if (highlights.edges.BC) items.push({ color: highlights.edges.BC, label: '边BC=B\'C\'' });
+  if (highlights.angles.A) items.push({ color: highlights.angles.A, label: '∠A=∠A\'' });
+  if (highlights.angles.B) items.push({ color: highlights.angles.B, label: '∠B=∠B\'' });
+  if (highlights.angles.C) items.push({ color: highlights.angles.C, label: '∠C=∠C\'' });
+
+  items.forEach(function(item) {
+    ctx.fillStyle = item.color;
+    ctx.fillRect(x, y - 6, 12, 12);
+    ctx.fillStyle = '#4a5568';
+    ctx.fillText(item.label, x + 16, y);
+    x += 100;
+  });
+}
+
+// 播放全等变换动画
+function playCongruentAnim() {
+  if (congruentAnimTimer) clearInterval(congruentAnimTimer);
+  congruentAnimProgress = 0;
+  congruentAnimTimer = setInterval(function() {
+    congruentAnimProgress += 0.025;
+    if (congruentAnimProgress >= 1) {
+      congruentAnimProgress = 1;
+      clearInterval(congruentAnimTimer);
+      congruentAnimTimer = null;
+    }
+    drawTriangle4();
+  }, 40);
+}
+
+// 重置全等动画
+function resetCongruent() {
+  if (congruentAnimTimer) {
+    clearInterval(congruentAnimTimer);
+    congruentAnimTimer = null;
+  }
+  congruentAnimProgress = 0;
+  drawTriangle4();
+}
+
+// 绑定方法切换按钮
+document.querySelectorAll('#section4 .method-tab').forEach(function(tab) {
+  tab.addEventListener('click', function() {
+    var method = this.getAttribute('data-method');
+    selectMethod(method);
+  });
+});
+
+document.getElementById('congruent-anim-btn').addEventListener('click', playCongruentAnim);
+document.getElementById('congruent-reset-btn').addEventListener('click', resetCongruent);
+
+/* ---------- 环节4 练习题 ---------- */
+var quizBank4 = [
+  { desc: '三边对应相等', answer: true, method: 'SSS' },
+  { desc: '两边及其一边的对角对应相等（SSA）', answer: false, method: 'SSA' },
+  { desc: '两边及夹角对应相等', answer: true, method: 'SAS' },
+  { desc: '两角及夹边对应相等', answer: true, method: 'ASA' },
+  { desc: '三个角对应相等（AAA）', answer: false, method: 'AAA' },
+  { desc: '两边和其中一边的对角对应相等', answer: false, method: 'SSA' },
+  { desc: '一角及其对边对应相等（AAS）', answer: true, method: 'AAS' },
+  { desc: '两角及其中一角的对边对应相等', answer: true, method: 'AAS' },
+  { desc: '三条边和两个角都对应相等', answer: true, method: 'SSS' },
+  { desc: '仅一个角和一条边对应相等', answer: false, method: '其他' }
+];
+var currentQuiz4 = [];
+
+function generateQuiz4() {
+  var shuffled = quizBank4.slice().sort(function() { return Math.random() - 0.5; });
+  currentQuiz4 = shuffled.slice(0, 5);
+  renderQuiz4();
+}
+
+function renderQuiz4() {
+  var list = document.getElementById('quiz-list-4');
+  list.innerHTML = '';
+  currentQuiz4.forEach(function(item, idx) {
+    var div = document.createElement('div');
+    div.style.marginBottom = '16px';
+    div.innerHTML =
+      '<div class="quiz-question">' + (idx + 1) + '. 在两个三角形中，' + item.desc + '，能否判定它们全等？</div>' +
+      '<div class="quiz-btns">' +
+        '<button class="quiz-btn" data-idx="' + idx + '" data-ans="true">能</button>' +
+        '<button class="quiz-btn" data-idx="' + idx + '" data-ans="false">不能</button>' +
+      '</div>' +
+      '<div class="quiz-feedback" id="quiz4-fb-' + idx + '"></div>';
+    list.appendChild(div);
+  });
+  list.querySelectorAll('.quiz-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var idx = parseInt(this.getAttribute('data-idx'), 10);
+      var ans = this.getAttribute('data-ans') === 'true';
+      var fb = document.getElementById('quiz4-fb-' + idx);
+      var item = currentQuiz4[idx];
+      if (ans === item.answer) {
+        fb.className = 'quiz-feedback correct';
+        if (item.answer) {
+          fb.innerHTML = '✓ 正确！' + item.method + ' 是有效的全等判定方法。';
+        } else {
+          fb.innerHTML = '✗ 正确！' + item.method + ' 不能判定全等。注意：只有 SSS、SAS、ASA（及 AAS）是有效的判定方法，SSA 和 AAA 不能判定全等。';
+        }
+      } else {
+        fb.className = 'quiz-feedback wrong';
+        if (item.answer) {
+          fb.innerHTML = '✗ 答错了。' + item.method + ' 可以判定全等，请复习判定定理。';
+        } else {
+          fb.innerHTML = '✗ 答错了。' + item.method + ' 不能判定全等。回忆一下：SSS、SAS、ASA 才是基本判定方法。';
+        }
+      }
+    });
+  });
+}
+
+document.getElementById('next-quiz-4').addEventListener('click', generateQuiz4);
+
+/* ============================================================
+ * 页面初始化
+ * ============================================================ */
+
+// 等待 DOM 加载完成后初始化所有环节
+window.addEventListener('DOMContentLoaded', function() {
+  initCanvas1();
+  initCanvas2();
+  initCanvas3();
+  initCanvas4();
+  drawTriangle1();
+  drawTriangle2();
+  drawTriangle3();
+  drawTriangle4();
+  generateQuiz2();
+  generateQuiz4();
+});
+
+// 横竖屏或窗口宽度变化后重绘当前画布，使补偿字号立即按新的显示比例生效。
+var triangleResizeFrame = 0;
+window.addEventListener('resize', function() {
+  if (triangleResizeFrame) cancelAnimationFrame(triangleResizeFrame);
+  triangleResizeFrame = requestAnimationFrame(function() {
+    triangleResizeFrame = 0;
+    var activeSection = document.querySelector('.section.active');
+    if (!activeSection) return;
+    if (activeSection.id === 'section1') drawTriangle1();
+    else if (activeSection.id === 'section2') drawTriangle2();
+    else if (activeSection.id === 'section3') drawTriangle3();
+    else if (activeSection.id === 'section4') drawTriangle4();
+  });
+});
+
+// 检测是否被 iframe 嵌入，如果是则启用精简模式（隐藏大标题）
+(function () {
+    try {
+        if (window.self !== window.top) {
+            document.body.classList.add('embedded');
+        }
+    } catch (e) { /* 跨域访问报错时忽略 */ }
+})();</script>
+</body>
+</html>
+

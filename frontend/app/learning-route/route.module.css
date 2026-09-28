@@ -1,0 +1,87 @@
+.page{max-width:1120px;margin:0 auto;color:var(--text-primary,#17334c);padding:1.5rem 0 2rem}
+.heading{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1.5rem}
+.heading h1,.heading h2{font-size:1.65rem;margin:.25rem 0}
+.muted{color:#586e81;font-size:.9rem;line-height:1.7}
+.steps{list-style:none;margin:0;padding:0;border:1px solid #d6e1ea;border-radius:1rem;background:white;overflow:hidden}
+.step{display:flex;align-items:center;gap:1.25rem;padding:1.25rem 1.5rem;border-bottom:1px solid #e6edf2}
+.step:last-child{border:0}.step[data-current=true]{background:#edf5ff;box-shadow:inset 4px 0 #2865bd}
+.number{display:grid;place-items:center;flex-shrink:0;width:2.5rem;height:2.5rem;border-radius:50%;background:#edf2f6;color:#526879;font-weight:700}
+.step[data-current=true] .number{background:#2865bd;color:white}
+.stepCopy{flex:1;min-width:0}.stepCopy h2{font-size:1.1rem;margin:0 0 .25rem}.stepCopy p{margin:0}
+.button,.secondary{display:inline-flex;align-items:center;justify-content:center;min-height:44px;border-radius:.6rem;padding:.65rem 1.25rem;text-decoration:none;font-weight:600;border:1px solid transparent;cursor:pointer;font-size:1rem;gap:.5rem}
+.button{background:#245dab;color:white}.secondary{background:white;border-color:#b9cbdb;color:#24527a}
+.button:disabled,.secondary:disabled{background:#f2f5f7;color:#697b89;border-color:#dce4ea;cursor:not-allowed}
+.button:focus-visible,.secondary:focus-visible,.page input:focus-visible,.page textarea:focus-visible,.page select:focus-visible{outline:3px solid #e19924;outline-offset:3px}
+.actions{display:flex;flex-wrap:wrap;align-items:center;gap:.75rem;margin-top:1.25rem}
+.panel{padding:1.5rem;background:white;border:1px solid #d6e1ea;border-radius:.85rem;margin:1rem 0;overflow-wrap:anywhere}
+.panel h2{font-size:1.25rem;margin:0 0 1rem}.panel h3{font-size:1.05rem}.panel p{line-height:1.7}
+.question{font-size:1.25rem;line-height:1.8;margin-bottom:1.25rem}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.option{display:flex;align-items:center;gap:.75rem;border:1px solid #bacddd;border-radius:.6rem;min-height:3.5rem;padding:1rem;cursor:pointer;background:#fff}
+.option:has(input:checked){border-color:#2865bd;background:#edf5ff}.option input{accent-color:#2865bd}
+.field{display:grid;gap:.5rem;margin:1rem 0}.field textarea,.field input,.filters select,.filters input{padding:.8rem;border:1px solid #bacddd;border-radius:.5rem;background:white;max-width:100%;font:inherit;color:inherit}
+.field textarea{min-height:6rem;resize:vertical}.alert{padding:.85rem 1rem;background:#fff2e2;color:#754511;border-radius:.5rem;line-height:1.6}
+.success{padding:.85rem 1rem;background:#e8f5ee;color:#176048;border-radius:.5rem;line-height:1.6}
+.progress{font-size:.9rem;color:#526879;display:flex;align-items:center;gap:1rem}.progress progress{flex:1;accent-color:#2865bd}
+.filters{display:flex;gap:1rem;flex-wrap:wrap;margin:1.5rem 0;padding:1.25rem;background:var(--surface,#fff);border:1px solid var(--border,#cad7e4);border-radius:.75rem}.filters label{display:grid;gap:.5rem;flex:1;min-width:140px;font-size:.9rem;color:var(--text-secondary,#4a6078)}.filters input,.filters select{width:100%;box-sizing:border-box}.list{list-style:none;padding:0}.list li{border-bottom:1px solid #e2e9ee;padding:1.25rem 0}.list li:last-child{border:0}.list h2{font-size:1.1rem;line-height:1.8;margin:.75rem 0}
+.tag{display:inline-block;padding:.2rem .6rem;margin-right:.5rem;border-radius:.35rem;background:#edf3f8;font-size:.85rem;color:#37556e}
+.originalImage{max-width:100%;max-height:300px;object-fit:contain}.stats{display:flex;flex-wrap:wrap;gap:2rem}.stats strong{display:block;font-size:2rem;color:#245dab}
+@media(max-width:600px){.page{padding:.5rem 0 1rem}.heading{align-items:flex-start;flex-direction:column}.step{gap:.75rem;padding:1rem}.stepCopy h2{font-size:1rem}.step .button,.step .secondary{padding:.6rem .8rem}.options{grid-template-columns:1fr}.panel{padding:1rem}.heading h1,.heading h2{font-size:1.4rem}}
+
+/* 用功能色区分步骤，锁定与完成依然由文字、图标及按钮状态说明。 */
+.heading { padding: 20px 24px; background: var(--page-soft, #eaf1ff); border: 1px solid color-mix(in srgb, var(--page-accent, #245dcc) 25%, white); border-left: 5px solid var(--page-accent, #245dcc); border-radius: 14px; }
+.steps { display: grid; gap: 12px; border: 0; background: transparent; overflow: visible; }
+.step { --step-accent: var(--study-blue); --step-soft: var(--study-blue-soft); border: 1px solid color-mix(in srgb, var(--step-accent) 28%, white); border-left: 5px solid var(--step-accent); border-radius: 12px; background: white; box-shadow: 0 3px 12px #18355408; }
+.step:nth-child(2) { --step-accent: var(--study-green); --step-soft: var(--study-green-soft); }
+.step:nth-child(3) { --step-accent: var(--study-purple); --step-soft: var(--study-purple-soft); }
+.step:nth-child(4) { --step-accent: var(--study-orange); --step-soft: var(--study-orange-soft); }
+.step:nth-child(5) { --step-accent: var(--study-cyan); --step-soft: var(--study-cyan-soft); }
+.step:last-child { border: 1px solid color-mix(in srgb, var(--step-accent) 28%, white); border-left: 5px solid var(--step-accent); }
+.step[data-current=true] { background: var(--step-soft); box-shadow: 0 5px 18px #18355412; }
+.number, .step[data-current=true] .number { background: var(--step-accent); color: white; border-radius: 12px; }
+.button { background: var(--page-accent, #245dcc); border-color: var(--page-accent, #245dcc); box-shadow: 0 3px 0 color-mix(in srgb, var(--page-accent, #245dcc) 80%, black); }
+.secondary { background: var(--page-soft, #eaf1ff); border-color: color-mix(in srgb, var(--page-accent, #245dcc) 30%, white); color: var(--page-accent, #245dcc); }
+.step .button { background: var(--step-accent); border-color: var(--step-accent); box-shadow: 0 3px 0 color-mix(in srgb, var(--step-accent) 80%, black); }
+.step .secondary:not(:disabled) { background: var(--step-soft); color: var(--step-accent); border-color: var(--step-accent); }
+.button:disabled, .secondary:disabled { background: #edf0f4; color: #657386; border-color: #d5dde5; box-shadow: none; opacity: 1; }
+.panel { border-top: 4px solid var(--page-accent, #245dcc); box-shadow: 0 4px 16px #18355408; }
+.filters { background: var(--page-soft, #eaf1ff); border-color: color-mix(in srgb, var(--page-accent, #245dcc) 25%, white); }
+.tag { background: var(--page-soft, #eaf1ff); color: var(--page-accent, #245dcc); }
+.tag + .tag { color: var(--study-green); background: var(--study-green-soft); }
+.stats > div { flex: 1; min-width: 160px; border-radius: 12px; padding: 20px; background: var(--study-green-soft); color: var(--study-green); }
+.stats > div:nth-child(2) { background: var(--study-orange-soft); color: var(--study-orange); }
+.stats strong { color: inherit; }
+/* 蓝图步骤卡：当前步骤醒目，锁定步骤保持中性。 */
+.heading { background: var(--bp-blue-soft); border: 2px solid var(--bp-ink); box-shadow: var(--bp-shadow); }
+/* 仅首页路线标题使用亮黄色，与蓝图画布形成清楚的分区。 */
+.heading[data-tone="learning-sunshine"] { background: var(--bp-yellow, #ffdb43); }
+.heading[data-tone="learning-sunshine"] .muted { color: var(--bp-ink, #152b56); }
+.heading[data-tone="learning-sunshine"] .secondary { background: #fff; }
+.step, .step:last-child { border: 2px solid var(--bp-ink); border-left: 7px solid var(--step-accent); background: var(--step-soft); box-shadow: var(--bp-shadow-sm); }
+.step[data-current=true] { box-shadow: var(--bp-shadow); }
+.number, .step[data-current=true] .number { border: 1px solid var(--bp-ink); box-shadow: 2px 2px 0 var(--bp-ink); }
+.button, .secondary, .step .button, .step .secondary:not(:disabled) { border: 1px solid var(--bp-ink); box-shadow: var(--bp-shadow-sm); }
+.secondary, .step .secondary:not(:disabled) { color: var(--bp-ink); }
+.step:has(button:disabled) { background: #f5f7fb; box-shadow: none; border-color: #b4c4e0; border-left-color: var(--step-accent); }
+.step:has(button:disabled) .number { background: var(--step-soft); color: var(--bp-ink); box-shadow: none; border-color: #b4c4e0; }
+.button:disabled, .secondary:disabled, .step .button:disabled { border-color: #b4c4e0; background: #edf1f7; color: #657386; box-shadow: none; }
+.button:active:not(:disabled), .secondary:active:not(:disabled) { transform: translate(2px, 2px); box-shadow: none; }
+.panel { border: 2px solid var(--bp-ink); border-top: 6px solid var(--page-accent, var(--bp-blue)); box-shadow: var(--bp-shadow); }
+.filters { border: 1px solid var(--bp-ink); box-shadow: var(--bp-shadow-sm); }
+.muted, .progress { color: var(--bp-muted); }
+.tag { border: 1px solid var(--bp-ink); color: var(--bp-ink); }
+.stats > div { border: 1px solid var(--bp-ink); box-shadow: var(--bp-shadow-sm); color: var(--bp-ink); }
+.stats > div:nth-child(2) { color: var(--bp-ink); }
+.alert, .success { border: 1px solid var(--bp-ink); color: var(--bp-ink); }
+.alert { background: var(--bp-orange-soft); }.success { background: var(--bp-green-soft); }
+.option:has(input:checked) { border-color: var(--page-accent, #245dcc); background: var(--page-soft, #eaf1ff); box-shadow: inset 3px 0 var(--page-accent, #245dcc); }
+@media (hover: hover) {
+  .button:hover:not(:disabled) { filter: brightness(.93); }
+  .secondary:hover:not(:disabled) { border-color: var(--page-accent, #245dcc); }
+}
+@media (max-width: 600px) {
+  .heading { padding: 16px; }
+  .step { flex-wrap: wrap; }
+  .stepCopy { flex-basis: calc(100% - 56px); }
+  .step > button { margin-left: 52px; }
+}

@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一元一次方程互动实验室</title>
+<style>
+:root {
+    --ink: #1e2b3a;
+    --muted: #607286;
+    --line: #dce5ee;
+    --paper: #ffffff;
+    --bg: #f7fbff;
+    --blue: #347ff0;
+    --blue-soft: #eaf3ff;
+    --purple: #7b45e8;
+    --purple-soft: #f2edff;
+    --pink: #ff5f91;
+    --pink-soft: #fff0f6;
+    --yellow: #ffd45a;
+    --orange: #f39a22;
+    --green: #24b78a;
+    --red: #e65353;
+    --accent: var(--blue);
+    --accent-soft: var(--blue-soft);
+}
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body {
+    margin: 0;
+    min-width: 320px;
+    max-width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background:
+        linear-gradient(rgba(52,127,240,.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(52,127,240,.055) 1px, transparent 1px),
+        var(--bg);
+    background-size: 36px 36px;
+    color: var(--ink);
+    font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+}
+button, input { font: inherit; }
+button:focus-visible, input:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 34%, transparent); outline-offset: 2px; }
+.lesson-shell { width: min(100% - 28px, 1280px); min-width: 0; margin: 0 auto; padding: 18px 0 30px; }
+.lesson-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 22px; margin-bottom: 14px; }
+.lesson-header > div:first-child,
+.concept-banner > div:nth-child(2),
+.difficulty-panel,
+.workspace,
+.history-section { min-width: 0; }
+.eyebrow { margin: 0 0 5px; color: var(--pink); font-size: 12px; font-weight: 900; }
+.lesson-header h1 { margin: 0; font-size: clamp(25px, 4vw, 38px); letter-spacing: 0; }
+.lesson-header p { margin: 7px 0 0; color: var(--muted); font-size: 14px; line-height: 1.65; overflow-wrap: anywhere; }
+.mastery { min-width: 180px; padding: 11px 13px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+.mastery-row { display: flex; justify-content: space-between; gap: 12px; color: var(--muted); font-size: 12px; }
+.mastery-row strong { color: var(--orange); font-size: 14px; }
+.mastery-track { height: 7px; margin-top: 9px; overflow: hidden; border-radius: 999px; background: #edf2f6; }
+.mastery-track span { display: block; width: 0; height: 100%; background: linear-gradient(90deg, var(--blue), var(--purple), var(--pink), var(--orange)); transition: width 500ms ease; }
+.difficulty-panel { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 16px; margin-bottom: 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+.difficulty-panel > strong { font-size: 13px; }
+.difficulty-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.difficulty-button { min-height: 42px; border: 1px solid var(--line); border-radius: 6px; background: #f9fbfd; color: var(--muted); cursor: pointer; }
+.difficulty-button:nth-child(1) { border-top: 4px solid var(--blue); }
+.difficulty-button:nth-child(2) { border-top: 4px solid var(--purple); }
+.difficulty-button:nth-child(3) { border-top: 4px solid var(--pink); }
+.difficulty-button[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--ink); font-weight: 900; }
+.concept-banner { display: grid; grid-template-columns: 46px minmax(0, 1fr) auto; align-items: center; gap: 14px; padding: 13px 15px; border: 1px solid var(--accent); border-radius: 8px 8px 0 0; background: var(--accent-soft); }
+.concept-icon { display: grid; width: 42px; height: 42px; place-items: center; border-radius: 50%; background: var(--accent); color: #fff; font-size: 18px; font-weight: 900; }
+.concept-banner h2 { margin: 0 0 3px; font-size: 18px; }
+.concept-banner p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; overflow-wrap: anywhere; }
+.concept-rule { padding: 6px 9px; border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent); border-radius: 5px; background: rgba(255,255,255,.75); color: var(--accent); font-size: 12px; font-weight: 800; }
+.stage-rail { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; padding: 12px; border-right: 1px solid var(--line); border-left: 1px solid var(--line); background: #fff; }
+.stage-step { display: grid; grid-template-columns: 28px minmax(0, 1fr); align-items: center; gap: 8px; min-height: 48px; padding: 7px 9px; border: 1px solid var(--line); border-radius: 6px; color: var(--muted); }
+.stage-step b { display: grid; width: 27px; height: 27px; place-items: center; border-radius: 50%; background: #edf2f6; color: var(--muted); font-size: 12px; }
+.stage-step span { font-size: 12px; font-weight: 800; }
+.stage-step.active { border-color: var(--accent); background: var(--accent-soft); color: var(--ink); }
+.stage-step.active b { background: var(--accent); color: #fff; }
+.stage-step.done { border-color: rgba(36,183,138,.44); background: #edfaf6; color: #087553; }
+.stage-step.done b { background: var(--green); color: #fff; }
+.workspace { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(330px, .65fr); min-width: 0; border: 1px solid var(--line); background: #fff; }
+.visual-panel { min-width: 0; padding: 18px; border-right: 1px solid var(--line); }
+.panel-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.panel-heading strong { color: var(--accent); font-size: 13px; }
+.panel-heading span { color: var(--orange); font-size: 12px; font-weight: 800; }
+.equation-board { display: flex; align-items: center; justify-content: center; min-height: 72px; margin-top: 12px; padding: 10px 16px; border: 1px solid var(--line); border-radius: 8px; background: linear-gradient(90deg, var(--accent-soft), #fff, var(--pink-soft)); }
+.equation-text { font-size: clamp(25px, 4vw, 38px); font-weight: 900; letter-spacing: 0; }
+.visual-stage { position: relative; min-height: 390px; margin-top: 12px; overflow: hidden; border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--line)); border-radius: 9px; background: linear-gradient(180deg, #fbfdff 0%, var(--accent-soft) 68%, #eef4f8 100%); }
+.balance-mode[hidden], .algebra-stage[hidden] { display: none; }
+.balance-mode { position: relative; }
+.precision-balance { display: block; width: 100%; height: auto; min-height: 390px; }
+.balance-beam-group { --tilt: 0deg; transform-box: view-box; transform-origin: 480px 190px; transform: rotate(var(--tilt)); transition: transform 760ms cubic-bezier(.2,.9,.25,1.15); }
+.balance-beam-group.is-working { animation: beamSettle 820ms ease; }
+.balance-pan-group { --pan-tilt: 0deg; --pan-shift: 0px; transform-box: view-box; transform-origin: center 202px; transform: translateY(var(--pan-shift)) rotate(var(--pan-tilt)); transition: transform 760ms cubic-bezier(.2,.9,.25,1.15); }
+.balance-needle { --needle-tilt: 0deg; transform-box: view-box; transform-origin: 480px 205px; transform: rotate(var(--needle-tilt)); transition: transform 760ms cubic-bezier(.2,.9,.25,1.15); }
+.mass-token { animation: weightDrop 460ms cubic-bezier(.2,.9,.25,1.2) both; transform-box: fill-box; transform-origin: center bottom; }
+.balance-message { position: absolute; left: 50%; top: 14px; z-index: 10; max-width: calc(100% - 24px); transform: translateX(-50%); padding: 7px 12px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.94); box-shadow: 0 5px 14px rgba(34,64,91,.08); color: var(--green); font-size: 12px; font-weight: 900; text-align: center; white-space: normal; }
+.balance-message.invalid { border-color: rgba(230,83,83,.4); background: #fff0f0; color: var(--red); }
+.algebra-stage { min-height: 430px; padding: 66px 18px 18px; background: linear-gradient(135deg, #fff 0%, var(--pink-soft) 50%, #fff9e9 100%); }
+.algebra-explanation { display: grid; grid-template-columns: 34px minmax(0,1fr); align-items: center; gap: 10px; max-width: 760px; margin: 0 auto 14px; color: var(--muted); font-size: 12px; line-height: 1.55; }
+.algebra-explanation b { display: grid; width: 34px; height: 34px; place-items: center; border-radius: 50%; background: var(--accent); color: #fff; }
+.algebra-mat { display: grid; grid-template-columns: minmax(0,1fr) 52px minmax(0,1fr); align-items: stretch; min-height: 300px; border: 1px solid rgba(91,111,132,.18); border-radius: 8px; background: rgba(255,255,255,.82); box-shadow: 0 18px 35px rgba(50,72,91,.08); }
+.algebra-side { min-width: 0; padding: 16px; }
+.algebra-side-label { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; color: var(--muted); font-size: 11px; font-weight: 800; }
+.algebra-side-label strong { color: var(--ink); font-size: 13px; }
+.equals-divider { display: grid; place-items: center; border-right: 1px dashed #d5dee7; border-left: 1px dashed #d5dee7; background: #f8fbfd; color: var(--accent); font-size: 32px; font-weight: 900; }
+.tile-field { display: flex; min-height: 220px; align-content: flex-start; align-items: flex-start; justify-content: center; flex-wrap: wrap; gap: 6px; }
+.algebra-group { position: relative; display: grid; grid-template-columns: 34px 20px; grid-template-rows: repeat(2, 27px); gap: 3px; padding: 22px 5px 7px; border: 2px dashed color-mix(in srgb, var(--accent) 62%, #fff); border-radius: 8px; background: color-mix(in srgb, var(--accent-soft) 72%, #fff); animation: tileIn 420ms ease both; }
+.algebra-group::before { content: "(x − 2)"; position: absolute; top: 6px; left: 9px; color: var(--accent); font-size: 10px; font-weight: 900; }
+.algebra-group .algebra-tile.variable { grid-row: 1 / 3; }
+.algebra-group .algebra-tile.variable { width: 34px; height: 57px; font-size: 17px; }
+.algebra-group .algebra-tile.unit { width: 20px; height: 25px; font-size: 9px; }
+.loose-tiles { display: flex; width: 76px; flex: 0 0 76px; flex-wrap: wrap; align-content: flex-start; justify-content: center; gap: 4px; padding: 6px; border: 1px solid rgba(243,154,34,.38); border-radius: 8px; background: #fff9e8; }
+.loose-tiles::before { content: "括号外的 +4"; width: 100%; color: #a66a09; font-size: 10px; font-weight: 900; text-align: center; }
+.loose-tiles .algebra-tile.unit { width: 28px; height: 28px; }
+.algebra-tile { display: grid; place-items: center; border: 2px solid rgba(255,255,255,.92); color: #fff; font-weight: 900; box-shadow: 0 5px 10px rgba(46,65,82,.13), inset 0 1px rgba(255,255,255,.38); animation: tileIn 420ms ease both; }
+.algebra-tile.variable { width: 46px; height: 77px; border-radius: 7px; background: linear-gradient(145deg, #8e58f2, #6634ca); font-size: 20px; }
+.algebra-tile.unit { width: 29px; height: 29px; border-radius: 6px; font-size: 11px; }
+.algebra-tile.positive { background: linear-gradient(145deg, #ffcb3d, #ee9418); color: #563400; }
+.algebra-tile.negative { background: linear-gradient(145deg, #4e9dff, #256dd2); }
+.tile-cluster { display: flex; max-width: 230px; align-content: flex-start; justify-content: center; flex-wrap: wrap; gap: 6px; }
+.cluster-label { width: 100%; margin-bottom: 3px; color: var(--muted); font-size: 10px; font-weight: 900; text-align: center; }
+.zero-pair-note { width: 100%; padding: 8px 10px; border: 1px solid rgba(36,183,138,.35); border-radius: 7px; background: #ecfaf5; color: #087553; font-size: 11px; font-weight: 800; text-align: center; }
+.algebra-stage.is-expanding .algebra-group { animation: groupOpen 650ms ease forwards; }
+.algebra-stage.is-combining .algebra-tile.unit { animation: zeroPair 680ms ease forwards; }
+.algebra-stage.is-working .algebra-mat { animation: boardPulse 580ms ease; }
+.algebra-side.invalid-pulse { animation: invalidShake 480ms ease 2; background: #fff0f0; }
+.control-panel { min-width: 0; padding: 18px; }
+.control-panel h3 { margin: 0 0 5px; font-size: 18px; }
+.control-panel > p { margin: 0 0 14px; color: var(--muted); font-size: 12px; line-height: 1.6; }
+.operation-card { padding: 14px; border: 2px dashed var(--accent); border-radius: 8px; background: var(--accent-soft); cursor: grab; user-select: none; }
+.operation-card:active { cursor: grabbing; }
+.operation-card small { display: block; color: var(--muted); }
+.operation-card strong { display: block; margin-top: 6px; color: var(--accent); font-size: 18px; }
+.operation-card.is-hidden { display: none; }
+.drop-zone { display: grid; min-height: 68px; place-items: center; margin-top: 10px; padding: 10px; border: 2px dashed #c9d5df; border-radius: 8px; background: #f9fbfd; color: var(--muted); font-size: 12px; text-align: center; }
+.drop-zone.is-over { border-color: var(--green); background: #ecfaf5; color: #087553; }
+.apply-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+.apply-button { min-height: 42px; border: 1px solid var(--line); border-radius: 6px; background: #fff; color: var(--ink); cursor: pointer; font-weight: 800; }
+.apply-button.primary { grid-column: 1 / -1; border-color: var(--accent); background: var(--accent); color: #fff; }
+.apply-button.wrong { border-color: rgba(230,83,83,.32); background: #fff4f4; color: #a93737; }
+.manual-operation { margin-top: 15px; padding-top: 14px; border-top: 1px solid var(--line); }
+.manual-operation.is-disabled { opacity: .48; }
+.manual-operation > strong { display: block; margin-bottom: 8px; font-size: 13px; }
+.operation-type { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+.operation-type button { min-height: 36px; border: 1px solid var(--line); border-radius: 5px; background: #f8fbfd; color: var(--muted); cursor: pointer; }
+.operation-type button.active { border-color: var(--accent); background: var(--accent-soft); color: var(--ink); font-weight: 800; }
+.operation-value { display: grid; grid-template-columns: 38px minmax(0,1fr) 38px; align-items: center; gap: 6px; margin-top: 8px; }
+.operation-value button { height: 36px; border: 1px solid var(--line); border-radius: 5px; background: #fff; cursor: pointer; font-size: 18px; }
+.operation-value output { text-align: center; color: var(--accent); font-size: 22px; font-weight: 900; }
+.coach-note { margin-top: 14px; padding: 11px; border-left: 4px solid var(--pink); background: var(--pink-soft); color: var(--muted); font-size: 12px; line-height: 1.65; }
+.coach-note strong { display: block; margin-bottom: 3px; color: var(--ink); }
+.history-section { display: grid; grid-template-columns: minmax(0, 1fr) minmax(290px, .55fr); gap: 12px; margin-top: 14px; }
+.history-panel, .verify-panel { padding: 16px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+.history-panel h3, .verify-panel h3 { margin: 0 0 10px; font-size: 16px; }
+.history-list { display: grid; gap: 7px; margin: 0; padding: 0; list-style: none; }
+.history-list li { display: grid; grid-template-columns: minmax(140px,.75fr) minmax(0,1fr); gap: 10px; padding: 9px 10px; border-left: 4px solid var(--purple); background: var(--purple-soft); font-size: 13px; }
+.history-list li span { color: var(--muted); }
+.history-list li strong { text-align: right; }
+.history-empty { color: var(--muted); font-size: 13px; }
+.verify-panel { background: #fffaf0; }
+.verify-panel p { margin: 0 0 10px; color: var(--muted); font-size: 12px; line-height: 1.6; }
+.verify-row { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 8px; }
+.verify-row input { min-width: 0; height: 42px; padding: 0 10px; border: 1px solid #e4c979; border-radius: 6px; background: #fff; color: var(--ink); }
+.verify-row button { min-height: 42px; padding: 0 14px; border: 1px solid #dfaa22; border-radius: 6px; background: var(--yellow); color: #513900; cursor: pointer; font-weight: 900; }
+.verify-row button:disabled, .apply-button:disabled { cursor: not-allowed; opacity: .45; }
+.verify-result { min-height: 22px; margin-top: 10px; color: var(--muted); font-size: 13px; }
+.verify-result.success { color: #087553; font-weight: 800; }
+.confetti { position: fixed; inset: 0; z-index: 100; overflow: hidden; pointer-events: none; }
+.confetti span { position: absolute; top: -20px; width: 10px; height: 18px; border-radius: 3px; animation: confettiFall 1.6s ease-in forwards; }
+@keyframes beamSettle { 0% { transform: rotate(0); } 30% { transform: rotate(2deg); } 68% { transform: rotate(-1.2deg); } 100% { transform: rotate(0); } }
+@keyframes weightDrop { from { opacity: 0; transform: translateY(-22px) scale(.8); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes tileIn { from { opacity: 0; transform: translateY(-12px) scale(.92); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes groupOpen { 55% { transform: scale(1.04); background: #fff3bd; } 100% { transform: scale(.92); opacity: .15; } }
+@keyframes zeroPair { 45% { transform: translateY(-8px) scale(1.08); } 100% { transform: scale(.4); opacity: 0; } }
+@keyframes boardPulse { 45% { box-shadow: 0 0 0 5px color-mix(in srgb, var(--green) 20%, transparent), 0 18px 35px rgba(50,72,91,.08); } }
+@keyframes invalidShake { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+@keyframes confettiFall { to { transform: translateY(110vh) rotate(520deg); opacity: .2; } }
+body.embedded .lesson-header { display: none; }
+body.embedded .lesson-shell { padding-top: 8px; }
+@media (max-width: 900px) {
+    .lesson-shell { width: min(100% - 18px, 1280px); }
+    .workspace, .history-section { grid-template-columns: 1fr; }
+    .visual-panel { border-right: 0; border-bottom: 1px solid var(--line); }
+}
+@media (max-width: 620px) {
+    .lesson-header, .concept-banner { align-items: flex-start; flex-direction: column; }
+    .mastery { width: 100%; }
+    .difficulty-panel { grid-template-columns: 1fr; }
+    .difficulty-options, .stage-rail { grid-template-columns: 1fr; }
+    .concept-banner { display: flex; }
+    .concept-rule { display: none; }
+    .visual-panel, .control-panel, .history-panel, .verify-panel { padding: 12px; }
+    .visual-stage { min-height: 330px; }
+    .precision-balance { min-height: 330px; }
+    .algebra-stage { min-height: 390px; padding: 62px 10px 10px; }
+    .algebra-mat { grid-template-columns: 1fr; }
+    .equals-divider { min-height: 46px; border: 0; border-top: 1px dashed #d5dee7; border-bottom: 1px dashed #d5dee7; }
+    .tile-field { min-height: 150px; }
+    .history-list li { grid-template-columns: 1fr; }
+    .history-list li strong { text-align: left; }
+}
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+</style>
+<link rel="stylesheet" href="./blueprint-theme.css">
+</head>
+<body data-theme="blueprint">
+<main class="lesson-shell">
+    <header class="lesson-header">
+        <div><p class="eyebrow">北师大版七年级上册 · 深度互动课</p><h1>一元一次方程</h1><p>先理解等式为什么能保持成立，再掌握规范解法，最后用代回检验确认答案。</p></div>
+        <div class="mastery"><div class="mastery-row"><span>理解进度</span><strong id="masteryText">0 / 3</strong></div><div class="mastery-track"><span id="masteryBar"></span></div></div>
+    </header>
+
+    <section class="difficulty-panel" aria-label="难度选择">
+        <strong>选择方程难度</strong>
+        <div class="difficulty-options" id="difficultyOptions"></div>
+    </section>
+
+    <section class="concept-banner">
+        <div class="concept-icon">=</div>
+        <div><h2 id="conceptTitle">等式就像一架平衡的天平</h2><p id="goalText"></p></div>
+        <span class="concept-rule" id="conceptRule">两边同时做相同操作</span>
+    </section>
+
+    <nav class="stage-rail" aria-label="学习步骤">
+        <div class="stage-step active" data-stage="1"><b>1</b><span id="stageOneLabel">理解平衡法则</span></div>
+        <div class="stage-step" data-stage="2"><b>2</b><span id="stageTwoLabel">逐步解出 x</span></div>
+        <div class="stage-step" data-stage="3"><b>3</b><span>代回原方程检验</span></div>
+    </nav>
+
+    <section class="workspace">
+        <div class="visual-panel">
+            <div class="panel-heading"><strong id="panelTitle">方程天平实验台</strong><span id="equationStatus">等式成立</span></div>
+            <div class="equation-board"><span class="equation-text" id="equationText"></span></div>
+            <div class="visual-stage" id="visualStage">
+                <div class="balance-message" id="balanceMessage">两边质量相等，天平保持平衡</div>
+                <div class="balance-mode" id="balanceStage">
+                    <svg class="precision-balance" viewBox="0 0 960 500" role="img" aria-labelledby="balanceTitle balanceDescription">
+                        <title id="balanceTitle">精密方程天平</title>
+                        <desc id="balanceDescription">左右托盘通过横梁和中央支点连接，方程两边相等时横梁与指针保持水平。</desc>
+                        <defs>
+                            <linearGradient id="metalDark" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#637b8b"/><stop offset=".45" stop-color="#2f4d60"/><stop offset="1" stop-color="#183447"/></linearGradient>
+                            <linearGradient id="metalLight" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f9fcff"/><stop offset=".42" stop-color="#bccbd5"/><stop offset=".7" stop-color="#f4f8fb"/><stop offset="1" stop-color="#8da3b2"/></linearGradient>
+                            <linearGradient id="brass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff1a0"/><stop offset=".34" stop-color="#ffc83f"/><stop offset=".72" stop-color="#db8b0d"/><stop offset="1" stop-color="#fff0a0"/></linearGradient>
+                            <linearGradient id="purpleMass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a879ff"/><stop offset=".48" stop-color="#7843e6"/><stop offset="1" stop-color="#5024af"/></linearGradient>
+                            <filter id="balanceShadow" x="-30%" y="-30%" width="160%" height="180%"><feDropShadow dx="0" dy="10" stdDeviation="9" flood-color="#25445c" flood-opacity=".18"/></filter>
+                            <filter id="tokenShadow" x="-30%" y="-30%" width="160%" height="180%"><feDropShadow dx="0" dy="5" stdDeviation="4" flood-color="#213b4e" flood-opacity=".22"/></filter>
+                        </defs>
+                        <ellipse cx="480" cy="463" rx="235" ry="18" fill="#9db0bd" opacity=".22"/>
+                        <path d="M320 438 Q334 410 382 405 H578 Q626 410 640 438 L626 457 H334 Z" fill="url(#metalDark)" filter="url(#balanceShadow)"/>
+                        <rect x="350" y="427" width="260" height="22" rx="11" fill="url(#metalLight)"/>
+                        <path d="M426 416 L447 247 Q450 230 468 227 H492 Q510 230 513 247 L534 416 Z" fill="url(#metalLight)" stroke="#718797" stroke-width="4"/>
+                        <path d="M459 407 L468 260 H492 L501 407 Z" fill="#38566a" opacity=".42"/>
+                        <circle cx="480" cy="205" r="64" fill="#f8fbfd" stroke="#49677a" stroke-width="7" filter="url(#balanceShadow)"/>
+                        <path d="M437 210 A47 47 0 0 1 523 210" fill="none" stroke="#c7d5de" stroke-width="4"/>
+                        <g stroke="#748b9a" stroke-width="3">
+                            <path d="M443 201 l-9 -4"/><path d="M452 181 l-7 -7"/><path d="M467 169 l-3 -10"/>
+                            <path d="M493 169 l3 -10"/><path d="M508 181 l7 -7"/><path d="M517 201 l9 -4"/>
+                        </g>
+                        <g class="balance-needle" id="balanceNeedle"><path d="M480 205 L480 157" stroke="#ff5f91" stroke-width="6" stroke-linecap="round"/><circle cx="480" cy="205" r="10" fill="url(#brass)" stroke="#fff" stroke-width="4"/></g>
+                        <g class="balance-beam-group" id="beam">
+                            <path d="M103 179 H857 L875 190 L857 201 H103 L85 190 Z" fill="url(#metalDark)" stroke="#183447" stroke-width="3" filter="url(#balanceShadow)"/>
+                            <path d="M112 184 H848" stroke="#b9cbd6" stroke-width="3" stroke-linecap="round" opacity=".55"/>
+                            <circle cx="480" cy="190" r="18" fill="url(#brass)" stroke="#fff" stroke-width="6"/>
+                            <circle cx="185" cy="190" r="10" fill="#eef4f7" stroke="#38576a" stroke-width="5"/>
+                            <circle cx="775" cy="190" r="10" fill="#eef4f7" stroke="#38576a" stroke-width="5"/>
+                            <g class="balance-pan-group" id="leftPan">
+                                <path d="M185 199 V234 M185 224 L111 330 M185 224 L259 330" fill="none" stroke="#647d8d" stroke-width="5" stroke-linecap="round"/>
+                                <circle cx="185" cy="224" r="6" fill="url(#brass)"/>
+                                <path d="M87 332 Q185 388 283 332 L269 363 Q185 405 101 363 Z" fill="url(#metalLight)" stroke="#405f72" stroke-width="5" filter="url(#balanceShadow)"/>
+                                <path d="M104 337 Q185 373 266 337" fill="none" stroke="#fff" stroke-width="4" opacity=".72"/>
+                                <g id="leftWeights"></g>
+                            </g>
+                            <g class="balance-pan-group" id="rightPan">
+                                <path d="M775 199 V234 M775 224 L701 330 M775 224 L849 330" fill="none" stroke="#647d8d" stroke-width="5" stroke-linecap="round"/>
+                                <circle cx="775" cy="224" r="6" fill="url(#brass)"/>
+                                <path d="M677 332 Q775 388 873 332 L859 363 Q775 405 691 363 Z" fill="url(#metalLight)" stroke="#405f72" stroke-width="5" filter="url(#balanceShadow)"/>
+                                <path d="M694 337 Q775 373 856 337" fill="none" stroke="#fff" stroke-width="4" opacity=".72"/>
+                                <g id="rightWeights"></g>
+                            </g>
+                        </g>
+                    </svg>
+                </div>
+                <div class="algebra-stage" id="algebraStage" hidden>
+                    <div class="algebra-explanation"><b id="algebraStepNumber">1</b><span id="algebraExplanation">先观察括号中的完整分组。</span></div>
+                    <div class="algebra-mat" id="algebraMat">
+                        <section class="algebra-side" id="algebraLeft"><div class="algebra-side-label"><strong>等式左边</strong><span id="leftTileSummary"></span></div><div class="tile-field" id="leftTiles"></div></section>
+                        <div class="equals-divider">=</div>
+                        <section class="algebra-side" id="algebraRight"><div class="algebra-side-label"><strong>等式右边</strong><span id="rightTileSummary"></span></div><div class="tile-field" id="rightTiles"></div></section>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <aside class="control-panel">
+            <h3>选择下一步操作</h3>
+            <p id="controlDescription">拖动推荐卡到等式两边，或自己设置操作。先试试只操作一边，观察为什么会出错。</p>
+            <div class="operation-card" id="suggestionCard" draggable="true"><small>推荐操作卡，可拖动</small><strong id="suggestionText"></strong></div>
+            <div class="drop-zone" id="dropZone">把操作卡拖到这里<br>同时作用于等式两边</div>
+            <div class="apply-actions">
+                <button class="apply-button primary" id="applyBothButton" type="button">同时应用到两边</button>
+                <button class="apply-button wrong" id="leftOnlyButton" type="button">只操作左边</button>
+                <button class="apply-button wrong" id="rightOnlyButton" type="button">只操作右边</button>
+            </div>
+            <div class="manual-operation">
+                <strong>自主选择操作</strong>
+                <div class="operation-type"><button class="active" data-type="add" type="button">两边加减</button><button data-type="divide" type="button">两边同除</button></div>
+                <div class="operation-value"><button id="decreaseValue" type="button">−</button><output id="operationValue">-1</output><button id="increaseValue" type="button">+</button></div>
+            </div>
+            <div class="coach-note"><strong id="coachTitle">先理解规则</strong><span id="coachText">等式表示左右两边的值相等。只改变一边，就会破坏这种相等关系。</span></div>
+        </aside>
+    </section>
+
+    <section class="history-section">
+        <div class="history-panel"><h3>我的规范解题过程</h3><ol class="history-list" id="historyList"></ol><p class="history-empty" id="historyEmpty">完成一次双边操作后，这里会自动记录依据和结果。</p></div>
+        <div class="verify-panel"><h3>代回检验</h3><p id="verifyPrompt">先把方程解到 x 单独在左边，才能进行检验。</p><div class="verify-row"><input id="verifyInput" type="number" placeholder="输入 x 的值" disabled><button id="verifyButton" type="button" disabled>代回原方程</button></div><div class="verify-result" id="verifyResult"></div></div>
+    </section>
+</main>
+<div class="confetti" id="confetti" aria-hidden="true"></div>
+
+<script src="equation-lab-model.js"></script>
+<script>
+(function () {
+    "use strict";
+    const model = window.EquationLabModel;
+    let difficultyId = "basic";
+    let state = model.createState(difficultyId);
+    let operationType = "add";
+    let operationValue = -1;
+    let wrongExperiments = 0;
+    let resetTimer = null;
+    let isTransitioning = false;
+
+    const elements = {
+        difficultyOptions: document.getElementById("difficultyOptions"), goalText: document.getElementById("goalText"),
+        conceptTitle: document.getElementById("conceptTitle"), conceptRule: document.getElementById("conceptRule"), panelTitle: document.getElementById("panelTitle"), stageOneLabel: document.getElementById("stageOneLabel"), stageTwoLabel: document.getElementById("stageTwoLabel"),
+        equationStatus: document.getElementById("equationStatus"), equationText: document.getElementById("equationText"),
+        visualStage: document.getElementById("visualStage"), balanceStage: document.getElementById("balanceStage"), algebraStage: document.getElementById("algebraStage"), balanceMessage: document.getElementById("balanceMessage"), beam: document.getElementById("beam"), balanceNeedle: document.getElementById("balanceNeedle"),
+        leftPan: document.getElementById("leftPan"), rightPan: document.getElementById("rightPan"), leftWeights: document.getElementById("leftWeights"), rightWeights: document.getElementById("rightWeights"),
+        algebraStepNumber: document.getElementById("algebraStepNumber"), algebraExplanation: document.getElementById("algebraExplanation"), algebraMat: document.getElementById("algebraMat"), algebraLeft: document.getElementById("algebraLeft"), algebraRight: document.getElementById("algebraRight"), leftTileSummary: document.getElementById("leftTileSummary"), rightTileSummary: document.getElementById("rightTileSummary"), leftTiles: document.getElementById("leftTiles"), rightTiles: document.getElementById("rightTiles"),
+        controlDescription: document.getElementById("controlDescription"), suggestionCard: document.getElementById("suggestionCard"), suggestionText: document.getElementById("suggestionText"), dropZone: document.getElementById("dropZone"),
+        applyBothButton: document.getElementById("applyBothButton"), leftOnlyButton: document.getElementById("leftOnlyButton"), rightOnlyButton: document.getElementById("rightOnlyButton"),
+        manualOperation: document.querySelector(".manual-operation"),
+        operationValue: document.getElementById("operationValue"), decreaseValue: document.getElementById("decreaseValue"), increaseValue: document.getElementById("increaseValue"),
+        coachTitle: document.getElementById("coachTitle"), coachText: document.getElementById("coachText"), historyList: document.getElementById("historyList"), historyEmpty: document.getElementById("historyEmpty"),
+        verifyPrompt: document.getElementById("verifyPrompt"), verifyInput: document.getElementById("verifyInput"), verifyButton: document.getElementById("verifyButton"), verifyResult: document.getElementById("verifyResult"),
+        masteryText: document.getElementById("masteryText"), masteryBar: document.getElementById("masteryBar"), confetti: document.getElementById("confetti")
+    };
+    if (window.self !== window.top) document.body.classList.add("embedded");
+
+    function renderDifficulty() {
+        elements.difficultyOptions.innerHTML = Object.values(model.tasks).map(task => `<button class="difficulty-button" data-difficulty="${task.id}" aria-pressed="${task.id === difficultyId}" type="button">${task.label}<br><small>${task.concept}</small></button>`).join("");
+        elements.difficultyOptions.querySelectorAll("[data-difficulty]").forEach(button => button.addEventListener("click", function () {
+            difficultyId = button.dataset.difficulty;
+            state = model.createState(difficultyId);
+            wrongExperiments = 0;
+            operationType = "add";
+            operationValue = -1;
+            applyTheme();
+            renderAll();
+        }));
+    }
+
+    function applyTheme() {
+        const themes = { basic: ["#347ff0", "#eaf3ff"], advanced: ["#7b45e8", "#f2edff"], challenge: ["#ff5f91", "#fff0f6"] };
+        const [accent, soft] = themes[difficultyId];
+        document.documentElement.style.setProperty("--accent", accent);
+        document.documentElement.style.setProperty("--accent-soft", soft);
+    }
+
+    function svgVariableMass(x, y, index) {
+        return `<g transform="translate(${x} ${y})"><g class="mass-token" style="animation-delay:${Math.min(index * 45, 260)}ms" filter="url(#tokenShadow)"><rect width="48" height="54" rx="7" fill="url(#purpleMass)" stroke="#fff" stroke-width="3"/><path d="M5 8 H43" stroke="#d8c7ff" stroke-width="3" stroke-linecap="round" opacity=".7"/><text x="24" y="35" text-anchor="middle" fill="#fff" font-size="22" font-weight="900">x</text></g></g>`;
+    }
+
+    function svgUnitMass(x, y, index) {
+        return `<g transform="translate(${x} ${y})"><g class="mass-token" style="animation-delay:${Math.min(index * 35, 280)}ms" filter="url(#tokenShadow)"><path d="M5 7 H21 L24 12 V28 H2 V12 Z" fill="url(#brass)" stroke="#fff" stroke-width="2"/><rect x="8" y="1" width="10" height="8" rx="3" fill="#d98b0e"/><text x="13" y="22" text-anchor="middle" fill="#5b3900" font-size="11" font-weight="900">1</text></g></g>`;
+    }
+
+    function renderScaleMasses(side, target, centerX) {
+        const tokens = [];
+        for (let i = 0; i < side.variables; i++) tokens.push({ type: "x", width: 48, height: 54 });
+        for (let i = 0; i < side.positiveUnits; i++) tokens.push({ type: "unit", width: 26, height: 29 });
+        const rows = [[]];
+        let rowWidth = 0;
+        tokens.forEach(token => {
+            const nextWidth = rowWidth ? rowWidth + 5 + token.width : token.width;
+            if (nextWidth > 176 && rows[rows.length - 1].length) {
+                rows.push([]);
+                rowWidth = 0;
+            }
+            rows[rows.length - 1].push(token);
+            rowWidth = rowWidth ? rowWidth + 5 + token.width : token.width;
+        });
+        let bottom = 334;
+        let tokenIndex = 0;
+        const markup = [];
+        rows.slice().reverse().forEach(row => {
+            const rowHeight = Math.max(...row.map(token => token.height), 29);
+            const totalWidth = row.reduce((sum, token) => sum + token.width, 0) + Math.max(0, row.length - 1) * 5;
+            let x = centerX - totalWidth / 2;
+            const y = bottom - rowHeight;
+            row.forEach(token => {
+                markup.push(token.type === "x" ? svgVariableMass(x, y, tokenIndex) : svgUnitMass(x, bottom - token.height, tokenIndex));
+                x += token.width + 5;
+                tokenIndex += 1;
+            });
+            bottom = y - 5;
+        });
+        target.innerHTML = markup.join("");
+    }
+
+    function algebraTile(kind, index) {
+        const label = kind === "variable" ? "x" : kind === "positive" ? "+1" : "−1";
+        return `<span class="algebra-tile ${kind}" style="animation-delay:${Math.min(index * 32, 260)}ms">${label}</span>`;
+    }
+
+    function tileCluster(variableCount, positiveCount, negativeCount, label) {
+        const tiles = [];
+        for (let i = 0; i < variableCount; i++) tiles.push(algebraTile("variable", tiles.length));
+        for (let i = 0; i < negativeCount; i++) tiles.push(algebraTile("negative", tiles.length));
+        for (let i = 0; i < positiveCount; i++) tiles.push(algebraTile("positive", tiles.length));
+        return `<div class="tile-cluster">${label ? `<span class="cluster-label">${label}</span>` : ""}${tiles.join("")}</div>`;
+    }
+
+    function renderAlgebra(visual) {
+        let leftMarkup = "";
+        if (visual.phase === "grouped") {
+            leftMarkup = visual.left.groups.map((group, groupIndex) => `<div class="algebra-group" style="animation-delay:${groupIndex * 90}ms">${algebraTile("variable", 0)}${Array.from({ length: group.negativeUnits }, (_, index) => algebraTile("negative", index + 1)).join("")}</div>`).join("");
+            leftMarkup += `<div class="loose-tiles">${Array.from({ length: visual.left.loosePositiveUnits }, (_, index) => algebraTile("positive", index)).join("")}</div>`;
+            elements.algebraStepNumber.textContent = "1";
+            elements.algebraExplanation.textContent = "3(x − 2) 表示三个完整的 (x − 2) 分组；括号外的 +4 仍然单独保留。";
+            elements.leftTileSummary.textContent = "3组(x−2) 与 +4";
+        } else if (visual.phase === "expanded") {
+            leftMarkup = tileCluster(visual.left.variables, 0, visual.left.negativeUnits, "展开括号：3x − 6");
+            leftMarkup += tileCluster(0, visual.left.positiveUnits, 0, "括号外：+4");
+            elements.algebraStepNumber.textContent = "2";
+            elements.algebraExplanation.textContent = "分配律只展开三个括号组，得到 3x − 6；原来的 +4 没有消失。";
+            elements.leftTileSummary.textContent = "3x − 6 + 4";
+        } else {
+            leftMarkup = tileCluster(visual.left.variables, visual.left.positiveUnits, visual.left.negativeUnits, "合并后的左边");
+            if (state.b === -2 && state.history.some(item => item.label.includes("零对"))) leftMarkup += `<div class="zero-pair-note">刚刚消去 4 组 (+1) + (−1) = 0</div>`;
+            elements.algebraStepNumber.textContent = state.solved ? "5" : state.b === 0 ? "4" : "3";
+            elements.algebraExplanation.textContent = state.solved ? "把 3 个 x 平均分成 3 份，右边的 15 也平均分成 3 份，所以 x = 5。" : state.b === 0 ? "两边同时加 2 后，左边的两个 −1 被抵消，右边变成 15。下一步平均分成 3 份。" : "四个 +1 与四个 −1 组成零对，剩下 3x − 2。";
+            elements.leftTileSummary.textContent = model.formatEquation(state).split("=")[0].trim();
+        }
+        elements.leftTiles.innerHTML = leftMarkup;
+        elements.rightTiles.innerHTML = tileCluster(visual.right.variables || 0, visual.right.positiveUnits, visual.right.negativeUnits, "等式右边");
+        elements.rightTileSummary.textContent = model.formatEquation(state).split("=")[1].trim();
+    }
+
+    function resetVisualPose() {
+        elements.beam.style.setProperty("--tilt", "0deg");
+        elements.balanceNeedle.style.setProperty("--needle-tilt", "0deg");
+        [elements.leftPan, elements.rightPan].forEach(pan => {
+            pan.style.setProperty("--pan-tilt", "0deg");
+            pan.style.setProperty("--pan-shift", "0px");
+        });
+        elements.algebraLeft.classList.remove("invalid-pulse");
+        elements.algebraRight.classList.remove("invalid-pulse");
+    }
+
+    function renderVisual() {
+        const visual = model.getVisualState(state);
+        elements.equationText.textContent = model.formatEquation(state);
+        resetVisualPose();
+        elements.balanceStage.hidden = visual.mode !== "balance";
+        elements.algebraStage.hidden = visual.mode !== "algebra";
+        elements.balanceMessage.className = "balance-message";
+        elements.equationStatus.textContent = "等式成立";
+        if (visual.mode === "balance") {
+            elements.panelTitle.textContent = "精密方程天平";
+            elements.conceptTitle.textContent = "等式就像一架平衡的天平";
+            elements.conceptRule.textContent = "两边同时做相同操作";
+            elements.stageOneLabel.textContent = "理解平衡法则";
+            elements.stageTwoLabel.textContent = "逐步解出 x";
+            elements.balanceMessage.textContent = "左右质量相等，横梁和指针都保持在中央";
+            renderScaleMasses(visual.left, elements.leftWeights, 185);
+            renderScaleMasses(visual.right, elements.rightWeights, 775);
+        } else {
+            elements.panelTitle.textContent = "括号与零对拼图板";
+            elements.conceptTitle.textContent = "每一次变形都必须保持等值";
+            elements.conceptRule.textContent = visual.phase === "grouped" || visual.phase === "expanded" ? "展开只改变写法，不改变值" : "两边同时做相同操作";
+            elements.stageOneLabel.textContent = "看懂括号与零对";
+            elements.stageTwoLabel.textContent = "逐步解出 x";
+            elements.balanceMessage.textContent = visual.phase === "grouped" ? "先看清三个括号组和独立的 +4" : visual.phase === "expanded" ? "+4 仍在原位，下一步再合并同类项" : "正负单位组成零对后，等值关系没有改变";
+            renderAlgebra(visual);
+        }
+    }
+
+    function renderSuggestion() {
+        const action = model.getSuggestedAction(state);
+        const structuralAction = action.type === "expand" || action.type === "combine";
+        elements.suggestionCard.classList.toggle("is-hidden", action.type === "verify");
+        elements.suggestionText.textContent = model.actionLabel(action);
+        elements.applyBothButton.disabled = action.type === "verify" || isTransitioning;
+        elements.leftOnlyButton.disabled = action.type === "verify" || structuralAction || isTransitioning;
+        elements.rightOnlyButton.disabled = action.type === "verify" || structuralAction || isTransitioning;
+        elements.applyBothButton.textContent = action.type === "expand" ? "展开三个括号组" : action.type === "combine" ? "组成零对并合并" : "同时应用到两边";
+        elements.dropZone.innerHTML = structuralAction ? "把操作卡拖到这里<br>完成等值变形" : "把操作卡拖到这里<br>同时作用于等式两边";
+        elements.controlDescription.textContent = structuralAction ? "先按顺序完成等值改写。展开括号和合并同类项不会改变原式的值。" : "拖动推荐卡到等式两边，或自己设置操作。也可以只操作一边，观察等式为什么会被破坏。";
+        elements.manualOperation.classList.toggle("is-disabled", structuralAction);
+        document.querySelectorAll("[data-type], #decreaseValue, #increaseValue").forEach(control => { control.disabled = structuralAction || isTransitioning; });
+        if (action.type === "add") { operationType = "add"; operationValue = action.value; }
+        if (action.type === "divide") { operationType = "divide"; operationValue = action.value; }
+        renderManualOperation();
+    }
+
+    function renderManualOperation() {
+        document.querySelectorAll("[data-type]").forEach(button => button.classList.toggle("active", button.dataset.type === operationType));
+        elements.operationValue.textContent = String(operationValue);
+    }
+
+    function renderHistory() {
+        elements.historyEmpty.hidden = state.history.length > 0;
+        elements.historyList.innerHTML = state.history.map((item, index) => `<li><span>${index + 1}. ${item.label}</span><strong>${item.equation}</strong></li>`).join("");
+    }
+
+    function renderProgress() {
+        const progress = state.verified ? 3 : state.solved ? 2 : state.history.length ? 1 : 0;
+        elements.masteryText.textContent = `${progress} / 3`;
+        elements.masteryBar.style.width = `${progress / 3 * 100}%`;
+        document.querySelectorAll("[data-stage]").forEach(item => {
+            const stage = Number(item.dataset.stage);
+            item.classList.toggle("done", stage <= progress);
+            item.classList.toggle("active", stage === Math.min(progress + 1, 3) && !state.verified);
+        });
+    }
+
+    function renderVerify() {
+        elements.verifyInput.disabled = !state.solved;
+        elements.verifyButton.disabled = !state.solved;
+        elements.verifyPrompt.textContent = state.solved ? `你得到 ${model.formatEquation(state)}。把 x 的值代回“${state.originalExpression}”，检查左右两边是否相等。` : "先把方程解到 x 单独在左边，才能进行检验。";
+    }
+
+    function renderCoach() {
+        const action = model.getSuggestedAction(state);
+        if (state.id === "challenge" && state.phase === "grouped") {
+            elements.coachTitle.textContent = "先看清括号外的 3";
+            elements.coachText.textContent = "3(x−2) 是三个完整的 (x−2) 分组。展开时每组都得到一个 x 和两个 −1，括号外的 +4 原样保留。";
+        } else if (state.id === "challenge" && state.phase === "expanded") {
+            elements.coachTitle.textContent = "用零对合并同类项";
+            elements.coachText.textContent = "四个 +1 分别与四个 −1 配成零对并消去，六个 −1 还剩两个，所以得到 3x−2。";
+        } else if (state.solved) {
+            elements.coachTitle.textContent = "还差最后一步";
+            elements.coachText.textContent = "求出 x 后必须代回原方程。如果左右两边的值相等，答案才通过检验。";
+        } else if (action.type === "add") {
+            elements.coachTitle.textContent = "先消去常数项";
+            elements.coachText.textContent = `左边有 ${state.b > 0 ? "+" : "−"}${Math.abs(state.b)}。两边同时${action.value >= 0 ? "加" : "减"}${Math.abs(action.value)}，等式仍然成立。`;
+        } else {
+            elements.coachTitle.textContent = "把 x 的系数化为 1";
+            elements.coachText.textContent = `现在是 ${state.a}x = ${state.c}。两边同时除以 ${state.a}，就能得到一个 x 的值。`;
+        }
+    }
+
+    function renderAll() {
+        renderDifficulty();
+        elements.goalText.textContent = `${state.originalExpression}：${state.goal}`;
+        renderVisual();
+        renderSuggestion();
+        renderHistory();
+        renderProgress();
+        renderVerify();
+        renderCoach();
+    }
+
+    function animateBalancedOperation() {
+        const visual = model.getVisualState(state);
+        if (visual.mode === "balance") {
+            elements.beam.classList.remove("is-working");
+            void elements.beam.getBoundingClientRect();
+            elements.beam.classList.add("is-working");
+            elements.balanceMessage.textContent = "左右两边同时改变，横梁摆动后重新回到平衡";
+            window.setTimeout(() => elements.beam.classList.remove("is-working"), 860);
+        } else {
+            elements.algebraStage.classList.remove("is-working");
+            void elements.algebraStage.offsetWidth;
+            elements.algebraStage.classList.add("is-working");
+            window.setTimeout(() => elements.algebraStage.classList.remove("is-working"), 620);
+        }
+    }
+
+    function runInvalidExperiment(scope) {
+        const action = model.getSuggestedAction(state).type === "verify" ? { type: "add", value: 1 } : model.getSuggestedAction(state);
+        if (action.type === "expand" || action.type === "combine" || isTransitioning) return;
+        state = model.applyAction(state, action, scope);
+        wrongExperiments += 1;
+        const tilt = scope === "left" ? -8 : 8;
+        const visual = model.getVisualState(state);
+        if (visual.mode === "balance") {
+            elements.beam.style.setProperty("--tilt", `${tilt}deg`);
+            elements.balanceNeedle.style.setProperty("--needle-tilt", `${tilt * 1.8}deg`);
+            elements.leftPan.style.setProperty("--pan-tilt", `${-tilt}deg`);
+            elements.rightPan.style.setProperty("--pan-tilt", `${-tilt}deg`);
+            elements.leftPan.style.setProperty("--pan-shift", scope === "left" ? "24px" : "-8px");
+            elements.rightPan.style.setProperty("--pan-shift", scope === "right" ? "24px" : "-8px");
+        } else {
+            const invalidSide = scope === "left" ? elements.algebraLeft : elements.algebraRight;
+            invalidSide.classList.add("invalid-pulse");
+        }
+        elements.balanceMessage.className = "balance-message invalid";
+        elements.balanceMessage.textContent = "只改变一边，等式被破坏了";
+        elements.equationStatus.textContent = "错误实验：左右不再相等";
+        elements.coachTitle.textContent = "这正是不能只移一边的原因";
+        elements.coachText.textContent = "移项不是把数字直接搬过去，而是等式两边同时做相同的加减操作。所谓“变号”，是省略书写后的结果。";
+        if (resetTimer) clearTimeout(resetTimer);
+        resetTimer = window.setTimeout(() => {
+            state = { ...state, balanced: true, invalidExperiment: null };
+            renderAll();
+        }, 2100);
+    }
+
+    function commitAction(action) {
+        state = model.applyAction(state, action, "both");
+        isTransitioning = false;
+        renderAll();
+        animateBalancedOperation();
+        if (state.solved) elements.verifyInput.focus();
+    }
+
+    function applyBoth(action) {
+        if (action.type === "verify" || isTransitioning) return;
+        if (action.type === "expand" || action.type === "combine") {
+            isTransitioning = true;
+            renderSuggestion();
+            const className = action.type === "expand" ? "is-expanding" : "is-combining";
+            elements.algebraStage.classList.add(className);
+            elements.balanceMessage.textContent = action.type === "expand" ? "正在把 3 分配给括号中的每一项，+4 保持不动" : "正在配对：(+1) 与 (−1) 合起来等于 0";
+            window.setTimeout(() => {
+                elements.algebraStage.classList.remove(className);
+                commitAction(action);
+            }, 680);
+            return;
+        }
+        commitAction(action);
+    }
+
+    function currentManualAction() {
+        const suggested = model.getSuggestedAction(state);
+        if (suggested.type === "expand" || suggested.type === "combine") return suggested;
+        return { type: operationType, value: Number(operationValue) };
+    }
+
+    document.querySelectorAll("[data-type]").forEach(button => button.addEventListener("click", function () {
+        operationType = button.dataset.type;
+        operationValue = operationType === "divide" ? Math.max(2, Math.abs(operationValue)) : operationValue;
+        renderManualOperation();
+    }));
+    elements.decreaseValue.addEventListener("click", function () { operationValue = operationType === "divide" ? Math.max(2, operationValue - 1) : Math.max(-12, operationValue - 1); renderManualOperation(); });
+    elements.increaseValue.addEventListener("click", function () { operationValue = Math.min(12, operationValue + 1); renderManualOperation(); });
+    elements.applyBothButton.addEventListener("click", function () { applyBoth(currentManualAction()); });
+    elements.leftOnlyButton.addEventListener("click", function () { runInvalidExperiment("left"); });
+    elements.rightOnlyButton.addEventListener("click", function () { runInvalidExperiment("right"); });
+    elements.suggestionCard.addEventListener("dragstart", function (event) { event.dataTransfer.setData("text/plain", "suggested-action"); });
+    elements.dropZone.addEventListener("dragover", function (event) { event.preventDefault(); elements.dropZone.classList.add("is-over"); });
+    elements.dropZone.addEventListener("dragleave", function () { elements.dropZone.classList.remove("is-over"); });
+    elements.dropZone.addEventListener("drop", function (event) { event.preventDefault(); elements.dropZone.classList.remove("is-over"); applyBoth(model.getSuggestedAction(state)); });
+    elements.suggestionCard.addEventListener("click", function () { applyBoth(model.getSuggestedAction(state)); });
+    elements.verifyButton.addEventListener("click", function () {
+        const result = model.verifySolution(state, elements.verifyInput.value);
+        if (result.correct) {
+            state = { ...state, verified: true };
+            elements.verifyResult.className = "verify-result success";
+            elements.verifyResult.textContent = `检验成功：左边 = ${result.leftValue}，右边 = ${result.rightValue}，所以 x = ${result.x} 是原方程的解。`;
+            renderProgress();
+            celebrate();
+            window.parent.postMessage({ type: "interactive-lesson-complete", lessonId: "g7-upper-equations", difficulty: difficultyId }, window.location.origin);
+        } else {
+            elements.verifyResult.className = "verify-result";
+            elements.verifyResult.textContent = `还不成立：代入后左边 = ${result.leftValue}，右边 = ${result.rightValue}。请检查解题步骤。`;
+        }
+    });
+
+    function celebrate() {
+        const colors = ["#347ff0", "#7b45e8", "#ff5f91", "#ffd45a", "#24b78a"];
+        elements.confetti.innerHTML = Array.from({ length: 34 }, (_, index) => `<span style="left:${(index * 37) % 100}%;background:${colors[index % colors.length]};animation-delay:${(index % 7) * 70}ms"></span>`).join("");
+        window.setTimeout(() => { elements.confetti.innerHTML = ""; }, 2100);
+    }
+
+    applyTheme();
+    renderAll();
+})();
+</script>
+</body>
+</html>

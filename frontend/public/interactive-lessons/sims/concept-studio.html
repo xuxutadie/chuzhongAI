@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>互动知识实验室</title>
+  <style>
+    :root {
+      --ink:#19283b; --muted:#64748b; --line:#dbe5f1; --paper:#fff;
+      --blue:#3185ff; --pink:#ff5b8f; --purple:#7c4dff; --yellow:#ffbd2e;
+      --mint:#20c997; --soft-blue:#edf5ff; --soft-pink:#fff0f5;
+    }
+    * { box-sizing:border-box; }
+    html,body { margin:0; min-height:100%; background:#f4f8fd; color:var(--ink); font-family:"Microsoft YaHei","PingFang SC",sans-serif; letter-spacing:0; }
+    button,input { font:inherit; }
+    button:focus-visible,input:focus-visible { outline:3px solid rgba(49,133,255,.24); outline-offset:2px; }
+    .studio { width:min(1560px,100%); margin:0 auto; padding:18px; }
+    .topbar { display:flex; align-items:center; justify-content:space-between; gap:18px; padding:16px 18px; border:1px solid var(--line); border-radius:8px; background:var(--paper); box-shadow:0 10px 32px rgba(38,67,105,.08); }
+    .identity { display:flex; align-items:center; gap:14px; min-width:0; }
+    .mark { display:grid; place-items:center; width:46px; height:46px; flex:0 0 auto; border-radius:50%; color:#fff; background:linear-gradient(135deg,var(--pink),var(--purple)); font-size:20px; font-weight:900; }
+    .identity h1 { margin:0; font-size:clamp(22px,3vw,34px); line-height:1.2; }
+    .identity p { margin:5px 0 0; color:var(--muted); font-size:14px; }
+    .status { padding:9px 13px; border:1px solid #aee7d2; border-radius:6px; color:#087f5b; background:#ebfff7; font-weight:800; white-space:nowrap; }
+    .difficulty { display:grid; grid-template-columns:auto repeat(3,minmax(150px,1fr)); gap:9px; align-items:stretch; margin-top:14px; padding:10px; border:1px solid var(--line); border-radius:8px; background:#fff; }
+    .difficulty-label { display:flex; align-items:center; padding:0 12px; font-size:14px; font-weight:900; }
+    .difficulty button { min-height:48px; padding:7px 12px; border:1px solid var(--line); border-top-width:4px; border-radius:6px; background:#f8fbff; color:var(--muted); cursor:pointer; }
+    .difficulty button:nth-of-type(1){border-top-color:var(--blue)} .difficulty button:nth-of-type(2){border-top-color:var(--purple)} .difficulty button:nth-of-type(3){border-top-color:var(--pink)}
+    .difficulty button[aria-pressed="true"] { border-color:var(--pink); background:var(--soft-pink); color:var(--ink); font-weight:900; box-shadow:0 6px 18px rgba(255,91,143,.12); }
+    .difficulty small { display:block; margin-top:3px; font-size:11px; font-weight:500; color:var(--muted); }
+    .level-brief { display:flex; align-items:center; gap:14px; margin-top:10px; padding:12px 15px; border:1px solid #bcd9ff; border-left:5px solid var(--blue); border-radius:7px; background:#f4f9ff; }
+    .level-brief strong { flex:0 0 auto; color:#1768c5; }
+    .level-brief span { color:#48647f; font-size:13px; line-height:1.55; }
+    .level-brief[data-difficulty="advanced"] { border-color:#d8c9ff; border-left-color:var(--purple); background:#f8f5ff; }
+    .level-brief[data-difficulty="advanced"] strong { color:#6436d5; }
+    .level-brief[data-difficulty="challenge"] { border-color:#ffc4d6; border-left-color:var(--pink); background:#fff4f8; }
+    .level-brief[data-difficulty="challenge"] strong { color:#c92d5d; }
+    .shape-modules { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:10px; padding:7px; border:1px solid var(--line); border-radius:8px; background:#fff; }
+    .shape-modules button { min-height:46px; border:1px solid transparent; border-radius:6px; background:transparent; color:var(--muted); font-weight:800; cursor:pointer; }
+    .shape-modules small { display:block; margin-top:2px; color:inherit; font-size:10px; font-weight:500; }
+    .shape-modules button:hover { background:#f4f8fd; color:var(--ink); }
+    .shape-modules button[aria-selected="true"] { border-color:#8ec5ff; background:#edf5ff; color:#1768c5; box-shadow:inset 0 -3px 0 var(--blue); }
+    .steps { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:12px; }
+    .step { display:flex; align-items:center; gap:10px; min-height:52px; padding:10px 13px; border:1px solid var(--line); border-radius:7px; background:#fff; color:var(--muted); cursor:pointer; text-align:left; }
+    .step span { display:grid; place-items:center; width:29px; height:29px; flex:0 0 auto; border-radius:50%; background:#e9f0f8; font-weight:900; }
+    .step strong { display:block; color:inherit; }
+    .step.active { border-color:#8ec5ff; color:#1768c5; background:var(--soft-blue); }
+    .step.done { border-color:#92e0c5; color:#087f5b; background:#effcf7; }
+    .step.done span { background:var(--mint); color:#fff; }
+    .workspace { display:grid; grid-template-columns:minmax(0,1fr) 350px; margin-top:12px; border:1px solid var(--line); border-radius:8px; overflow:hidden; background:#fff; box-shadow:0 18px 46px rgba(38,67,105,.09); }
+    .visual-panel { min-width:0; padding:18px; border-right:1px solid var(--line); }
+    .panel-heading { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:12px; }
+    .panel-heading strong { color:var(--pink); font-size:14px; }
+    .panel-heading h2 { margin:5px 0 0; font-size:22px; }
+    .live { max-width:46%; padding:8px 10px; border-radius:6px; color:#8d4d00; background:#fff7dc; font-size:13px; font-weight:800; text-align:right; }
+    .shape-guide { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:12px; }
+    .shape-guide div { min-height:52px; padding:9px 11px; border:1px solid var(--line); border-radius:7px; background:#f8fbff; color:var(--muted); font-size:12px; line-height:1.45; }
+    .shape-guide b { display:block; margin-bottom:2px; color:var(--ink); font-size:13px; }
+    .shape-guide div.current { border-color:#ff8eb0; background:#fff0f5; color:#8d3553; box-shadow:0 5px 16px rgba(255,91,143,.1); }
+    .shape-guide div.done { border-color:#8fddc2; background:#effcf7; color:#087f5b; }
+    .canvas-shell { position:relative; min-height:520px; overflow:hidden; border:1px solid #bfd6f3; border-radius:8px; background:linear-gradient(145deg,#fafdff 0%,#fff4f8 100%); }
+    canvas { display:block; width:100%; height:520px; touch-action:none; cursor:crosshair; }
+    #shapeWebglCanvas { display:none; cursor:grab; }
+    #shapeWebglCanvas:active { cursor:grabbing; }
+    .canvas-note { position:absolute; left:14px; bottom:12px; padding:7px 10px; border:1px solid rgba(49,133,255,.2); border-radius:6px; background:rgba(255,255,255,.9); color:#45647f; font-size:12px; pointer-events:none; }
+    .shape-overlay { position:absolute; top:12px; right:12px; width:min(250px,42%); padding:12px; border:1px solid rgba(49,133,255,.2); border-radius:7px; background:rgba(255,255,255,.92); box-shadow:0 10px 28px rgba(38,67,105,.1); pointer-events:none; }
+    .shape-overlay strong { display:block; margin-bottom:5px; color:var(--ink); }
+    .shape-overlay p { margin:0; color:var(--muted); font-size:12px; line-height:1.55; }
+    .shape-overlay .facts { display:grid; grid-template-columns:repeat(3,1fr); gap:5px; margin-top:9px; }
+    .shape-overlay .facts span { padding:6px 3px; border-radius:5px; background:#f1f6fc; color:#45647f; font-size:11px; text-align:center; }
+    .shape-overlay .views { display:grid; grid-template-columns:repeat(3,1fr); gap:5px; margin-top:9px; }
+    .shape-overlay .views span { display:grid; place-items:center; min-height:54px; padding:5px; border:1px solid var(--line); border-radius:5px; background:#f8fbff; color:#45647f; font-size:11px; text-align:center; }
+    .shape-overlay .views i { display:block; width:28px; height:22px; margin-bottom:3px; border:2px solid currentColor; background:rgba(49,133,255,.08); }
+    .shape-overlay .views i.circle { width:25px; height:25px; border-radius:50%; }
+    .choice-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:7px; margin:10px 0 15px; }
+    .choice-grid button { min-height:39px; border:1px solid var(--line); border-radius:6px; background:#fff; color:var(--muted); cursor:pointer; }
+    .choice-grid button[aria-pressed="true"] { border-color:#8ec5ff; background:#edf5ff; color:#1768c5; font-weight:900; }
+    .control-panel { padding:18px; background:#fbfdff; }
+    .control-panel h2 { margin:0; font-size:20px; }
+    .mission { margin:8px 0 16px; color:var(--muted); line-height:1.7; font-size:14px; }
+    .control { margin:15px 0; padding:13px; border:1px solid var(--line); border-radius:7px; background:#fff; }
+    .control-top { display:flex; justify-content:space-between; gap:10px; margin-bottom:10px; font-size:13px; font-weight:800; }
+    .control-output { color:var(--purple); font-size:18px; }
+    input[type="range"] { width:100%; accent-color:var(--pink); cursor:pointer; }
+    .actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:15px; }
+    .actions button,.advance { min-height:44px; border:1px solid var(--line); border-radius:6px; background:#fff; color:var(--ink); font-weight:800; cursor:pointer; }
+    .actions .primary,.advance { border-color:var(--blue); color:#fff; background:var(--blue); }
+    .advance { width:100%; margin-top:9px; background:linear-gradient(90deg,var(--blue),var(--purple)); }
+    .advance:disabled { border-color:var(--line); background:#e8eef5; color:#8593a6; cursor:not-allowed; }
+    .coach { margin-top:15px; padding:13px; border-left:4px solid var(--yellow); background:#fff9e8; color:#6f5420; line-height:1.65; font-size:13px; }
+    .challenge { margin-top:12px; padding:18px; border:1px solid var(--line); border-radius:8px; background:#fff; }
+    .challenge-head { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    .challenge-head strong { color:var(--purple); }
+    .challenge-head span { color:var(--muted); font-size:13px; }
+    .challenge h2 { margin:10px 0 13px; font-size:20px; }
+    .answers { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+    .answer { min-height:46px; border:1px solid var(--line); border-radius:6px; background:#f8fbff; color:var(--ink); cursor:pointer; }
+    .answer:hover:not(:disabled) { border-color:var(--blue); background:var(--soft-blue); }
+    .answer:disabled { opacity:.45; cursor:not-allowed; }
+    .answer.correct { border-color:var(--mint); color:#087f5b; background:#eafff7; font-weight:900; }
+    .answer.wrong { border-color:var(--pink); color:#b4234d; background:var(--soft-pink); }
+    .feedback { min-height:44px; margin-top:10px; padding:11px 13px; border-radius:6px; background:#f1f5f9; color:var(--muted); line-height:1.55; }
+    .feedback.success { color:#087f5b; background:#eafff7; }
+    .feedback.error { color:#a61e4d; background:#fff0f5; }
+    @media (max-width:980px) {
+      .workspace { grid-template-columns:1fr; }
+      .visual-panel { border-right:0; border-bottom:1px solid var(--line); }
+      .difficulty { grid-template-columns:1fr 1fr 1fr; }
+      .difficulty-label { grid-column:1/-1; }
+      .canvas-shell,canvas { min-height:430px; height:430px; }
+    }
+    @media (max-width:620px) {
+      .studio { padding:8px; }
+      .topbar { align-items:flex-start; padding:13px; }
+      .status { display:none; }
+      .mark { width:38px; height:38px; font-size:16px; }
+      .identity h1 { font-size:21px; }
+      .difficulty { grid-template-columns:1fr; }
+      .difficulty-label { grid-column:auto; }
+      .level-brief { align-items:flex-start; flex-direction:column; gap:4px; }
+      .shape-modules { grid-template-columns:1fr 1fr; }
+      .steps { grid-template-columns:1fr; }
+      .step { min-height:44px; }
+      .visual-panel,.control-panel,.challenge { padding:12px; }
+      .panel-heading { display:block; }
+      .shape-guide { grid-template-columns:1fr; }
+      .live { max-width:none; margin-top:8px; text-align:left; }
+      .canvas-shell { display:flex; flex-direction:column; min-height:0; height:auto; }
+      .canvas-shell canvas { order:2; min-height:360px; height:360px; flex:0 0 360px; }
+      .canvas-note { display:none; }
+      .shape-overlay { position:static; order:1; width:auto; margin:8px 8px 0; padding:9px; }
+      .answers { grid-template-columns:1fr 1fr; }
+    }
+  </style>
+<link rel="stylesheet" href="./blueprint-theme.css">
+</head>
+<body data-theme="blueprint">
+  <main class="studio">
+    <header class="topbar">
+      <div class="identity"><div class="mark">实</div><div><h1 id="lessonTitle">互动知识实验室</h1><p id="lessonSubtitle">加载专属学习场景</p></div></div>
+      <div class="status" id="statusBadge">准备探索</div>
+    </header>
+    <section class="difficulty" aria-label="难度选择">
+      <div class="difficulty-label">选择难度</div>
+      <div id="difficultyButtons" style="display:contents"></div>
+    </section>
+    <section class="level-brief" id="levelBrief" hidden><strong id="levelMode"></strong><span id="levelSummary"></span></section>
+    <nav class="shape-modules" id="shapeModules" aria-label="丰富的图形世界实验主题" hidden></nav>
+    <nav class="steps" id="stepButtons" aria-label="学习步骤"></nav>
+    <section class="workspace">
+      <div class="visual-panel">
+        <div class="panel-heading"><div><strong id="sceneName">专属实验场景</strong><h2 id="stageTitle">先看懂发生了什么</h2></div><div class="live" id="liveReadout">等待操作</div></div>
+        <div class="shape-guide" id="shapeGuide" hidden></div>
+        <div class="canvas-shell"><canvas id="sceneCanvas" width="1100" height="520"></canvas><canvas id="shapeWebglCanvas" aria-label="可自由旋转的立体图形模型"></canvas><div class="shape-overlay" id="shapeOverlay" hidden></div><div class="canvas-note" id="canvasNote">拖动画面或调整右侧参数</div></div>
+      </div>
+      <aside class="control-panel">
+        <h2 id="missionTitle">本步任务</h2>
+        <p class="mission" id="missionText"></p>
+        <div id="controls"></div>
+        <div class="actions"><button class="primary" id="playButton" type="button">播放变化</button><button id="resetButton" type="button">重新开始</button></div>
+        <button class="advance" id="advanceButton" type="button" disabled>完成本步，继续</button>
+        <div class="coach" id="coachText">先改变一个参数，观察画面和数值如何一起变化。</div>
+      </aside>
+    </section>
+    <section class="challenge">
+      <div class="challenge-head"><strong>即时自检</strong><span id="challengeStatus">完成前两步后解锁</span></div>
+      <h2 id="challengeQuestion"></h2>
+      <div class="answers" id="answers"></div>
+      <div class="feedback" id="feedback">这里会告诉你为什么对、为什么错，不只显示答案。</div>
+    </section>
+  </main>
+  <script src="self-developed-lab-model.js"></script>
+  <script src="interactive-lesson-quality-model.js"></script>
+  <script src="concept-studio-engine.js"></script>
+  <script src="../vendor/three-r128.min.js"></script>
+  <script src="../vendor/OrbitControls-r128.js"></script>
+  <script src="concept-studio.js"></script>
+</body>
+</html>

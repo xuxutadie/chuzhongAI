@@ -1,0 +1,1146 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第三章：整式及其加减 - 互动教学模拟</title>
+<style>
+/* ===== 全局样式 ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+    background: linear-gradient(135deg, #e0e7ff 0%, #f0f4f8 50%, #fdf2f8 100%);
+    min-height: 100vh;
+    color: #333;
+    overflow-x: hidden;
+}
+
+/* ===== 顶部标题 ===== */
+.header {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 18px 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.header h1 { font-size: 20px; display: flex; align-items: center; gap: 10px; }
+.header .chapter { background: rgba(255,255,255,0.25); padding: 4px 14px; border-radius: 16px; font-size: 12px; }
+
+/* ===== 标签栏 ===== */
+.tabs {
+    display: flex;
+    gap: 8px;
+    padding: 12px 20px;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    flex-wrap: wrap;
+    justify-content: center;
+}
+/* 被 iframe 嵌入时：隐藏大标题、压缩 tabs */
+body.embedded .header { display: none; }
+body.embedded .tabs { padding: 6px 12px; gap: 4px; }
+body.embedded .tab { padding: 6px 14px; font-size: 13px; border-radius: 18px; }
+
+.tab {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 22px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    background: #f0f2f8;
+    color: #555;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.tab:hover { transform: translateY(-2px); }
+.tab.active {
+    color: white;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    box-shadow: 0 4px 12px rgba(102,126,234,0.3);
+}
+
+/* ===== 主区域 ===== */
+.main {
+    padding: 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+.section {
+    display: none;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    padding: 24px;
+    animation: fadeIn 0.3s;
+}
+.section.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+.section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #4a3f8c;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f0f2f8;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.section-desc {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.7;
+    margin-bottom: 18px;
+    background: #f8faff;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border-left: 3px solid #667eea;
+}
+
+/* ===== 按钮 ===== */
+.btn {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+    color: white;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(102,126,234,0.3); }
+.btn.green { background: linear-gradient(135deg, #43e97b, #38d9a9); }
+.btn.orange { background: linear-gradient(135deg, #f093fb, #f5576c); }
+.btn.blue { background: linear-gradient(135deg, #4facfe, #00c6fb); }
+.btn.gray { background: linear-gradient(135deg, #a0a0b8, #7c7c95); }
+.btn:disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
+
+/* ===== 通用按钮组 ===== */
+.btn-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 10px 0;
+}
+.btn-group .btn { flex: 0 0 auto; }
+
+/* ===== 滑块 ===== */
+.slider-group { margin: 14px 0; }
+.slider-group label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+.slider-group label .value { color: #667eea; font-weight: 700; font-size: 15px; }
+input[type="range"] {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: #e0e7ff;
+    -webkit-appearance: none;
+    outline: none;
+}
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: #667eea;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(102,126,234,0.4);
+}
+
+/* ===== 场景选择按钮 ===== */
+.scene-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+}
+.scene-btn {
+    padding: 14px 8px;
+    border: 2px solid #e0e7ff;
+    border-radius: 10px;
+    background: #f8faff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-align: center;
+    color: #555;
+}
+.scene-btn:hover { border-color: #667eea; background: #eef2ff; }
+.scene-btn.active {
+    border-color: #667eea;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+}
+.scene-btn .icon { font-size: 26px; display: block; margin-bottom: 6px; }
+
+/* ===== 展示框 ===== */
+.display-box {
+    background: linear-gradient(135deg, #f0f4ff, #fce4ec);
+    border-radius: 14px;
+    padding: 20px;
+    text-align: center;
+    margin: 14px 0;
+    min-height: 90px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.display-box .scene-text {
+    font-size: 16px;
+    color: #444;
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+.display-box .expression {
+    font-size: 28px;
+    font-weight: 700;
+    color: #4a3f8c;
+    letter-spacing: 1px;
+}
+.display-box .expression .num { color: #e74c3c; }
+
+/* ===== 知识点提示框 ===== */
+.tip-box {
+    background: #fff8e1;
+    border-left: 4px solid #ffb300;
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-top: 14px;
+    font-size: 13px;
+    color: #5d4a1f;
+    line-height: 1.7;
+}
+.tip-box .tip-title {
+    font-weight: 700;
+    color: #b8860b;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* ===== 环节2：分类游戏 ===== */
+.classify-question {
+    background: #f8faff;
+    border-radius: 12px;
+    padding: 22px;
+    text-align: center;
+    margin-bottom: 14px;
+}
+.classify-question .expr {
+    font-size: 36px;
+    font-weight: 700;
+    color: #4a3f8c;
+    margin: 8px 0;
+}
+.classify-question .q-num { font-size: 12px; color: #888; }
+.classify-btns {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 14px;
+}
+.classify-btn {
+    padding: 14px;
+    border: 2px solid #e0e7ff;
+    border-radius: 10px;
+    background: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+    color: #555;
+}
+.classify-btn:hover { border-color: #667eea; background: #eef2ff; }
+.classify-btn:hover .icon { transform: scale(1.2); }
+.classify-btn .icon { font-size: 22px; display: block; margin-bottom: 4px; transition: transform 0.2s; }
+.classify-btn.mon { color: #2e7d32; }
+.classify-btn.poly { color: #1565c0; }
+.classify-btn.non { color: #c62828; }
+
+.feedback {
+    border-radius: 10px;
+    padding: 14px;
+    margin-top: 12px;
+    font-size: 13px;
+    line-height: 1.7;
+    min-height: 50px;
+    display: none;
+}
+.feedback.show { display: block; animation: fadeIn 0.3s; }
+.feedback.correct {
+    background: #e8f5e9;
+    border-left: 4px solid #43e97b;
+    color: #1b5e20;
+}
+.feedback.wrong {
+    background: #ffebee;
+    border-left: 4px solid #f5576c;
+    color: #b71c1c;
+}
+.feedback .detail { color: #555; margin-top: 6px; font-size: 12px; }
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    background: #f8faff;
+    border-radius: 8px;
+}
+.progress-info .score { color: #667eea; font-weight: 700; }
+
+/* ===== 环节3：合并同类项 ===== */
+.merge-expr {
+    font-size: 32px;
+    font-weight: 700;
+    text-align: center;
+    margin: 18px 0;
+    line-height: 2;
+    font-family: "Cambria Math", "Times New Roman", serif;
+}
+.merge-expr .term {
+    display: inline-block;
+    padding: 6px 10px;
+    margin: 0 2px;
+    border-radius: 8px;
+    transition: all 0.4s;
+    cursor: default;
+}
+.merge-expr .term.highlight-a { background: #fff3e0; color: #e65100; }
+.merge-expr .term.highlight-b { background: #e3f2fd; color: #0d47a1; }
+.merge-expr .term.highlight-c { background: #f3e5f5; color: #6a1b9a; }
+.merge-expr .term.dim { opacity: 0.35; transform: scale(0.92); }
+.merge-expr .term.merged { background: #e8f5e9; color: #1b5e20; transform: scale(1.05); }
+.merge-expr .op { color: #888; padding: 0 4px; }
+
+.merge-result {
+    background: linear-gradient(135deg, #f0f4ff, #e8f5e9);
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 14px;
+    text-align: center;
+    font-size: 18px;
+    color: #4a3f8c;
+    min-height: 50px;
+    display: none;
+}
+.merge-result.show { display: block; animation: fadeIn 0.4s; }
+.merge-result .step {
+    font-size: 14px;
+    color: #666;
+    margin-top: 8px;
+    line-height: 1.8;
+}
+
+.hint-box {
+    background: #e3f2fd;
+    border-left: 4px solid #4facfe;
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-top: 14px;
+    font-size: 13px;
+    color: #0d47a1;
+    line-height: 1.7;
+    display: none;
+}
+.hint-box.show { display: block; animation: fadeIn 0.3s; }
+.hint-box .hint-title { font-weight: 700; margin-bottom: 4px; }
+
+/* ===== 环节4：去括号 ===== */
+.bracket-demo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 14px 0;
+}
+.bracket-card {
+    background: #f8faff;
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+}
+.bracket-card .title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #4a3f8c;
+    margin-bottom: 10px;
+}
+.bracket-card .formula {
+    font-size: 22px;
+    font-weight: 700;
+    color: #333;
+    margin: 8px 0;
+    font-family: "Cambria Math", "Times New Roman", serif;
+}
+.bracket-card .formula .pos { color: #43e97b; }
+.bracket-card .formula .neg { color: #f5576c; }
+
+/* 面积模型可视化 */
+.area-model {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 14px 0;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.area-block {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+    transition: all 0.4s;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.area-block.a { background: #667eea; }
+.area-block.b { background: #43e97b; }
+.area-block.neg-a { background: #f5576c; }
+.area-block.neg-b { background: #f9ca24; color: #5d4a1f; }
+.area-op {
+    font-size: 28px;
+    font-weight: 700;
+    color: #888;
+    padding: 0 6px;
+}
+
+/* 练习题 */
+.exercise-item {
+    background: #f8faff;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+}
+.exercise-item .q-text {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+.exercise-item .q-text .expr {
+    color: #4a3f8c;
+    font-family: "Cambria Math", "Times New Roman", serif;
+    font-size: 18px;
+}
+.answer-input-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.answer-input {
+    flex: 1;
+    min-width: 180px;
+    padding: 10px 12px;
+    border: 2px solid #e0e7ff;
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: "Cambria Math", "Times New Roman", serif;
+    outline: none;
+    transition: border 0.2s;
+}
+.answer-input:focus { border-color: #667eea; }
+.exercise-feedback {
+    margin-top: 10px;
+    font-size: 13px;
+    line-height: 1.7;
+    border-radius: 8px;
+    padding: 10px 12px;
+    display: none;
+}
+.exercise-feedback.show { display: block; animation: fadeIn 0.3s; }
+.exercise-feedback.correct {
+    background: #e8f5e9;
+    color: #1b5e20;
+    border-left: 4px solid #43e97b;
+}
+.exercise-feedback.wrong {
+    background: #ffebee;
+    color: #b71c1c;
+    border-left: 4px solid #f5576c;
+}
+.exercise-feedback .steps {
+    margin-top: 6px;
+    color: #555;
+    font-size: 12px;
+    font-family: "Cambria Math", "Times New Roman", serif;
+    line-height: 1.8;
+}
+
+/* ===== 响应式 ===== */
+@media (max-width: 700px) {
+    .scene-grid, .classify-btns { grid-template-columns: 1fr; }
+    .bracket-demo { grid-template-columns: 1fr; }
+    .merge-expr { font-size: 24px; }
+    .display-box .expression { font-size: 22px; }
+}
+</style>
+<link rel="stylesheet" href="./blueprint-theme.css">
+</head>
+<body data-theme="blueprint">
+
+<!-- 顶部标题 -->
+<div class="header">
+    <h1>➗ 第三章：整式及其加减</h1>
+    <span class="chapter">北师大版七年级上册 · 自制互动模拟</span>
+</div>
+
+<!-- 标签栏 -->
+<div class="tabs">
+    <button class="tab active" onclick="switchSection('algebra')">🏷️ 用字母表示数</button>
+    <button class="tab" onclick="switchSection('classify')">🔢 认识整式</button>
+    <button class="tab" onclick="switchSection('merge')">➕ 合并同类项</button>
+    <button class="tab" onclick="switchSection('bracket')">🔲 去括号</button>
+</div>
+
+<!-- 主区域 -->
+<div class="main">
+
+<!-- ============ 环节1：代数式入门 ============ -->
+<div class="section active" id="section-algebra">
+    <div class="section-title">🏷️ 环节一：用字母表示数</div>
+    <div class="section-desc">
+        生活中我们经常遇到变化的量，用<b>字母</b>表示这些变化的量，就能简洁地表达数量关系。
+        拖动滑动条改变字母 n 的值，观察代数式的变化。
+    </div>
+
+    <!-- 场景选择 -->
+    <div class="scene-grid">
+        <button class="scene-btn active" onclick="selectScene('apple')">
+            <span class="icon">🍎</span>苹果装袋
+        </button>
+        <button class="scene-btn" onclick="selectScene('distance')">
+            <span class="icon">🚗</span>行程问题
+        </button>
+        <button class="scene-btn" onclick="selectScene('price')">
+            <span class="icon">💰</span>购物总价
+        </button>
+    </div>
+
+    <!-- 滑动条 -->
+    <div class="slider-group">
+        <label>n 的值 <span class="value" id="algebraN">3</span></label>
+        <input type="range" id="algebraSlider" min="1" max="20" value="3" oninput="updateAlgebra(this.value)">
+    </div>
+
+    <!-- 展示框 -->
+    <div class="display-box" id="algebraDisplay">
+        <div class="scene-text">每袋装 3 个苹果，<b id="algebraN1">3</b> 袋共有 ___ 个苹果</div>
+        <div class="expression">3 × <span class="num" id="algebraN2">3</span> = <span class="num" id="algebraResult">9</span></div>
+        <div style="font-size:13px;color:#777;margin-top:6px;">代数式：<b style="color:#667eea;">3n</b></div>
+    </div>
+
+    <!-- 知识点提示 -->
+    <div class="tip-box">
+        <div class="tip-title">💡 什么是代数式？</div>
+        用运算符号（加、减、乘、除、乘方、开方）把 <b>数</b> 或 <b>表示数的字母</b> 连接而成的式子，叫做<b>代数式</b>。
+        单独一个数或一个字母也是代数式。例如：<b>3n</b>、<b>50 + 3n</b>、<b>2(x + 3)</b> 都是代数式。
+        <br>注意：代数式中不能含有 "="、"&gt;"、"&lt;"、"≠" 等关系符号。
+    </div>
+</div>
+
+<!-- ============ 环节2：单项式与多项式 ============ -->
+<div class="section" id="section-classify">
+    <div class="section-title">🔢 环节二：认识整式（单项式与多项式）</div>
+    <div class="section-desc">
+        <b>单项式</b>：数与字母的积组成的代数式（单独一个数或字母也是单项式）。<br>
+        <b>多项式</b>：几个单项式的和。<br>
+        <b>整式</b>：单项式与多项式统称为整式。含有除法且分母中有字母的式子不是整式。
+    </div>
+
+    <!-- 进度信息 -->
+    <div class="progress-info">
+        <span>题目进度：<b id="classifyProgress">1 / 8</b></span>
+        <span>得分：<span class="score" id="classifyScore">0</span> 分</span>
+    </div>
+
+    <!-- 题目区 -->
+    <div class="classify-question">
+        <div class="q-num" id="classifyQNum">第 1 题</div>
+        <div class="expr" id="classifyExpr">3x²</div>
+    </div>
+
+    <!-- 分类按钮 -->
+    <div class="classify-btns">
+        <button class="classify-btn mon" onclick="checkClassification('monomial')">
+            <span class="icon">✔️</span>单项式
+        </button>
+        <button class="classify-btn poly" onclick="checkClassification('polynomial')">
+            <span class="icon">📚</span>多项式
+        </button>
+        <button class="classify-btn non" onclick="checkClassification('nonintegral')">
+            <span class="icon">✖️</span>非整式
+        </button>
+    </div>
+
+    <!-- 反馈区 -->
+    <div class="feedback" id="classifyFeedback"></div>
+
+    <!-- 控制按钮 -->
+    <div class="btn-group" style="margin-top:14px;">
+        <button class="btn blue" id="classifyNextBtn" onclick="nextClassify()" disabled>下一题 →</button>
+        <button class="btn gray" onclick="resetClassify()">🔄 重新开始</button>
+    </div>
+
+    <!-- 知识点提示 -->
+    <div class="tip-box">
+        <div class="tip-title">💡 系数和次数</div>
+        <b>单项式的系数</b>：单项式中的数字因数。如 3x² 的系数是 3，-5xy 的系数是 -5。<br>
+        <b>单项式的次数</b>：所有字母的指数的和。如 3x² 的次数是 2，-5xy 的次数是 1+1=2。<br>
+        <b>多项式的次数</b>：次数最高的项的次数。如 x²-3x+2 的次数是 2。
+    </div>
+</div>
+
+<!-- ============ 环节3：合并同类项 ============ -->
+<div class="section" id="section-merge">
+    <div class="section-title">➕ 环节三：合并同类项</div>
+    <div class="section-desc">
+        <b>同类项</b>：所含字母相同，并且相同字母的指数也相同的项。<br>
+        <b>合并同类项法则</b>：系数相加减，字母和字母的指数不变。
+    </div>
+
+    <!-- 进度信息 -->
+    <div class="progress-info">
+        <span>题目：<b id="mergeProgress">1 / 5</b></span>
+        <span>提示：相同颜色的项是同类项</span>
+    </div>
+
+    <!-- 表达式展示 -->
+    <div class="merge-expr" id="mergeExpr"></div>
+
+    <!-- 合并结果 -->
+    <div class="merge-result" id="mergeResult"></div>
+
+    <!-- 提示框 -->
+    <div class="hint-box" id="mergeHint">
+        <div class="hint-title">💡 解题提示</div>
+        <div id="mergeHintContent"></div>
+    </div>
+
+    <!-- 控制按钮 -->
+    <div class="btn-group">
+        <button class="btn green" id="mergeBtn" onclick="mergeLikeTerms()">✨ 合并同类项</button>
+        <button class="btn blue" onclick="toggleMergeHint()">💡 显示提示</button>
+        <button class="btn gray" onclick="nextMerge()">⏭️ 下一题</button>
+        <button class="btn orange" onclick="resetMerge()">🔄 重置</button>
+    </div>
+
+    <!-- 知识点提示 -->
+    <div class="tip-box">
+        <div class="tip-title">💡 合并步骤</div>
+        ① <b>找</b>：找出同类项（字母相同、相同字母指数也相同）；<br>
+        ② <b>移</b>：把同类项移到一起（注意符号）；<br>
+        ③ <b>合</b>：系数相加减，字母和指数不变。例如：3x - 2x = (3-2)x = x
+    </div>
+</div>
+
+<!-- ============ 环节4：去括号 ============ -->
+<div class="section" id="section-bracket">
+    <div class="section-title">🔲 环节四：去括号法则</div>
+    <div class="section-desc">
+        <b>去括号法则</b>：<br>
+        ① 括号前面是 "+" 号：把括号和它前面的 "+" 号去掉，括号里各项都<b>不变号</b>。<br>
+        ② 括号前面是 "−" 号：把括号和它前面的 "−" 号去掉，括号里各项都<b>变号</b>。
+    </div>
+
+    <!-- 互动演示：面积模型 -->
+    <div class="bracket-demo">
+        <div class="bracket-card">
+            <div class="title">➕ 括号前是 " + " 号</div>
+            <div class="formula">+(a + b) = <span class="pos">a + b</span></div>
+            <div class="area-model" id="posModel"></div>
+            <div style="font-size:12px;color:#888;margin-top:6px;">括号内各项<b style="color:#43e97b;">不变号</b></div>
+        </div>
+        <div class="bracket-card">
+            <div class="title">➖ 括号前是 " − " 号</div>
+            <div class="formula">−(a + b) = <span class="neg">−a − b</span></div>
+            <div class="area-model" id="negModel"></div>
+            <div style="font-size:12px;color:#888;margin-top:6px;">括号内各项<b style="color:#f5576c;">都变号</b></div>
+        </div>
+    </div>
+
+    <!-- 滑块控制 a、b -->
+    <div class="slider-group">
+        <label>a 的值 <span class="value" id="bracketA">3</span></label>
+        <input type="range" id="bracketASlider" min="1" max="8" value="3" oninput="updateBracketModel()">
+    </div>
+    <div class="slider-group">
+        <label>b 的值 <span class="value" id="bracketB">2</span></label>
+        <input type="range" id="bracketBSlider" min="1" max="8" value="2" oninput="updateBracketModel()">
+    </div>
+
+    <!-- 练习题区 -->
+    <h3 style="font-size:15px;color:#4a3f8c;margin:18px 0 10px;">📝 练习题：化简下列各式</h3>
+    <div id="bracketExercises"></div>
+
+    <!-- 知识点提示 -->
+    <div class="tip-box">
+        <div class="tip-title">💡 去括号口诀</div>
+        正号留着不变号，负号进去全变号。<br>
+        当括号前有数字因数时，先用<b>分配律</b>把数字乘进括号，再去括号。例如：3(x − 2) = 3·x − 3·2 = 3x − 6
+    </div>
+</div>
+
+</div>
+
+<script>
+// ============================================================
+//  全局：标签页切换（不依赖 event 对象，通过 id 匹配）
+// ============================================================
+function switchSection(id) {
+    // 更新标签栏状态
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    const activeTab = document.querySelector('.tab[onclick*="' + id + '"]');
+    if (activeTab) activeTab.classList.add('active');
+
+    // 更新内容区
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    const target = document.getElementById('section-' + id);
+    if (target) target.classList.add('active');
+}
+
+// ============================================================
+//  环节1：代数式入门
+// ============================================================
+// 场景数据：每个场景包含场景文字模板和代数式
+const scenes = {
+    apple: {
+        text: (n, r) => '每袋装 3 个苹果，<b>' + n + '</b> 袋共有 <b>' + r + '</b> 个苹果',
+        expr: (n, r) => '3 × ' + n + ' = ' + r,
+        algebra: '3n'
+    },
+    distance: {
+        text: (n, r) => '汽车每小时行驶 60 千米，<b>' + n + '</b> 小时行驶 <b>' + r + '</b> 千米',
+        expr: (n, r) => '60 × ' + n + ' = ' + r,
+        algebra: '60n'
+    },
+    price: {
+        text: (n, r) => '笔记本每本 5 元，买 <b>' + n + '</b> 本共需 <b>' + r + '</b> 元',
+        expr: (n, r) => '5 × ' + n + ' = ' + r,
+        algebra: '5n'
+    }
+};
+let currentScene = 'apple';
+
+function selectScene(name) {
+    currentScene = name;
+    // 更新按钮状态（通过 name 匹配，不依赖 event）
+    document.querySelectorAll('.scene-btn').forEach(b => b.classList.remove('active'));
+    const btn = document.querySelector('.scene-btn[onclick*="' + name + '"]');
+    if (btn) btn.classList.add('active');
+    // 刷新显示
+    updateAlgebra(document.getElementById('algebraSlider').value);
+}
+
+function updateAlgebra(val) {
+    const n = parseInt(val);
+    const scene = scenes[currentScene];
+    const result = (currentScene === 'apple' ? 3 : currentScene === 'distance' ? 60 : 5) * n;
+
+    document.getElementById('algebraN').textContent = n;
+    document.getElementById('algebraDisplay').innerHTML = `
+        <div class="scene-text">${scene.text(n, result)}</div>
+        <div class="expression">${scene.expr(n, result)}</div>
+        <div style="font-size:13px;color:#777;margin-top:6px;">代数式：<b style="color:#667eea;">${scene.algebra}</b></div>
+    `;
+}
+
+// ============================================================
+//  环节2：单项式与多项式分类游戏
+// ============================================================
+// 题库：每个题包含表达式、正确分类、解释、（单项式的）系数和次数
+const classifyQuestions = [
+    { expr: '3x²',         type: 'monomial',     detail: '是单项式。系数为 3，次数为 2。', coef: 3, deg: 2 },
+    { expr: '−5xy',        type: 'monomial',     detail: '是单项式。系数为 −5，次数为 1+1=2。', coef: -5, deg: 2 },
+    { expr: '2x + 1',      type: 'polynomial',   detail: '是多项式。由 2x 和 1 两个单项式相加组成，次数为 1。', coef: null, deg: 1 },
+    { expr: 'x² − 3x + 2', type: 'polynomial',   detail: '是多项式。由 x²、−3x、+2 三个单项式组成，次数为 2。', coef: null, deg: 2 },
+    { expr: '7',           type: 'monomial',     detail: '是单项式。单独一个数也是单项式，系数为 7，次数为 0。', coef: 7, deg: 0 },
+    { expr: '−x/2',        type: 'monomial',     detail: '是单项式。可写成 −(1/2)·x，系数为 −1/2，次数为 1。', coef: '-1/2', deg: 1 },
+    { expr: '1/x',         type: 'nonintegral',  detail: '不是整式。分母中含有字母 x，属于分式，不是整式。', coef: null, deg: null },
+    { expr: '3x²y − 2xy²', type: 'polynomial',   detail: '是多项式。两个单项式相减组成，最高次项 3x²y 次数为 3。', coef: null, deg: 3 },
+    { expr: 'x³y²z',       type: 'monomial',     detail: '是单项式。系数为 1，次数为 3+2+1=6。', coef: 1, deg: 6 },
+    { expr: 'a² + 1/b',    type: 'nonintegral',  detail: '不是整式。第二项 1/b 分母含字母，整体不是整式。', coef: null, deg: null }
+];
+let classifyIndex = 0;       // 当前题目索引
+let classifyScore = 0;       // 得分
+let classifyAnswered = false; // 当前题是否已作答
+
+const typeNames = { monomial: '单项式', polynomial: '多项式', nonintegral: '非整式' };
+
+function renderClassifyQuestion() {
+    const q = classifyQuestions[classifyIndex];
+    document.getElementById('classifyQNum').textContent = '第 ' + (classifyIndex + 1) + ' 题';
+    document.getElementById('classifyExpr').textContent = q.expr;
+    document.getElementById('classifyProgress').textContent = (classifyIndex + 1) + ' / ' + classifyQuestions.length;
+    document.getElementById('classifyScore').textContent = classifyScore;
+
+    // 重置反馈和按钮
+    const fb = document.getElementById('classifyFeedback');
+    fb.classList.remove('show', 'correct', 'wrong');
+    fb.innerHTML = '';
+    classifyAnswered = false;
+
+    // 重置分类按钮可用状态
+    document.querySelectorAll('.classify-btn').forEach(b => {
+        b.disabled = false;
+        b.style.opacity = '1';
+    });
+    document.getElementById('classifyNextBtn').disabled = true;
+}
+
+function checkClassification(type) {
+    if (classifyAnswered) return; // 已作答则不再处理
+    classifyAnswered = true;
+    const q = classifyQuestions[classifyIndex];
+    const fb = document.getElementById('classifyFeedback');
+
+    // 禁用所有分类按钮
+    document.querySelectorAll('.classify-btn').forEach(b => {
+        b.disabled = true;
+        b.style.opacity = '0.5';
+    });
+
+    if (type === q.type) {
+        classifyScore += 10;
+        document.getElementById('classifyScore').textContent = classifyScore;
+        fb.classList.add('show', 'correct');
+        fb.innerHTML = '✓ <b>回答正确！</b><div class="detail">' + q.detail + '</div>';
+    } else {
+        fb.classList.add('show', 'wrong');
+        fb.innerHTML = '✗ <b>分类错误。</b>正确答案是 <b>' + typeNames[q.type] + '</b>。<div class="detail">' + q.detail + '</div>';
+    }
+
+    // 启用"下一题"按钮
+    document.getElementById('classifyNextBtn').disabled = false;
+}
+
+function nextClassify() {
+    if (classifyIndex < classifyQuestions.length - 1) {
+        classifyIndex++;
+        renderClassifyQuestion();
+    } else {
+        // 全部完成
+        const fb = document.getElementById('classifyFeedback');
+        fb.classList.add('show', 'correct');
+        fb.innerHTML = '🎉 <b>全部完成！</b>你的最终得分是 <b>' + classifyScore + '</b> 分（满分 ' + (classifyQuestions.length * 10) + ' 分）。点击"重新开始"可以再做一次。';
+        document.getElementById('classifyNextBtn').disabled = true;
+    }
+}
+
+function resetClassify() {
+    classifyIndex = 0;
+    classifyScore = 0;
+    renderClassifyQuestion();
+}
+
+// ============================================================
+//  环节3：合并同类项
+// ============================================================
+// 题库：每个题包含原始项、同类项分组、合并过程和结果
+const mergeQuestions = [
+    {
+        // 3x + 5y - 2x + 7y
+        terms: [
+            { text: '3x', group: 'a', sign: '+' },
+            { text: '5y', group: 'b', sign: '+' },
+            { text: '2x', group: 'a', sign: '−' },
+            { text: '7y', group: 'b', sign: '+' }
+        ],
+        steps: ['3x − 2x = (3−2)x = x', '5y + 7y = (5+7)y = 12y'],
+        result: 'x + 12y',
+        hint: '3x 与 −2x 是同类项（都含 x，指数相同）；5y 与 7y 是同类项（都含 y，指数相同）。'
+    },
+    {
+        // 4a² - 3a + 2a² + 5a
+        terms: [
+            { text: '4a²', group: 'a', sign: '+' },
+            { text: '3a', group: 'b', sign: '−' },
+            { text: '2a²', group: 'a', sign: '+' },
+            { text: '5a', group: 'b', sign: '+' }
+        ],
+        steps: ['4a² + 2a² = (4+2)a² = 6a²', '−3a + 5a = (−3+5)a = 2a'],
+        result: '6a² + 2a',
+        hint: '4a² 与 2a² 是同类项；−3a 与 5a 是同类项。注意 a² 和 a 字母指数不同，不是同类项！'
+    },
+    {
+        // 6m + 2n - 4m - n + 3
+        terms: [
+            { text: '6m', group: 'a', sign: '+' },
+            { text: '2n', group: 'b', sign: '+' },
+            { text: '4m', group: 'a', sign: '−' },
+            { text: 'n', group: 'b', sign: '−' },
+            { text: '3', group: 'c', sign: '+' }
+        ],
+        steps: ['6m − 4m = (6−4)m = 2m', '2n − n = (2−1)n = n', '常数项 3 保持不变'],
+        result: '2m + n + 3',
+        hint: '6m 与 −4m 是同类项；2n 与 −n 是同类项（n 即 1n）；常数 3 单独一组。'
+    },
+    {
+        // 2xy + 3x - xy + 5x - 7
+        terms: [
+            { text: '2xy', group: 'a', sign: '+' },
+            { text: '3x', group: 'b', sign: '+' },
+            { text: 'xy', group: 'a', sign: '−' },
+            { text: '5x', group: 'b', sign: '+' },
+            { text: '7', group: 'c', sign: '−' }
+        ],
+        steps: ['2xy − xy = (2−1)xy = xy', '3x + 5x = (3+5)x = 8x', '常数项 −7 保持不变'],
+        result: 'xy + 8x − 7',
+        hint: '2xy 与 −xy 是同类项（xy 即 1xy）；3x 与 5x 是同类项；−7 是常数项。'
+    },
+    {
+        // 5p²q - 2pq + 3p²q + 8pq
+        terms: [
+            { text: '5p²q', group: 'a', sign: '+' },
+            { text: '2pq', group: 'b', sign: '−' },
+            { text: '3p²q', group: 'a', sign: '+' },
+            { text: '8pq', group: 'b', sign: '+' }
+        ],
+        steps: ['5p²q + 3p²q = (5+3)p²q = 8p²q', '−2pq + 8pq = (−2+8)pq = 6pq'],
+        result: '8p²q + 6pq',
+        hint: '5p²q 与 3p²q 是同类项（都含 p²q）；−2pq 与 8pq 是同类项（都含 pq）。注意 p²q 与 pq 不同！'
+    }
+];
+let mergeIndex = 0;
+let mergeMerged = false;
+
+function renderMergeQuestion() {
+    const q = mergeQuestions[mergeIndex];
+    mergeMerged = false;
+    document.getElementById('mergeProgress').textContent = (mergeIndex + 1) + ' / ' + mergeQuestions.length;
+
+    // 渲染表达式（按同类项分组高亮）
+    const exprEl = document.getElementById('mergeExpr');
+    let html = '';
+    q.terms.forEach((t, i) => {
+        const sign = (i === 0 && t.sign === '+') ? '' : (t.sign === '+' ? ' <span class="op">+</span> ' : ' <span class="op">−</span> ');
+        html += sign + '<span class="term highlight-' + t.group + '" data-group="' + t.group + '" data-idx="' + i + '">' + t.text + '</span>';
+    });
+    exprEl.innerHTML = html;
+
+    // 清空结果和提示
+    const result = document.getElementById('mergeResult');
+    result.classList.remove('show');
+    result.innerHTML = '';
+    const hint = document.getElementById('mergeHint');
+    hint.classList.remove('show');
+
+    // 启用合并按钮
+    document.getElementById('mergeBtn').disabled = false;
+}
+
+function mergeLikeTerms() {
+    if (mergeMerged) return;
+    mergeMerged = true;
+    const q = mergeQuestions[mergeIndex];
+
+    // 动画效果：先让所有同类项"靠拢"（添加 merged 类）
+    const terms = document.querySelectorAll('#mergeExpr .term');
+    terms.forEach(t => t.classList.add('merged'));
+
+    // 延迟 500ms 后展示合并过程和结果
+    setTimeout(() => {
+        const result = document.getElementById('mergeResult');
+        let html = '<b>合并结果：</b><span style="font-size:24px;color:#4a3f8c;">' + q.result + '</span>';
+        html += '<div class="step">';
+        q.steps.forEach(s => html += '👉 ' + s + '<br>');
+        html += '</div>';
+        result.innerHTML = html;
+        result.classList.add('show');
+    }, 500);
+
+    // 禁用合并按钮
+    document.getElementById('mergeBtn').disabled = true;
+}
+
+function toggleMergeHint() {
+    const hint = document.getElementById('mergeHint');
+    const q = mergeQuestions[mergeIndex];
+    document.getElementById('mergeHintContent').textContent = q.hint;
+    hint.classList.toggle('show');
+}
+
+function nextMerge() {
+    if (mergeIndex < mergeQuestions.length - 1) {
+        mergeIndex++;
+        renderMergeQuestion();
+    } else {
+        // 循环到第一题
+        mergeIndex = 0;
+        renderMergeQuestion();
+    }
+}
+
+function resetMerge() {
+    mergeIndex = 0;
+    renderMergeQuestion();
+}
+
+// ============================================================
+//  环节4：去括号
+// ============================================================
+// 面积模型可视化
+function updateBracketModel() {
+    const a = parseInt(document.getElementById('bracketASlider').value);
+    const b = parseInt(document.getElementById('bracketBSlider').value);
+    document.getElementById('bracketA').textContent = a;
+    document.getElementById('bracketB').textContent = b;
+
+    // 正号模型：+(a+b) = a + b，展示 a 个紫色块 + b 个绿色块
+    const posEl = document.getElementById('posModel');
+    let posHtml = '';
+    posHtml += '<div style="display:flex;flex-wrap:wrap;gap:4px;max-width:200px;justify-content:center;">';
+    for (let i = 0; i < a; i++) posHtml += '<div class="area-block a" style="width:28px;height:28px;font-size:13px;">a</div>';
+    posHtml += '<div class="area-op" style="font-size:20px;">+</div>';
+    for (let i = 0; i < b; i++) posHtml += '<div class="area-block b" style="width:28px;height:28px;font-size:13px;">b</div>';
+    posHtml += '</div>';
+    posEl.innerHTML = posHtml;
+
+    // 负号模型：-(a+b) = -a - b，展示 a 个红色块 + b 个黄色块（变号）
+    const negEl = document.getElementById('negModel');
+    let negHtml = '';
+    negHtml += '<div style="display:flex;flex-wrap:wrap;gap:4px;max-width:200px;justify-content:center;">';
+    for (let i = 0; i < a; i++) negHtml += '<div class="area-block neg-a" style="width:28px;height:28px;font-size:13px;">−a</div>';
+    negHtml += '<div class="area-op" style="font-size:20px;">−</div>';
+    for (let i = 0; i < b; i++) negHtml += '<div class="area-block neg-b" style="width:28px;height:28px;font-size:13px;">−b</div>';
+    negHtml += '</div>';
+    negEl.innerHTML = negHtml;
+}
+
+// 练习题库：含答案和步骤
+const bracketExercises = [
+    {
+        q: '3(x − 2) − (2x + 1)',
+        answer: 'x-7',
+        accept: ['x-7', 'x - 7', 'x−7'],
+        steps: '解：3(x − 2) − (2x + 1)<br>　= 3·x − 3·2 − 2x − 1 （分配律 + 去括号）<br>　= 3x − 6 − 2x − 1<br>　= (3x − 2x) + (−6 − 1)<br>　= x − 7'
+    },
+    {
+        q: '2(x + 3) − 3(x − 1)',
+        answer: '9-x',
+        accept: ['9-x', '9 - x', '9−x', '-x+9', '-x + 9', '−x+9'],
+        steps: '解：2(x + 3) − 3(x − 1)<br>　= 2x + 6 − 3x + 3 （分配律 + 去括号，注意负号变号）<br>　= (2x − 3x) + (6 + 3)<br>　= −x + 9'
+    },
+    {
+        q: '5a − (3a − 2) + a',
+        answer: '3a+2',
+        accept: ['3a+2', '3a + 2', '3a−2+2a'.replace('−2+2a',''), '2+3a', '2 + 3a'],
+        steps: '解：5a − (3a − 2) + a<br>　= 5a − 3a + 2 + a （去括号，负号各项变号）<br>　= (5a − 3a + a) + 2<br>　= 3a + 2'
+    },
+    {
+        q: '−2(x − 3) + 4(x + 1)',
+        answer: '2x+10',
+        accept: ['2x+10', '2x + 10', '10+2x', '10 + 2x'],
+        steps: '解：−2(x − 3) + 4(x + 1)<br>　= −2x + 6 + 4x + 4 （分配律，注意 −2 乘以 −3 得 +6）<br>　= (−2x + 4x) + (6 + 4)<br>　= 2x + 10'
+    },
+    {
+        q: '3(2x − 1) − 2(x − 2) − 5',
+        answer: '4x-4',
+        accept: ['4x-4', '4x - 4', '−4+4x', '-4+4x', '-4 + 4x'],
+        steps: '解：3(2x − 1) − 2(x − 2) − 5<br>　= 6x − 3 − 2x + 4 − 5 （分配律 + 去括号）<br>　= (6x − 2x) + (−3 + 4 − 5)<br>　= 4x − 4'
+    }
+];
+
+function renderBracketExercises() {
+    const container = document.getElementById('bracketExercises');
+    let html = '';
+    bracketExercises.forEach((ex, i) => {
+        html += `
+        <div class="exercise-item">
+            <div class="q-text">第 ${i + 1} 题：化简 <span class="expr">${ex.q}</span></div>
+            <div class="answer-input-row">
+                <input type="text" class="answer-input" id="ans-${i}" placeholder="例如：x-7" onkeydown="if(event.key==='Enter')checkBracketAnswer(${i})">
+                <button class="btn green" onclick="checkBracketAnswer(${i})">✓ 提交</button>
+            </div>
+            <div class="exercise-feedback" id="fb-${i}"></div>
+        </div>`;
+    });
+    container.innerHTML = html;
+}
+
+function checkBracketAnswer(idx) {
+    const ex = bracketExercises[idx];
+    const input = document.getElementById('ans-' + idx);
+    const fb = document.getElementById('fb-' + idx);
+    const userAns = input.value.trim().toLowerCase().replace(/\s+/g, '').replace(/−/g, '-');
+
+    if (!userAns) {
+        fb.classList.remove('correct', 'wrong');
+        fb.classList.add('show', 'wrong');
+        fb.innerHTML = '⚠️ 请输入答案后再提交。';
+        return;
+    }
+
+    // 标准化答案：把所有形式都转为无空格、统一减号
+    const acceptList = ex.accept.map(a => a.toLowerCase().replace(/\s+/g, '').replace(/−/g, '-'));
+    const isCorrect = acceptList.includes(userAns);
+
+    fb.classList.remove('correct', 'wrong');
+    fb.classList.add('show');
+
+    if (isCorrect) {
+        fb.classList.add('correct');
+        fb.innerHTML = '✓ <b>回答正确！</b><div class="steps">' + ex.steps + '</div>';
+    } else {
+        fb.classList.add('wrong');
+        fb.innerHTML = '✗ <b>答案不正确。</b>正确答案是 <b>' + ex.answer + '</b>。<div class="steps">' + ex.steps + '</div>';
+    }
+}
+
+// ============================================================
+//  初始化
+// ============================================================
+window.addEventListener('DOMContentLoaded', function() {
+    // 环节1初始化
+    updateAlgebra(3);
+
+    // 环节2初始化
+    renderClassifyQuestion();
+
+    // 环节3初始化
+    renderMergeQuestion();
+
+    // 环节4初始化
+    updateBracketModel();
+    renderBracketExercises();
+});
+
+// 检测是否被 iframe 嵌入，如果是则启用精简模式（隐藏大标题）
+(function () {
+    try {
+        if (window.self !== window.top) {
+            document.body.classList.add('embedded');
+        }
+    } catch (e) { /* 跨域访问报错时忽略 */ }
+})();</script>
+
+</body>
+</html>
+

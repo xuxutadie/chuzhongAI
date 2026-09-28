@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自研互动实验室</title>
+<style>
+:root {
+    --ink: #182b3a;
+    --muted: #627687;
+    --line: #d9e5ec;
+    --paper: #ffffff;
+    --bg: #f6fbff;
+    --primary: #2f80ed;
+    --secondary: #ff5d8f;
+    --soft: #eaf3ff;
+    --yellow: #ffd45a;
+    --green: #24b68a;
+    --purple: #7c3aed;
+    --orange: #f59e0b;
+    --red: #e65353;
+}
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background:
+        linear-gradient(rgba(47, 128, 237, 0.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(47, 128, 237, 0.055) 1px, transparent 1px),
+        var(--bg);
+    background-size: 36px 36px;
+    color: var(--ink);
+    font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+}
+button, input { font: inherit; }
+button:focus-visible, input:focus-visible { outline: 3px solid color-mix(in srgb, var(--primary) 35%, transparent); outline-offset: 2px; }
+.lab-shell { width: min(100% - 28px, 1280px); margin: 0 auto; padding: 18px 0 28px; }
+.lab-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; margin-bottom: 14px; }
+.eyebrow { margin: 0 0 5px; color: var(--secondary); font-size: 12px; font-weight: 900; }
+.lab-header h1 { margin: 0; font-size: clamp(24px, 4vw, 36px); letter-spacing: 0; }
+.lab-header p { max-width: 760px; margin: 7px 0 0; color: var(--muted); font-size: 14px; line-height: 1.65; }
+.score-box { min-width: 142px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 7px; background: var(--paper); }
+.score-box span { color: var(--muted); font-size: 12px; }
+.score-stars { margin-top: 5px; color: var(--orange); font-size: 20px; letter-spacing: 2px; }
+.difficulty-bar { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 14px; margin-bottom: 14px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); }
+.difficulty-bar strong { font-size: 13px; }
+.difficulty-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.difficulty-button { min-height: 40px; border: 1px solid var(--line); border-radius: 6px; background: #f8fbfd; color: var(--muted); cursor: pointer; }
+.difficulty-button:nth-child(1) { border-top: 3px solid var(--green); }
+.difficulty-button:nth-child(2) { border-top: 3px solid var(--purple); }
+.difficulty-button:nth-child(3) { border-top: 3px solid var(--red); }
+.difficulty-button[aria-pressed="true"] { border-color: var(--primary); background: var(--soft); color: var(--ink); font-weight: 800; }
+.mission { display: grid; grid-template-columns: 46px minmax(0, 1fr); gap: 14px; align-items: center; padding: 14px 16px; border: 1px solid var(--primary); border-radius: 8px 8px 0 0; background: var(--soft); }
+.mission-number { display: grid; width: 42px; height: 42px; place-items: center; border-radius: 50%; background: var(--primary); color: #fff; font-weight: 900; }
+.mission h2 { margin: 0 0 4px; font-size: 18px; }
+.mission p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+.workspace { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(270px, .65fr); min-width: 0; border: 1px solid var(--line); border-top: 0; background: var(--paper); }
+.stage-panel { min-width: 0; padding: 18px; border-right: 1px solid var(--line); }
+.panel-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.panel-heading strong { color: var(--primary); font-size: 13px; }
+.panel-heading span { color: var(--orange); font-size: 12px; font-weight: 800; }
+.canvas-wrap { position: relative; width: 100%; aspect-ratio: 16 / 8.2; min-height: 300px; overflow: hidden; border: 1px solid color-mix(in srgb, var(--primary) 24%, var(--line)); border-radius: 8px; background: radial-gradient(circle at 50% 42%, var(--soft), #fff 68%); }
+#labCanvas { display: block; width: 100%; height: 100%; cursor: crosshair; touch-action: none; }
+.canvas-tip { position: absolute; top: 10px; right: 10px; max-width: 52%; padding: 5px 8px; border: 1px solid var(--line); border-radius: 5px; background: rgba(255,255,255,.92); color: var(--primary); font-size: 11px; pointer-events: none; }
+.action-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+.action-button { min-height: 40px; border: 1px solid var(--line); border-radius: 6px; background: #fff; color: var(--ink); cursor: pointer; font-weight: 700; }
+.action-button.primary { border-color: var(--primary); background: var(--primary); color: #fff; }
+.action-button.random { border-color: #e6b83f; background: #fff8dd; }
+.action-button:hover { transform: translateY(-1px); }
+.control-panel { min-width: 0; padding: 18px; }
+.control-panel h3 { margin: 0 0 5px; font-size: 17px; }
+.control-panel > p { margin: 0 0 16px; color: var(--muted); font-size: 12px; line-height: 1.6; }
+.control-item { margin-top: 15px; }
+.control-label { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 7px; color: var(--muted); font-size: 12px; }
+.control-label output { color: var(--primary); font-size: 15px; font-weight: 900; }
+input[type="range"] { width: 100%; accent-color: var(--primary); cursor: pointer; }
+.observation { margin-top: 18px; padding: 12px; border-left: 4px solid var(--secondary); background: #fff2f7; color: var(--muted); font-size: 12px; line-height: 1.7; }
+.observation strong { display: block; margin-bottom: 3px; color: var(--ink); }
+.challenge { margin-top: 14px; padding: 17px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); }
+.challenge-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.challenge-top strong { color: var(--secondary); font-size: 13px; }
+.challenge-top span { color: var(--muted); font-size: 12px; }
+.challenge h3 { margin: 10px 0 14px; font-size: 18px; }
+.answer-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.answer-button { min-height: 42px; border: 1px solid var(--line); border-radius: 6px; background: #f8fbfd; color: var(--ink); cursor: pointer; }
+.answer-button:nth-child(1) { border-bottom: 3px solid #2f80ed; }
+.answer-button:nth-child(2) { border-bottom: 3px solid #7c3aed; }
+.answer-button:nth-child(3) { border-bottom: 3px solid #f59e0b; }
+.answer-button:nth-child(4) { border-bottom: 3px solid #ff5d8f; }
+.answer-button:disabled { cursor: not-allowed; opacity: .45; }
+.answer-button.correct { border-color: var(--green); background: #eafaf5; color: #087553; }
+.answer-button.wrong { border-color: var(--red); background: #fff0f0; color: #9f3030; }
+.feedback { min-height: 22px; margin: 12px 0 0; color: var(--muted); font-size: 13px; }
+.feedback.success { color: #087553; font-weight: 800; }
+body.embedded .lab-header { display: none; }
+body.embedded .lab-shell { padding-top: 8px; }
+@media (max-width: 800px) {
+    .lab-shell { width: min(100% - 18px, 1280px); }
+    .lab-header { flex-direction: column; }
+    .score-box { width: 100%; }
+    .difficulty-bar { grid-template-columns: 1fr; }
+    .workspace { grid-template-columns: 1fr; }
+    .stage-panel { border-right: 0; border-bottom: 1px solid var(--line); }
+    .answer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) {
+    .mission { grid-template-columns: 38px minmax(0, 1fr); padding: 12px; }
+    .mission-number { width: 34px; height: 34px; }
+    .difficulty-options, .action-row { grid-template-columns: 1fr; }
+    .stage-panel, .control-panel, .challenge { padding: 12px; }
+    .canvas-wrap { min-height: 260px; aspect-ratio: 1 / 1; }
+    .canvas-tip { max-width: calc(100% - 20px); }
+}
+@media (prefers-reduced-motion: reduce) { .action-button:hover { transform: none; } }
+</style>
+<link rel="stylesheet" href="./blueprint-theme.css">
+</head>
+<body data-theme="blueprint">
+<main class="lab-shell">
+    <header class="lab-header">
+        <div>
+            <p class="eyebrow">学习驾驶舱 · 自研互动实验室</p>
+            <h1 id="lessonTitle">互动课题</h1>
+            <p>改变参数、拖动画面、运行实验，再用自己的判断完成挑战。</p>
+        </div>
+        <div class="score-box"><span>本课表现</span><div class="score-stars" id="scoreStars">☆ ☆ ☆</div></div>
+    </header>
+
+    <section class="difficulty-bar" aria-label="难度选择">
+        <strong>选择难度</strong>
+        <div class="difficulty-options" id="difficultyOptions"></div>
+    </section>
+
+    <section class="mission">
+        <div class="mission-number">GO</div>
+        <div><h2 id="missionTitle">实验任务</h2><p id="missionPrompt"></p></div>
+    </section>
+
+    <section class="workspace">
+        <div class="stage-panel">
+            <div class="panel-heading"><strong id="sceneLabel">互动实验台</strong><span id="liveReadout">准备开始</span></div>
+            <div class="canvas-wrap">
+                <canvas id="labCanvas" width="900" height="460" aria-label="可操作的互动实验画面"></canvas>
+                <div class="canvas-tip" id="canvasTip">拖动画面或调整右侧参数</div>
+            </div>
+            <div class="action-row">
+                <button class="action-button primary" id="playButton" type="button">开始实验</button>
+                <button class="action-button random" id="randomButton" type="button">随机新任务</button>
+                <button class="action-button" id="resetButton" type="button">恢复初始值</button>
+            </div>
+        </div>
+        <aside class="control-panel">
+            <h3>实验控制台</h3>
+            <p id="difficultyHint"></p>
+            <div id="controlList"></div>
+            <div class="observation"><strong>观察提示</strong><span id="observationText">先改变一个参数，看看画面发生了什么。</span></div>
+        </aside>
+    </section>
+
+    <section class="challenge">
+        <div class="challenge-top"><strong>即时挑战</strong><span id="challengeStatus">完成一次操作后解锁</span></div>
+        <h3 id="challengeQuestion"></h3>
+        <div class="answer-grid" id="answerGrid"></div>
+        <p class="feedback" id="feedback" role="status">先操作上方实验，再选择答案。</p>
+    </section>
+</main>
+
+<script src="self-developed-lab-model.js"></script>
+<script>
+(function () {
+    "use strict";
+    const model = window.SelfDevelopedLabModel;
+    const params = new URLSearchParams(window.location.search);
+    const requestedLessonId = params.get("lesson") || "g7-upper-shapes";
+    let difficultyId = "basic";
+    let session = model.createSession(requestedLessonId, difficultyId);
+    let values = {};
+    let interacted = false;
+    let solved = false;
+    let running = false;
+    let phase = 0;
+    let frameId = null;
+    let dragging = false;
+
+    const canvas = document.getElementById("labCanvas");
+    const ctx = canvas.getContext("2d");
+    const elements = {
+        lessonTitle: document.getElementById("lessonTitle"),
+        missionTitle: document.getElementById("missionTitle"),
+        missionPrompt: document.getElementById("missionPrompt"),
+        difficultyOptions: document.getElementById("difficultyOptions"),
+        difficultyHint: document.getElementById("difficultyHint"),
+        controlList: document.getElementById("controlList"),
+        observationText: document.getElementById("observationText"),
+        challengeQuestion: document.getElementById("challengeQuestion"),
+        challengeStatus: document.getElementById("challengeStatus"),
+        answerGrid: document.getElementById("answerGrid"),
+        feedback: document.getElementById("feedback"),
+        scoreStars: document.getElementById("scoreStars"),
+        liveReadout: document.getElementById("liveReadout"),
+        canvasTip: document.getElementById("canvasTip"),
+        playButton: document.getElementById("playButton"),
+        randomButton: document.getElementById("randomButton"),
+        resetButton: document.getElementById("resetButton")
+    };
+
+    if (window.self !== window.top) document.body.classList.add("embedded");
+
+    function initializeValues() {
+        values = Object.fromEntries(session.controls.map(control => [control.key, control.value]));
+        interacted = false;
+        solved = false;
+        running = false;
+        phase = 0;
+        if (frameId !== null) cancelAnimationFrame(frameId);
+        frameId = null;
+    }
+
+    function applyTheme() {
+        const [primary, secondary] = session.lesson.colors;
+        document.documentElement.style.setProperty("--primary", primary);
+        document.documentElement.style.setProperty("--secondary", secondary);
+        document.documentElement.style.setProperty("--soft", primary + "18");
+    }
+
+    function renderDifficulty() {
+        elements.difficultyOptions.innerHTML = model.difficulties.map(item =>
+            `<button class="difficulty-button" type="button" data-difficulty="${item.id}" aria-pressed="${item.id === difficultyId}">${item.label}</button>`
+        ).join("");
+        elements.difficultyOptions.querySelectorAll("[data-difficulty]").forEach(button => {
+            button.addEventListener("click", function () {
+                difficultyId = button.dataset.difficulty;
+                session = model.createSession(session.lessonId, difficultyId);
+                initializeValues();
+                renderAll();
+            });
+        });
+    }
+
+    function renderControls() {
+        elements.controlList.innerHTML = session.controls.map(control => `
+            <div class="control-item">
+                <label class="control-label" for="control-${control.key}"><span>${control.label}</span><output id="output-${control.key}">${values[control.key]}</output></label>
+                <input id="control-${control.key}" data-control="${control.key}" type="range" min="${control.min}" max="${control.max}" step="${control.step}" value="${values[control.key]}">
+            </div>`).join("");
+        elements.controlList.querySelectorAll("[data-control]").forEach(input => {
+            input.addEventListener("input", function () {
+                values[input.dataset.control] = Number(input.value);
+                interacted = true;
+                updateControlOutputs();
+                renderChallenge();
+                draw();
+            });
+        });
+    }
+
+    function updateControlOutputs() {
+        session.controls.forEach(control => {
+            const output = document.getElementById(`output-${control.key}`);
+            const input = document.getElementById(`control-${control.key}`);
+            if (output) output.textContent = String(values[control.key]);
+            if (input) input.value = String(values[control.key]);
+        });
+        elements.liveReadout.textContent = session.controls.map(control => `${control.label} ${values[control.key]}`).join(" · ");
+        elements.observationText.textContent = observationForScene();
+    }
+
+    function renderChallenge() {
+        const challenge = session.lesson.challenge;
+        const optionCount = difficultyId === "basic" ? 2 : difficultyId === "advanced" ? 3 : 4;
+        const selectedOptions = challenge.options
+            .filter(option => option === challenge.answer || challenge.options.indexOf(option) < optionCount)
+            .slice(0, optionCount);
+        if (!selectedOptions.includes(challenge.answer)) selectedOptions[selectedOptions.length - 1] = challenge.answer;
+        elements.challengeQuestion.textContent = challenge.question;
+        elements.challengeStatus.textContent = solved ? "挑战完成" : interacted ? "请选择答案" : "完成一次操作后解锁";
+        elements.answerGrid.innerHTML = selectedOptions.map(option =>
+            `<button class="answer-button${solved && option === challenge.answer ? " correct" : ""}" type="button" data-answer="${option}"${!interacted && !solved ? " disabled" : ""}>${option}</button>`
+        ).join("");
+        elements.answerGrid.querySelectorAll("[data-answer]").forEach(button => {
+            button.addEventListener("click", function () {
+                elements.answerGrid.querySelectorAll(".answer-button").forEach(item => item.classList.remove("wrong"));
+                if (button.dataset.answer === challenge.answer) {
+                    solved = true;
+                    elements.feedback.className = "feedback success";
+                    elements.feedback.textContent = "回答正确。你已经完成本难度的实验挑战。";
+                    elements.scoreStars.textContent = difficultyId === "challenge" ? "★ ★ ★" : difficultyId === "advanced" ? "★ ★ ☆" : "★ ☆ ☆";
+                    renderChallenge();
+                    window.parent.postMessage({ type: "interactive-lesson-complete", lessonId: session.lessonId, difficulty: difficultyId }, window.location.origin);
+                } else {
+                    button.classList.add("wrong");
+                    elements.feedback.className = "feedback";
+                    elements.feedback.textContent = "再观察一次实验画面，尝试用变化规律排除错误选项。";
+                }
+            });
+        });
+    }
+
+    function renderAll() {
+        applyTheme();
+        elements.lessonTitle.textContent = session.lesson.title;
+        elements.missionTitle.textContent = session.lesson.mission;
+        elements.missionPrompt.textContent = session.prompt;
+        elements.difficultyHint.textContent = model.getDifficulty(difficultyId).hint;
+        elements.canvasTip.textContent = draggableScenes.has(session.lesson.scene) ? "可以直接拖动画面中的关键点" : "调整参数或点击开始实验";
+        elements.scoreStars.textContent = "☆ ☆ ☆";
+        elements.feedback.className = "feedback";
+        elements.feedback.textContent = "先操作上方实验，再选择答案。";
+        elements.playButton.textContent = dynamicScenes.has(session.lesson.scene) ? "开始实验" : "演示变化";
+        renderDifficulty();
+        renderControls();
+        updateControlOutputs();
+        renderChallenge();
+        draw();
+    }
+
+    function observationForScene() {
+        const scene = session.lesson.scene;
+        const v = values;
+        if (difficultyId === "challenge" && !interacted) return "挑战模式不直接给出规律，请先操作并记录你的猜想。";
+        if (scene === "numberline") return `当前位置是 ${v.value}，移动 ${v.move} 个单位后到达 ${v.value + v.move}。`;
+        if (scene === "function") return `当前函数为 y=${v.k}x${v.b >= 0 ? "+" : ""}${v.b}，k 控制倾斜，b 控制上下位置。`;
+        if (scene === "pythagorean") return `两直角边平方和为 ${v.a * v.a + v.b * v.b}，斜边约为 ${Math.sqrt(v.a * v.a + v.b * v.b).toFixed(2)}。`;
+        if (scene === "probability") return `设定概率为 ${v.chance}%，实验次数越多，模拟频率通常越稳定。`;
+        if (scene === "motion") return `按当前参数，路程 s = vt = ${v.speed * v.time}。`;
+        if (scene === "force") return `合力为 ${v.force - v.friction}，正值表示物体向推力方向加速。`;
+        if (scene === "wave") return `振幅 ${v.amplitude} 影响波动强弱，频率 ${v.frequency} 影响疏密。`;
+        if (scene === "optics") return `入射角 ${v.angle}°，介质折射率 ${v.index}，光线方向随参数改变。`;
+        return `你已改变实验参数。继续比较变化前后，找出不变的量和发生变化的量。`;
+    }
+
+    function clearCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+    }
+    function line(x1, y1, x2, y2, color, width) { ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.strokeStyle = color; ctx.lineWidth = width || 3; ctx.stroke(); }
+    function circle(x, y, r, fill, stroke) { ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fillStyle = fill; ctx.fill(); if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = 3; ctx.stroke(); } }
+    function text(value, x, y, size, color, align) { ctx.fillStyle = color || "#182b3a"; ctx.font = `700 ${size || 18}px Microsoft YaHei`; ctx.textAlign = align || "center"; ctx.fillText(value, x, y); }
+    function axes() { line(80, 230, 820, 230, "#8aa3b3", 2); line(450, 50, 450, 410, "#8aa3b3", 2); text("x", 830, 235, 15); text("y", 445, 40, 15); }
+
+    // 每类知识点使用独立绘制逻辑，共享同一交互协议。
+    function draw() {
+        clearCanvas();
+        const scene = session.lesson.scene;
+        const v = values;
+        const primary = session.lesson.colors[0];
+        const secondary = session.lesson.colors[1];
+        const pulse = Math.sin(phase) * 8;
+
+        if (scene === "shapes") {
+            const a = v.turn * Math.PI / 180;
+            const cx = 450, cy = 235, size = 105;
+            const points = [[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]].map(([x,y,z]) => {
+                const rx = x * Math.cos(a) - z * Math.sin(a); const rz = x * Math.sin(a) + z * Math.cos(a);
+                return [cx + rx * size, cy + y * size * .72 - rz * 24];
+            });
+            [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]].forEach(([a1,b1], i) => line(...points[a1], ...points[b1], i < 4 ? primary : secondary, 4));
+            const sy = 120 + v.slice * 2.2; line(300, sy, 600, sy, "#f59e0b", 5); text("拖动或旋转观察立体图形", 450, 430, 16);
+        } else if (scene === "numberline" || scene === "real") {
+            line(90, 240, 810, 240, "#718d9e", 3);
+            for (let i=-10;i<=10;i++) { const x=450+i*34; line(x,233,x,247,i===0?"#f59e0b":"#9bb0bd",i===0?4:2); if(i%2===0) text(i,x,275,13); }
+            const value = scene === "real" ? Math.sqrt(v.radicand) : v.value;
+            const px=450+Math.max(-10,Math.min(10,value))*34; circle(px,240,13,primary,"#fff"); text(scene === "real" ? `√${v.radicand} ≈ ${value.toFixed(v.precision)}` : String(v.value),px,205,20,primary);
+            if(scene === "numberline") { const end=Math.max(-10,Math.min(10,v.value+v.move)); line(px,190,450+end*34,190,secondary,6); text(`终点 ${v.value+v.move}`,450+end*34,165,16,secondary); }
+        } else if (scene === "algebra") {
+            const count=Math.max(1,Math.abs(v.x)); for(let i=0;i<count;i++){ctx.fillStyle=primary;ctx.fillRect(180+i*48,150,36,120);text("x",198+i*48,220,18,"#fff");}
+            const constants=Math.max(1,Math.abs(v.constant)); for(let i=0;i<constants;i++){ctx.fillStyle=secondary;ctx.fillRect(230+i*42,310,30,30);}
+            text(`${v.x}x ${v.constant>=0?"+":""} ${v.constant}`,450,95,28);
+        } else if (scene === "angle") {
+            const a=v.angle*Math.PI/180, cx=300, cy=330, len=v.length*45; line(cx,cy,cx+len,cy,primary,6); line(cx,cy,cx+Math.cos(a)*len,cy-Math.sin(a)*len,secondary,6); ctx.beginPath();ctx.arc(cx,cy,70,-a,0);ctx.strokeStyle="#f59e0b";ctx.lineWidth=5;ctx.stroke();text(`${v.angle}°`,360,285,24,"#f59e0b"); text(v.angle<90?"锐角":v.angle===90?"直角":v.angle<180?"钝角":"平角",640,220,28,primary);
+        } else if (scene === "balance") {
+            const delta=(v.right-v.left)*6; line(260,210-delta,640,210+delta,"#5f7180",8); line(450,220,400,360,"#7c3aed",8);line(400,360,500,360,"#7c3aed",8); circle(300,175-delta,22,primary);circle(600,175+delta,22,secondary);text(v.left,300,183-delta,16,"#fff");text(v.right,600,183+delta,16,"#fff");text(v.left===v.right?"平衡":"两边不相等",450,410,22,v.left===v.right?"#24b68a":"#e65353");
+        } else if (scene === "chart") {
+            const groups=Math.round(v.group); for(let i=0;i<groups;i++){const h=70+((i*37+v.samples)%150);ctx.fillStyle=[primary,secondary,"#f59e0b","#24b68a","#7c3aed"][i%5];ctx.fillRect(130+i*(620/groups),360-h,Math.max(30,500/groups),h);text(String(i+1),150+i*(620/groups),390,13); } line(100,360,800,360,"#8095a3",3);text(`样本 ${v.samples} · 分为 ${groups} 组`,450,80,22);
+        } else if (scene === "area") {
+            const w=v.a*55,h=v.b*38,x=450-w/2,y=230-h/2;ctx.fillStyle=primary+"40";ctx.fillRect(x,y,w,h);ctx.strokeStyle=primary;ctx.lineWidth=5;ctx.strokeRect(x,y,w,h);for(let i=1;i<v.a;i++)line(x+i*55,y,x+i*55,y+h,"#fff",2);for(let i=1;i<v.b;i++)line(x,y+i*38,x+w,y+i*38,"#fff",2);text(`${v.a} × ${v.b} = ${v.a*v.b}`,450,90,30,secondary);
+        } else if (scene === "parallel") {
+            line(120,150,780,150,primary,6);line(120,320,780,320,primary,6);const x=200+v.offset*5;line(x-110,390,x+110,80,secondary,6);text(`${v.angle}°`,x+55,135,20,"#f59e0b");text(`${v.angle}°`,x-15,305,20,"#f59e0b");text("同位角相等",650,235,24,primary);
+        } else if (scene === "probability") {
+            const success=Math.round(v.trials*v.chance/100 + Math.sin(phase)*Math.min(4,v.trials*.04));const total=Math.max(1,v.trials);const bar=success/total;ctx.fillStyle="#edf3f7";ctx.fillRect(160,160,580,80);ctx.fillStyle=primary;ctx.fillRect(160,160,580*bar,80);text(`出现 ${success} 次 / ${total} 次`,450,210,24,"#fff");text(`实验频率 ${(bar*100).toFixed(1)}%`,450,300,28,secondary);for(let i=0;i<12;i++)circle(180+i*48,95+Math.sin(phase+i)*18,8,i%2?primary:secondary);
+        } else if (scene === "triangle" || scene === "pythagorean") {
+            const triangleHeight=scene==="pythagorean"?v.b:v.height;const ax=240,ay=350,bx=240+v.a*45,by=350,cx=240,cy=350-triangleHeight*38;line(ax,ay,bx,by,primary,7);line(ax,ay,cx,cy,secondary,7);line(cx,cy,bx,by,"#f59e0b",7);circle(cx,cy,11,secondary);text(scene==="pythagorean"?`c ≈ ${Math.sqrt(v.a*v.a+v.b*v.b).toFixed(2)}`:"拖动参数改变三角形",620,140,22,primary);text(scene==="pythagorean"?"a² + b² = c²":"内角和始终为 180°",620,210,26,secondary);
+        } else if (scene === "symmetry") {
+            const axis=180+v.axis*5.4;line(axis,70,axis,400,"#f59e0b",5);const d=v.offset*35;circle(axis-d,230,16,primary,"#fff");circle(axis+d,230,16,secondary,"#fff");line(axis-d,230,axis+d,230,"#899ead",3);text("A",axis-d,195,18,primary);text("A′",axis+d,195,18,secondary);text("距离相等",axis,300,22);
+        } else if (scene === "function" || scene === "quadratic") {
+            axes();ctx.beginPath();for(let px=80;px<=820;px+=4){const x=(px-450)/45;const y=scene==="quadratic"?v.a*Math.pow(x-v.b,2):v.k*x+v.b;const py=230-y*30;if(px===80)ctx.moveTo(px,py);else ctx.lineTo(px,py);}ctx.strokeStyle=primary;ctx.lineWidth=5;ctx.stroke();text(scene==="quadratic"?`y=${v.a}(x-${v.b})²`:`y=${v.k}x${v.b>=0?"+":""}${v.b}`,680,75,23,secondary);
+        } else if (scene === "path") {
+            const x=220,y=100,w=v.width*45,h=v.height*35;ctx.fillStyle=primary+"22";ctx.fillRect(x,y,w,h);ctx.strokeStyle=primary;ctx.lineWidth=5;ctx.strokeRect(x,y,w,h);line(x,y+h,x+w,y,secondary,7);circle(x,y+h,10,"#f59e0b");circle(x+w,y,10,"#f59e0b");text(`最短距离 ≈ ${Math.sqrt(v.width*v.width+v.height*v.height).toFixed(2)}`,450,410,24,secondary);
+        } else if (scene === "coordinate" || scene === "transform") {
+            axes();const px=450+(v.x||2)*38,py=230-(v.y||2)*38;if(scene==="coordinate"){circle(px,py,14,primary,"#fff");text(`(${v.x}, ${v.y})`,px,py-25,18,primary);}else{const x1=340,y1=275,x2=x1+v.dx*38,y2=y1-v.dy*38;ctx.fillStyle=primary+"55";ctx.fillRect(x1-35,y1-35,70,70);ctx.fillStyle=secondary+"88";ctx.fillRect(x2-35,y2-35,70,70);line(x1,y1,x2,y2,"#f59e0b",5);text(`(${v.dx}, ${v.dy})`,x2,y2-50,18,secondary);}
+        } else if (scene === "measurement") {
+            const start=100,end=800;line(start,300,end,300,"#4f6270",6);for(let i=0;i<=20;i++){const x=start+i*35;line(x,300,x,300-(i%5===0?45:22),i%5===0?primary:"#8195a2",i%5===0?4:2);if(i%5===0)text(i*5,x,335,13);}const px=start+v.value*7;line(px,180,px,310,secondary,5);text(`${v.value} cm`,px,155,24,secondary);text(`分度值 ${v.scale} mm`,650,100,20,primary);
+        } else if (scene === "motion") {
+            const progress=((phase*.08*v.speed)%1);const carX=120+progress*620;ctx.fillStyle=primary;ctx.fillRect(carX-45,235,90,38);circle(carX-28,278,14,"#273745");circle(carX+28,278,14,"#273745");line(90,295,810,295,"#879ba8",5);line(520,390,520+v.time*24,390-v.speed*v.time*2.2,secondary,5);text(`v=${v.speed}  t=${v.time}  s=${v.speed*v.time}`,450,90,25,primary);
+        } else if (scene === "error") {
+            line(120,260,780,260,"#8398a5",4);const center=120+v.trueValue*7;line(center,180,center,330,primary,5);text("真实值",center,160,17,primary);for(let i=0;i<7;i++){const dx=(Math.sin(i*2.3+phase*.2)*v.error)*18;circle(center+dx,250+(i%2)*28,8,secondary);}text(`平均测量值约 ${(v.trueValue+v.error*.18).toFixed(1)}`,450,390,23,secondary);
+        } else if (scene === "wave") {
+            line(70,230,830,230,"#9aadb9",2);ctx.beginPath();for(let x=70;x<=830;x+=3){const y=230-Math.sin((x-70)*v.frequency*.012+phase)*v.amplitude*18;if(x===70)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.strokeStyle=primary;ctx.lineWidth=5;ctx.stroke();circle(80,230-Math.sin(phase)*v.amplitude*18,12,secondary);text(`振幅 ${v.amplitude} · 频率 ${v.frequency}`,450,80,24,secondary);
+        } else if (scene === "optics") {
+            const cx=450,cy=230,a=v.angle*Math.PI/180;ctx.fillStyle="#dff2ff";ctx.fillRect(0,cy,900,230);line(80,cy,820,cy,"#2f80ed",5);line(cx,60,cx,400,"#8da1ae",2);line(cx-Math.sin(a)*210,cy-Math.cos(a)*210,cx,cy,"#f59e0b",7);const refr=Math.asin(Math.sin(a)/v.index);line(cx,cy,cx+Math.sin(refr)*210,cy+Math.cos(refr)*210,primary,7);line(cx,cy,cx+Math.sin(a)*180,cy-Math.cos(a)*180,secondary,5);text(`入射角 ${v.angle}°`,230,105,20,"#f59e0b");text("折射光",650,360,20,primary);
+        } else if (scene === "force") {
+            const net=v.force-v.friction,boxX=420+Math.sin(phase*.7)*Math.max(0,net)*4;ctx.fillStyle=primary;ctx.fillRect(boxX-70,210,140,100);line(100,315,800,315,"#8297a4",6);line(boxX,180,boxX+v.force*12,180,secondary,8);line(boxX,350,boxX-v.friction*12,350,"#f59e0b",8);text(`推力 ${v.force}`,boxX+v.force*6,155,17,secondary);text(`摩擦力 ${v.friction}`,boxX-v.friction*6,390,17,"#f59e0b");text(`合力 ${net}`,450,80,28,net===0?"#24b68a":primary);
+        }
+    }
+
+    const dynamicScenes = new Set(["probability", "motion", "wave", "optics", "force", "error", "shapes"]);
+    const draggableScenes = new Set(["numberline", "real", "angle", "triangle", "coordinate", "symmetry", "transform", "optics", "shapes"]);
+
+    function animationLoop() {
+        if (!running) return;
+        phase += 0.08;
+        draw();
+        frameId = requestAnimationFrame(animationLoop);
+    }
+
+    elements.playButton.addEventListener("click", function () {
+        interacted = true;
+        if (dynamicScenes.has(session.lesson.scene)) {
+            running = !running;
+            elements.playButton.textContent = running ? "暂停实验" : "继续实验";
+            if (running) animationLoop();
+        } else {
+            session.controls.forEach(control => {
+                const span = Math.min(control.max - control.min, model.getDifficulty(difficultyId).range);
+                values[control.key] = Math.max(control.min, Math.min(control.max, control.value + span / 2));
+            });
+            updateControlOutputs();
+            draw();
+        }
+        renderChallenge();
+    });
+
+    elements.randomButton.addEventListener("click", function () {
+        interacted = true;
+        session.controls.forEach(control => {
+            const steps = Math.floor((control.max - control.min) / control.step);
+            values[control.key] = Number((control.min + Math.floor(Math.random() * (steps + 1)) * control.step).toFixed(2));
+        });
+        updateControlOutputs();
+        renderChallenge();
+        draw();
+    });
+
+    elements.resetButton.addEventListener("click", function () {
+        initializeValues();
+        renderAll();
+    });
+
+    function pointerPosition(event) {
+        const rect=canvas.getBoundingClientRect();
+        return { x:(event.clientX-rect.left)/rect.width*canvas.width, y:(event.clientY-rect.top)/rect.height*canvas.height };
+    }
+    function updateFromPointer(event) {
+        if (!draggableScenes.has(session.lesson.scene)) return;
+        const p=pointerPosition(event), scene=session.lesson.scene;
+        if(scene==="numberline") values.value=Math.max(-10,Math.min(10,Math.round((p.x-450)/34)));
+        else if(scene==="real") values.radicand=Math.max(2,Math.min(50,Math.round(Math.pow(Math.max(0,(p.x-450)/34),2))));
+        else if(scene==="angle" || scene==="optics") values.angle=Math.max(5,Math.min(scene==="angle"?170:75,Math.round(Math.atan2(330-p.y,p.x-300)*180/Math.PI/5)*5));
+        else if(scene==="coordinate"){values.x=Math.max(-8,Math.min(8,Math.round((p.x-450)/38)));values.y=Math.max(-8,Math.min(8,Math.round((230-p.y)/38)));}
+        else if(scene==="triangle") values.height=Math.max(2,Math.min(9,Math.round((350-p.y)/38)));
+        else if(scene==="symmetry") values.offset=Math.max(1,Math.min(8,Math.round(Math.abs(p.x-(180+values.axis*5.4))/35)));
+        else if(scene==="transform"){values.dx=Math.max(-6,Math.min(6,Math.round((p.x-340)/38)));values.dy=Math.max(-6,Math.min(6,Math.round((275-p.y)/38)));}
+        else if(scene==="shapes") values.turn=Math.max(0,Math.min(360,Math.round(p.x/canvas.width*360/15)*15));
+        interacted=true;updateControlOutputs();renderChallenge();draw();
+    }
+    canvas.addEventListener("pointerdown", function(event){dragging=true;canvas.setPointerCapture(event.pointerId);updateFromPointer(event);});
+    canvas.addEventListener("pointermove", function(event){if(dragging)updateFromPointer(event);});
+    canvas.addEventListener("pointerup", function(event){dragging=false;if(canvas.hasPointerCapture(event.pointerId))canvas.releasePointerCapture(event.pointerId);});
+    canvas.addEventListener("pointercancel", function(){dragging=false;});
+
+    initializeValues();
+    renderAll();
+})();
+</script>
+</body>
+</html>

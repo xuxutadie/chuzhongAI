@@ -1,0 +1,1432 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第六章 数据的收集与整理 - 互动教学</title>
+<style>
+  /* ========== 全局样式 ========== */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Microsoft YaHei", "PingFang SC", "Helvetica Neue", sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf3 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+    line-height: 1.6;
+  }
+
+  /* ========== 顶部标题栏 ========== */
+  .header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 32px 40px;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+    margin-bottom: 24px;
+    text-align: center;
+  }
+  .header h1 { font-size: 28px; margin-bottom: 8px; letter-spacing: 2px; }
+  .header p { font-size: 15px; opacity: 0.9; }
+
+  /* ========== 主容器 ========== */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* ========== 标签页导航 ========== */
+  .tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+/* 被 iframe 嵌入时：隐藏大标题、压缩 tabs */
+body.embedded .header { display: none; }
+body.embedded .tabs { padding: 6px 12px; gap: 4px; }
+body.embedded .tab-btn { padding: 6px 14px; font-size: 13px; border-radius: 18px; }
+
+  .tab-btn {
+    flex: 1;
+    min-width: 200px;
+    padding: 14px 18px;
+    border: none;
+    background: white;
+    color: #667eea;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .tab-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(102,126,234,0.2); }
+  .tab-btn.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 4px 14px rgba(102,126,234,0.4);
+  }
+
+  /* ========== 内容卡片 ========== */
+  .section {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    display: none;
+    animation: fadeIn 0.4s ease;
+  }
+  .section.active { display: block; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .section h2 {
+    color: #764ba2;
+    font-size: 22px;
+    margin-bottom: 8px;
+    border-left: 4px solid #667eea;
+    padding-left: 12px;
+  }
+  .section .subtitle {
+    color: #888;
+    font-size: 14px;
+    margin-bottom: 24px;
+    padding-left: 16px;
+  }
+
+  /* ========== 知识点提示框 ========== */
+  .tip-box {
+    background: linear-gradient(135deg, #e0e7ff 0%, #f3e8ff 100%);
+    border-left: 4px solid #764ba2;
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin: 16px 0;
+    font-size: 14px;
+    color: #4a5568;
+  }
+  .tip-box strong { color: #667eea; }
+
+  /* ========== 通用按钮 ========== */
+  .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.25s ease;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(102,126,234,0.35); }
+  .btn-secondary {
+    background: #edf2f7;
+    color: #4a5568;
+  }
+  .btn-secondary:hover { background: #e2e8f0; }
+  .btn-success { background: #48bb78; color: white; }
+  .btn-danger { background: #f56565; color: white; }
+
+  /* ========== 环节1：场景卡片 ========== */
+  .scenario-list { display: flex; flex-direction: column; gap: 16px; margin: 20px 0; }
+  .scenario-card {
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    background: #fcfcfd;
+  }
+  .scenario-card.selected { border-color: #667eea; background: #f0f4ff; }
+  .scenario-card h3 { color: #2d3748; font-size: 17px; margin-bottom: 8px; }
+  .scenario-card p { color: #718096; font-size: 14px; margin-bottom: 14px; }
+  .choice-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+  .choice-btn {
+    padding: 8px 18px;
+    border: 2px solid #cbd5e0;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+  .choice-btn:hover { border-color: #667eea; color: #667eea; }
+  .feedback {
+    margin-top: 14px;
+    padding: 14px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    display: none;
+  }
+  .feedback.correct { background: #c6f6d5; color: #22543d; display: block; }
+  .feedback.wrong { background: #fed7d7; color: #742a2a; display: block; }
+
+  /* ========== 环节2：滑块与表格 ========== */
+  .control-panel {
+    background: #f7fafc;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 16px 0;
+  }
+  .slider-group { margin-bottom: 16px; }
+  .slider-group label { display: block; font-weight: 600; margin-bottom: 8px; color: #4a5568; }
+  .slider-group input[type="range"] { width: 100%; accent-color: #667eea; }
+  .slider-value { color: #764ba2; font-weight: 700; font-size: 18px; }
+  table.freq-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+    font-size: 14px;
+  }
+  table.freq-table th, table.freq-table td {
+    border: 1px solid #e2e8f0;
+    padding: 10px 12px;
+    text-align: center;
+  }
+  table.freq-table th {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-weight: 600;
+  }
+  table.freq-table tr:nth-child(even) { background: #f7fafc; }
+  table.freq-table tr.highlight { background: #fef3c7; font-weight: 700; }
+  table.freq-table tr.highlight:hover { background: #fde68a; }
+  table.freq-table tbody tr { cursor: pointer; transition: background 0.2s; }
+  table.freq-table tbody tr:hover { background: #ebf4ff; }
+  .freq-table-scroll {
+    max-width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-gutter: stable;
+  }
+  .freq-table-scroll table.freq-table { min-width: 480px; margin-top: 0; }
+  .freq-table-scroll-hint { display: none; }
+  .freq-bar-cell { min-width: 170px; }
+  .freq-bar-track {
+    display: block;
+    width: 140px;
+    height: 12px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #e9edff;
+  }
+  .freq-bar-fill {
+    display: block;
+    width: var(--bar-percent);
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #667eea, #8b5cf6);
+  }
+
+  /* ========== 环节3：图表区域 ========== */
+  .chart-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .chart-btn {
+    padding: 10px 20px;
+    border: 2px solid #e2e8f0;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.25s;
+  }
+  .chart-btn.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-color: transparent;
+  }
+  .canvas-wrapper {
+    background: white;
+    border: 2px solid #f0f0f5;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 420px;
+  }
+  canvas { max-width: 100%; }
+
+  /* ========== 环节4：数据点操作 ========== */
+  .data-input-area {
+    background: #f7fafc;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  .input-row { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; }
+  .input-row input[type="number"] {
+    padding: 8px 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    width: 100px;
+  }
+  .input-row input[type="number"]:focus { outline: none; border-color: #667eea; }
+  .preset-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .stats-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .stat-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(102,126,234,0.25);
+  }
+  .stat-card .stat-label { font-size: 14px; opacity: 0.9; margin-bottom: 6px; }
+  .stat-card .stat-value { font-size: 28px; font-weight: 700; }
+  .stat-card .stat-desc { font-size: 12px; opacity: 0.85; margin-top: 4px; }
+  .data-display {
+    background: #f7fafc;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-family: "Consolas", monospace;
+    font-size: 14px;
+    color: #4a5568;
+    margin: 12px 0;
+    word-break: break-all;
+    min-height: 24px;
+  }
+  .data-tag {
+    display: inline-block;
+    background: #ebf4ff;
+    color: #3182ce;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 13px;
+    margin: 2px;
+  }
+
+  @media (max-width: 768px) {
+    body { padding: 8px; }
+    .section { padding: 16px; }
+    .canvas-wrapper { min-height: 0; padding: 8px; }
+    .freq-table-scroll-hint {
+      display: block;
+      margin: 12px 0 6px;
+      color: #667eea;
+      font-size: 13px;
+    }
+    .stats-cards { grid-template-columns: 1fr; }
+    .tab-btn { min-width: 100%; }
+  }
+</style>
+<link rel="stylesheet" href="./blueprint-theme.css">
+</head>
+<body data-theme="blueprint">
+<div class="container">
+  <!-- 顶部标题栏 -->
+  <div class="header">
+    <h1>📊 第六章 数据的收集与整理</h1>
+    <p>北师大版 · 七年级数学上册 · 互动教学模拟</p>
+  </div>
+
+  <!-- 标签页导航 -->
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="section1">📊 普查与抽样</button>
+    <button class="tab-btn" data-tab="section2">📈 频数与频率</button>
+    <button class="tab-btn" data-tab="section3">📉 三种统计图</button>
+    <button class="tab-btn" data-tab="section4">🔢 数据代表值</button>
+  </div>
+
+  <!-- ============ 环节1：普查与抽样 ============ -->
+  <div class="section active" id="section1">
+    <h2>环节一：数据收集方式 —— 普查与抽样调查</h2>
+    <p class="subtitle">判断下列场景应采用哪种调查方式，并理解其理由</p>
+
+    <div class="tip-box">
+      <strong>📌 知识点：</strong>
+      <b>普查</b>是对总体中每个对象都进行调查（全面调查），结果准确但工作量大、成本高；
+      <b>抽样调查</b>是从总体中抽取一部分（样本）进行调查，省时省力，但结果存在误差。
+      选择依据：当总体数量小、或对精确度要求高时用普查；当总体数量大、或调查具有破坏性时用抽样。
+    </div>
+
+    <div class="scenario-list" id="scenarioList">
+      <!-- 场景卡片由 JS 动态生成 -->
+    </div>
+  </div>
+
+  <!-- ============ 环节2：频数与频率 ============ -->
+  <div class="section" id="section2">
+    <h2>环节二：频数与频率 —— 频数分布表</h2>
+    <p class="subtitle">调整组数与组距，观察频数分布表的变化</p>
+
+    <div class="tip-box">
+      <strong>📌 知识点：</strong>
+      <b>频数</b> = 落在某组内的数据个数；
+      <b>频率</b> = 频数 ÷ 数据总数（结果在 0~1 之间，所有组频率之和为 1）。
+      合理分组能更清晰地反映数据的分布规律。
+    </div>
+
+    <div class="control-panel">
+      <div class="slider-group">
+        <label>组数：<span class="slider-value" id="groupCountValue">6</span> 组</label>
+        <input type="range" id="groupCountSlider" min="4" max="10" value="6" step="1">
+      </div>
+      <div style="font-size:13px;color:#718096;">
+        当前组距：<span id="groupWidthValue" style="color:#764ba2;font-weight:700;">--</span> 分　
+        数据总数：40 人　数据范围：<span id="dataRangeValue" style="color:#764ba2;font-weight:700;">--</span>
+      </div>
+    </div>
+
+    <p class="freq-table-scroll-hint">↔ 左右滑动可查看完整表格</p>
+    <div class="freq-table-scroll" role="region" aria-label="频数分布表，可左右滑动" tabindex="0">
+      <table class="freq-table" id="freqTable">
+        <thead>
+          <tr>
+            <th>组号</th>
+            <th>分组区间</th>
+            <th>频数</th>
+            <th>频率</th>
+            <th>频数分布条</th>
+          </tr>
+        </thead>
+        <tbody id="freqTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ 环节3：三种统计图 ============ -->
+  <div class="section" id="section3">
+    <h2>环节三：统计图绘制 —— 条形图 / 折线图 / 扇形图</h2>
+    <p class="subtitle">同一组数据，用不同统计图呈现，各有侧重</p>
+
+    <div class="tip-box">
+      <strong>📌 知识点：</strong>
+      <b>条形图</b>便于比较各类别的数量多少；
+      <b>折线图</b>反映数据随时间或顺序的变化趋势；
+      <b>扇形图</b>显示各部分占总体的百分比。
+    </div>
+
+    <div class="chart-controls">
+      <button class="chart-btn active" data-chart="bar">📊 条形图</button>
+      <button class="chart-btn" data-chart="line">📈 折线图</button>
+      <button class="chart-btn" data-chart="pie">🥧 扇形图</button>
+    </div>
+
+    <div style="margin-bottom:12px;font-size:14px;color:#4a5568;">
+      当前数据：某月 30 天天气情况 —— 晴天 12 天，多云 9 天，阴天 6 天，雨天 3 天
+    </div>
+
+    <div class="canvas-wrapper">
+      <canvas id="chartCanvas"></canvas>
+    </div>
+  </div>
+
+  <!-- ============ 环节4：数据代表值 ============ -->
+  <div class="section" id="section4">
+    <h2>环节四：数据代表值 —— 平均数、中位数、众数</h2>
+    <p class="subtitle">添加数据点或切换预设数据集，实时计算三种代表值</p>
+
+    <div class="tip-box">
+      <strong>📌 知识点：</strong>
+      <b>平均数</b> = 所有数据之和 ÷ 数据总个数（反映整体平均水平）；
+      <b>中位数</b> = 数据由小到大排序后位于中间的数（偶数个时取中间两数平均，反映中间位置）；
+      <b>众数</b> = 出现次数最多的数（可能有多个或没有，反映集中趋势）。
+    </div>
+
+    <div class="data-input-area">
+      <div class="input-row">
+        <label style="font-weight:600;color:#4a5568;">添加数据点：</label>
+        <input type="number" id="dataInput" min="1" max="100" placeholder="1-100">
+        <button class="btn btn-primary" id="addDataBtn">➕ 添加</button>
+        <button class="btn btn-danger" id="clearDataBtn">🗑 清空</button>
+      </div>
+      <div class="preset-btns">
+        <span style="line-height:32px;color:#718096;font-size:13px;">预设数据集：</span>
+        <button class="btn btn-secondary preset-btn" data-preset="exam">📋 考试成绩</button>
+        <button class="btn btn-secondary preset-btn" data-preset="height">📏 身高数据</button>
+        <button class="btn btn-secondary preset-btn" data-preset="money">💰 零花钱</button>
+      </div>
+    </div>
+
+    <div class="data-display" id="dataDisplay">暂无数据，请添加或选择预设数据集</div>
+
+    <div class="stats-cards">
+      <div class="stat-card">
+        <div class="stat-label">平均数</div>
+        <div class="stat-value" id="meanValue">--</div>
+        <div class="stat-desc">总和 ÷ 个数</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">中位数</div>
+        <div class="stat-value" id="medianValue">--</div>
+        <div class="stat-desc">排序后中间值</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">众数</div>
+        <div class="stat-value" id="modeValue">--</div>
+        <div class="stat-desc">出现次数最多</div>
+      </div>
+    </div>
+
+    <div class="canvas-wrapper" style="min-height:200px;">
+      <canvas id="numberLineCanvas"></canvas>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+ * 第六章 数据的收集与整理 - 互动教学脚本
+ * 所有函数均不使用全局 event 变量，通过 querySelector 匹配元素
+ * ============================================================ */
+
+/* ---------- 通用：标签页切换 ---------- */
+// 切换显示指定的内容环节
+function switchSection(sectionId) {
+  // 隐藏所有环节
+  document.querySelectorAll('.section').forEach(function(sec) {
+    sec.classList.remove('active');
+  });
+  // 取消所有标签按钮高亮
+  document.querySelectorAll('.tab-btn').forEach(function(btn) {
+    btn.classList.remove('active');
+  });
+  // 显示目标环节并高亮对应按钮
+  document.getElementById(sectionId).classList.add('active');
+  var targetBtn = document.querySelector('.tab-btn[data-tab="' + sectionId + '"]');
+  if (targetBtn) targetBtn.classList.add('active');
+
+  // 切换到环节3时重绘图表，切换到环节4时重绘数轴
+  if (sectionId === 'section3') {
+    drawChart(currentChartType);
+  } else if (sectionId === 'section4') {
+    drawNumberLine();
+  }
+}
+
+// 为标签按钮绑定点击事件（使用 querySelector 匹配，不依赖全局 event）
+document.querySelectorAll('.tab-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var targetId = this.getAttribute('data-tab');
+    switchSection(targetId);
+  });
+});
+
+
+/* ============================================================
+ * 环节1：普查与抽样调查
+ * ============================================================ */
+
+// 三个互动场景定义
+var scenarios = [
+  {
+    title: '场景一：全国中学生身高调查',
+    desc: '为了解全国中学生身高发育情况，需要收集相关数据。全国中学生人数众多（数千万）。',
+    answer: 'sample',
+    explain: '应采用<b>抽样调查</b>。全国中学生人数达数千万，普查工作量极大、耗时耗力且不现实。'
+            + '通过科学抽样（如分层抽样）也能较准确反映整体情况。',
+    advantage: '抽样调查的优点：省时、省力、省费用，便于实施。'
+  },
+  {
+    title: '场景二：一批灯泡使用寿命检测',
+    desc: '某工厂生产了一批灯泡，需要检测其平均使用寿命是否达标。',
+    answer: 'sample',
+    explain: '应采用<b>抽样调查</b>。检测灯泡寿命属于<b>破坏性试验</b>，若对每只灯泡都测试，'
+            + '全部灯泡都将损坏，失去生产意义。因此必须抽样。',
+    advantage: '抽样调查适用于具有破坏性的检测，如炮弹射程、火柴质量等。'
+  },
+  {
+    title: '场景三：班级同学最喜欢的科目',
+    desc: '班主任想了解本班 45 名同学最喜欢的科目，以便调整教学安排。',
+    answer: 'census',
+    explain: '应采用<b>普查</b>。本班只有 45 人，人数较少，调查工作量不大，'
+            + '且对每位同学的偏好都需了解，普查能获得完整准确的数据。',
+    advantage: '普查的优点：结果准确全面，无抽样误差。适用于总体数量小或对精度要求高的场合。'
+  }
+];
+
+// 渲染场景卡片
+function renderScenarios() {
+  var list = document.getElementById('scenarioList');
+  list.innerHTML = '';
+  scenarios.forEach(function(sc, idx) {
+    var card = document.createElement('div');
+    card.className = 'scenario-card';
+    card.id = 'scenario-' + idx;
+    card.innerHTML =
+      '<h3>' + sc.title + '</h3>' +
+      '<p>' + sc.desc + '</p>' +
+      '<div class="choice-btns">' +
+        '<button class="choice-btn" data-scenario="' + idx + '" data-type="census">📋 普查</button>' +
+        '<button class="choice-btn" data-scenario="' + idx + '" data-type="sample">🎯 抽样调查</button>' +
+      '</div>' +
+      '<div class="feedback" id="feedback-' + idx + '"></div>';
+    list.appendChild(card);
+  });
+
+  // 为每个选择按钮绑定事件（不依赖全局 event 变量）
+  document.querySelectorAll('.choice-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var scenarioIdx = parseInt(this.getAttribute('data-scenario'), 10);
+      var type = this.getAttribute('data-type');
+      checkSurveyType(scenarioIdx, type, this);
+    });
+  });
+}
+
+// 检查学生选择的调查类型是否正确
+function checkSurveyType(scenarioIdx, type, clickedBtn) {
+  var sc = scenarios[scenarioIdx];
+  var feedback = document.getElementById('feedback-' + scenarioIdx);
+  // 高亮被选场景卡片
+  document.querySelectorAll('.scenario-card').forEach(function(c) { c.classList.remove('selected'); });
+  document.getElementById('scenario-' + scenarioIdx).classList.add('selected');
+
+  // 标记按钮选中状态
+  var card = document.getElementById('scenario-' + scenarioIdx);
+  card.querySelectorAll('.choice-btn').forEach(function(b) { b.style.borderColor = '#cbd5e0'; b.style.color = ''; b.style.fontWeight = '400'; });
+  clickedBtn.style.borderColor = '#667eea';
+  clickedBtn.style.color = '#667eea';
+  clickedBtn.style.fontWeight = '700';
+
+  if (type === sc.answer) {
+    feedback.className = 'feedback correct';
+    var typeName = (type === 'census') ? '普查' : '抽样调查';
+    feedback.innerHTML = '✅ <b>判断正确！</b> 你选择了「' + typeName + '」。<br>' +
+                         '<b>理由：</b>' + sc.explain + '<br>' +
+                         '<b>补充：</b>' + sc.advantage;
+  } else {
+    feedback.className = 'feedback wrong';
+    var wrongName = (type === 'census') ? '普查' : '抽样调查';
+    var rightName = (sc.answer === 'census') ? '普查' : '抽样调查';
+    feedback.innerHTML = '❌ <b>判断有误。</b> 你选择了「' + wrongName + '」，但更合适的方式是「' + rightName + '」。<br>' +
+                         '<b>理由：</b>' + sc.explain + '<br>' +
+                         '<b>补充：</b>' + sc.advantage;
+  }
+}
+
+
+/* ============================================================
+ * 环节2：频数与频率分布表
+ * ============================================================ */
+
+// 预设数据：全班40人数学成绩（0-100分）
+var scoreData = [
+  72, 85, 63, 91, 78, 56, 88, 95, 67, 73,
+  82, 77, 69, 90, 84, 58, 76, 81, 93, 70,
+  65, 87, 79, 92, 74, 60, 86, 83, 71, 96,
+  68, 80, 89, 75, 62, 94, 66, 85, 72, 78
+];
+
+var highlightGroup = -1; // 当前高亮的组号
+
+// 根据组数生成分组并更新频数分布表
+function updateGrouping(groupCount) {
+  document.getElementById('groupCountValue').textContent = groupCount;
+  var minVal = Math.min.apply(null, scoreData);
+  var maxVal = Math.max.apply(null, scoreData);
+  // 组距：保证所有数据落入组内，向上取整并适当留余量
+  var range = maxVal - minVal;
+  var groupWidth = Math.ceil((range + 1) / groupCount);
+  // 微调组距，确保分组整齐
+  if (groupWidth < 1) groupWidth = 1;
+
+  document.getElementById('groupWidthValue').textContent = groupWidth;
+  document.getElementById('dataRangeValue').textContent = minVal + ' ~ ' + maxVal + ' 分';
+
+  // 计算每组的频数
+  var groups = [];
+  var maxFreq = 0;
+  for (var i = 0; i < groupCount; i++) {
+    var lower = minVal + i * groupWidth;
+    var upper = lower + groupWidth;
+    var freq = 0;
+    for (var j = 0; j < scoreData.length; j++) {
+      // 最后一组包含上界，其余不包含上界
+      if (i === groupCount - 1) {
+        if (scoreData[j] >= lower && scoreData[j] <= upper) freq++;
+      } else {
+        if (scoreData[j] >= lower && scoreData[j] < upper) freq++;
+      }
+    }
+    if (freq > maxFreq) maxFreq = freq;
+    groups.push({
+      index: i + 1,
+      lower: lower,
+      upper: upper,
+      freq: freq,
+      rate: (freq / scoreData.length)
+    });
+  }
+
+  // 渲染表格
+  var tbody = document.getElementById('freqTableBody');
+  tbody.innerHTML = '';
+  groups.forEach(function(g) {
+    var tr = document.createElement('tr');
+    if (g.index - 1 === highlightGroup) tr.classList.add('highlight');
+    var barPercent = Math.round((g.freq / Math.max(maxFreq, 1)) * 100);
+    tr.innerHTML =
+      '<td>' + g.index + '</td>' +
+      '<td>' + g.lower + ' ~ ' + g.upper + '</td>' +
+      '<td><b>' + g.freq + '</b></td>' +
+      '<td>' + g.rate.toFixed(3) + '</td>' +
+      '<td class="freq-bar-cell"><span class="freq-bar-track" aria-label="频数相对长度 ' + barPercent + '%"><span class="freq-bar-fill" style="--bar-percent:' + barPercent + '%"></span></span></td>';
+    // 点击行高亮
+    tr.addEventListener('click', function() {
+      highlightGroup = g.index - 1;
+      updateGrouping(groupCount);
+    });
+    tbody.appendChild(tr);
+  });
+
+  // 添加合计行
+  var totalTr = document.createElement('tr');
+  totalTr.style.background = '#edf2f7';
+  totalTr.style.fontWeight = '700';
+  totalTr.innerHTML =
+    '<td>合计</td><td>—</td><td>' + scoreData.length + '</td>' +
+    '<td>1.000</td><td>—</td>';
+  tbody.appendChild(totalTr);
+}
+
+// 组数滑块事件绑定
+document.getElementById('groupCountSlider').addEventListener('input', function() {
+  highlightGroup = -1; // 重置高亮
+  updateGrouping(parseInt(this.value, 10));
+});
+
+
+/* ============================================================
+ * 环节3：三种统计图绘制
+ * ============================================================ */
+
+// 当前图表类型
+var currentChartType = 'bar';
+// 统计图数据：某月30天天气情况
+var weatherData = [
+  { name: '晴天', value: 12, color: '#FFB100' },
+  { name: '多云', value: 9,  color: '#90CDF4' },
+  { name: '阴天', value: 6,  color: '#A0AEC0' },
+  { name: '雨天', value: 3,  color: '#4299E1' }
+];
+
+// 图表切换动画进度（0~1）
+var chartAnimProgress = 1;
+
+// 绘制统计图（条形图 bar / 折线图 line / 扇形图 pie）
+function drawChart(type) {
+  currentChartType = type;
+  var canvas = document.getElementById('chartCanvas');
+  var ctx = setupCanvas(canvas, 720, 400);
+  var size = getCanvasLogicalSize(canvas, 720, 400);
+  ctx.clearRect(0, 0, size.width, size.height);
+
+  // 启动切换动画
+  chartAnimProgress = 0;
+  animateChart();
+
+  // 更新按钮高亮
+  document.querySelectorAll('.chart-btn').forEach(function(b) { b.classList.remove('active'); });
+  var activeBtn = document.querySelector('.chart-btn[data-chart="' + type + '"]');
+  if (activeBtn) activeBtn.classList.add('active');
+}
+
+// 动画绘制（逐帧）
+function animateChart() {
+  chartAnimProgress += 0.06;
+  if (chartAnimProgress > 1) chartAnimProgress = 1;
+
+  var canvas = document.getElementById('chartCanvas');
+  var ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width / (window.devicePixelRatio || 1), canvas.height / (window.devicePixelRatio || 1));
+
+  var p = chartAnimProgress; // 缓动因子
+  // 使用 easeOutCubic 缓动
+  var ease = 1 - Math.pow(1 - p, 3);
+
+  if (currentChartType === 'bar') {
+    drawBarChart(ctx, ease);
+  } else if (currentChartType === 'line') {
+    drawLineChart(ctx, ease);
+  } else if (currentChartType === 'pie') {
+    drawPieChart(ctx, ease);
+  }
+
+  if (chartAnimProgress < 1) {
+    requestAnimationFrame(animateChart);
+  }
+}
+
+// 绘制条形图
+function drawBarChart(ctx, progress) {
+  var size = getCanvasLogicalSize(ctx.canvas, 720, 400);
+  var W = size.width, H = size.height;
+  var compact = W < 520;
+  var padding = compact
+    ? { left: 42, right: 24, top: 42, bottom: 52 }
+    : { left: 60, right: 30, top: 40, bottom: 60 };
+  var chartW = W - padding.left - padding.right;
+  var chartH = H - padding.top - padding.bottom;
+  var maxVal = Math.max.apply(null, weatherData.map(function(d){return d.value;}));
+  var niceMax = Math.ceil(maxVal / 5) * 5; // 取整刻度
+
+  // 标题
+  ctx.fillStyle = '#2d3748';
+  ctx.font = 'bold 16px "Microsoft YaHei"';
+  ctx.textAlign = 'center';
+  ctx.fillText('某月天气情况条形图', W / 2, 25);
+
+  // 绘制坐标轴
+  ctx.strokeStyle = '#a0aec0';
+  ctx.lineWidth = 2;
+  // Y 轴
+  ctx.beginPath();
+  ctx.moveTo(padding.left, padding.top);
+  ctx.lineTo(padding.left, padding.top + chartH);
+  ctx.stroke();
+  // X 轴
+  ctx.beginPath();
+  ctx.moveTo(padding.left, padding.top + chartH);
+  ctx.lineTo(padding.left + chartW, padding.top + chartH);
+  ctx.stroke();
+
+  // Y 轴刻度
+  ctx.fillStyle = '#718096';
+  ctx.font = '12px "Microsoft YaHei"';
+  ctx.textAlign = 'right';
+  var steps = 5;
+  for (var i = 0; i <= steps; i++) {
+    var val = (niceMax / steps) * i;
+    var y = padding.top + chartH - (val / niceMax) * chartH;
+    ctx.fillText(val, padding.left - 8, y + 4);
+    // 网格线
+    ctx.strokeStyle = '#edf2f7';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(padding.left, y);
+    ctx.lineTo(padding.left + chartW, y);
+    ctx.stroke();
+  }
+
+  // 绘制条形
+  var barCount = weatherData.length;
+  var barWidth = chartW / barCount * 0.55;
+  var gap = chartW / barCount;
+  weatherData.forEach(function(d, idx) {
+    var x = padding.left + gap * idx + (gap - barWidth) / 2;
+    var fullH = (d.value / niceMax) * chartH;
+    var h = fullH * progress; // 动画：高度逐渐增长
+    var y = padding.top + chartH - h;
+
+    // 渐变填充
+    var grad = ctx.createLinearGradient(x, y, x, padding.top + chartH);
+    grad.addColorStop(0, d.color);
+    grad.addColorStop(1, lightenColor(d.color, 30));
+    ctx.fillStyle = grad;
+    roundRect(ctx, x, y, barWidth, h, 6);
+    ctx.fill();
+
+    // 数值标注（动画完成后再显示）
+    if (progress > 0.7) {
+      ctx.fillStyle = '#2d3748';
+      ctx.font = 'bold 14px "Microsoft YaHei"';
+      ctx.textAlign = 'center';
+      ctx.fillText(d.value + '天', x + barWidth / 2, y - 8);
+    }
+
+    // X 轴标签
+    ctx.fillStyle = '#4a5568';
+    ctx.font = '13px "Microsoft YaHei"';
+    ctx.textAlign = 'center';
+    ctx.fillText(d.name, x + barWidth / 2, padding.top + chartH + 22);
+  });
+
+  // 轴标题
+  ctx.fillStyle = '#718096';
+  ctx.font = '12px "Microsoft YaHei"';
+  ctx.textAlign = 'left';
+  ctx.fillText('天数', compact ? 4 : padding.left - 45, padding.top - 15);
+}
+
+// 绘制折线图
+function drawLineChart(ctx, progress) {
+  var size = getCanvasLogicalSize(ctx.canvas, 720, 400);
+  var W = size.width, H = size.height;
+  var compact = W < 520;
+  var padding = compact
+    ? { left: 42, right: 24, top: 42, bottom: 52 }
+    : { left: 60, right: 30, top: 40, bottom: 60 };
+  var chartW = W - padding.left - padding.right;
+  var chartH = H - padding.top - padding.bottom;
+  var maxVal = Math.max.apply(null, weatherData.map(function(d){return d.value;}));
+  var niceMax = Math.ceil(maxVal / 5) * 5;
+
+  // 标题
+  ctx.fillStyle = '#2d3748';
+  ctx.font = 'bold 16px "Microsoft YaHei"';
+  ctx.textAlign = 'center';
+  ctx.fillText('某月天气情况折线图', W / 2, 25);
+
+  // 坐标轴
+  ctx.strokeStyle = '#a0aec0';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(padding.left, padding.top);
+  ctx.lineTo(padding.left, padding.top + chartH);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(padding.left, padding.top + chartH);
+  ctx.lineTo(padding.left + chartW, padding.top + chartH);
+  ctx.stroke();
+
+  // Y 轴刻度与网格
+  ctx.fillStyle = '#718096';
+  ctx.font = '12px "Microsoft YaHei"';
+  ctx.textAlign = 'right';
+  var steps = 5;
+  for (var i = 0; i <= steps; i++) {
+    var val = (niceMax / steps) * i;
+    var y = padding.top + chartH - (val / niceMax) * chartH;
+    ctx.fillText(val, padding.left - 8, y + 4);
+    ctx.strokeStyle = '#edf2f7';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(padding.left, y);
+    ctx.lineTo(padding.left + chartW, y);
+    ctx.stroke();
+  }
+
+  // 计算每个点坐标
+  var points = weatherData.map(function(d, idx) {
+    var x = padding.left + (chartW / (weatherData.length - 1)) * idx;
+    var y = padding.top + chartH - (d.value / niceMax) * chartH;
+    return { x: x, y: y, data: d };
+  });
+
+  // 动画：按 progress 逐步绘制折线
+  var totalSegs = points.length - 1;
+  var drawnSegs = totalSegs * progress;
+
+  // 绘制折线
+  ctx.strokeStyle = '#667eea';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(points[0].x, points[0].y);
+  for (var i = 1; i < points.length; i++) {
+    if (i <= drawnSegs) {
+      ctx.lineTo(points[i].x, points[i].y);
+    } else if (i - 1 < drawnSegs) {
+      // 当前段部分绘制
+      var frac = drawnSegs - (i - 1);
+      var px = points[i-1].x + (points[i].x - points[i-1].x) * frac;
+      var py = points[i-1].y + (points[i].y - points[i-1].y) * frac;
+      ctx.lineTo(px, py);
+    }
+  }
+  ctx.stroke();
+
+  // 绘制数据点和标签
+  points.forEach(function(pt, idx) {
+    if (idx <= drawnSegs) {
+      // 数据点
+      ctx.fillStyle = pt.data.color;
+      ctx.beginPath();
+      ctx.arc(pt.x, pt.y, 7, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // 数值标注
+      if (progress > 0.5) {
+        ctx.fillStyle = '#2d3748';
+        ctx.font = 'bold 13px "Microsoft YaHei"';
+        ctx.textAlign = 'center';
+        ctx.fillText(pt.data.value + '天', pt.x, pt.y - 14);
+      }
+
+      // X 轴标签
+      ctx.fillStyle = '#4a5568';
+      ctx.font = '13px "Microsoft YaHei"';
+      ctx.textAlign = compact && idx === 0
+        ? 'left'
+        : (compact && idx === points.length - 1 ? 'right' : 'center');
+      ctx.fillText(pt.data.name, pt.x, padding.top + chartH + 22);
+    }
+  });
+
+  ctx.fillStyle = '#718096';
+  ctx.font = '12px "Microsoft YaHei"';
+  ctx.textAlign = 'left';
+  ctx.fillText('天数', compact ? 4 : padding.left - 45, padding.top - 15);
+}
+
+// 绘制扇形图
+function drawPieChart(ctx, progress) {
+  var size = getCanvasLogicalSize(ctx.canvas, 720, 400);
+  var W = size.width, H = size.height;
+  var compact = W < 520;
+  var cx = compact ? W / 2 : W / 2 - 80;
+  var cy = compact ? 145 : H / 2 + 10;
+  var radius = compact ? Math.min(96, (W - 32) / 2) : Math.min(W, H) / 3.2;
+  var total = weatherData.reduce(function(s, d){return s + d.value;}, 0);
+
+  // 标题
+  ctx.fillStyle = '#2d3748';
+  ctx.font = 'bold 16px "Microsoft YaHei"';
+  ctx.textAlign = 'center';
+  ctx.fillText('某月天气情况扇形图', W / 2, 25);
+
+  // 动画：按 progress 逐渐展开扇形
+  var totalAngle = Math.PI * 2 * progress;
+  var startAngle = -Math.PI / 2; // 从正上方开始
+  var drawnAngle = 0;
+
+  weatherData.forEach(function(d) {
+    var angle = (d.value / total) * Math.PI * 2;
+    if (drawnAngle >= totalAngle) return;
+    var actualAngle = Math.min(angle, totalAngle - drawnAngle);
+
+    // 扇形
+    ctx.fillStyle = d.color;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, radius, startAngle, startAngle + actualAngle);
+    ctx.closePath();
+    ctx.fill();
+    ctx.strokeStyle = 'white';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // 百分比标注（动画过半后显示）
+    if (progress > 0.6 && actualAngle >= angle * 0.9) {
+      var percent = ((d.value / total) * 100).toFixed(1);
+      var midAngle = startAngle + angle / 2;
+      var tx = cx + Math.cos(midAngle) * radius * 0.65;
+      var ty = cy + Math.sin(midAngle) * radius * 0.65;
+      ctx.fillStyle = 'white';
+      ctx.font = 'bold 14px "Microsoft YaHei"';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(percent + '%', tx, ty);
+    }
+
+    startAngle += angle;
+    drawnAngle += angle;
+  });
+
+  // 窄屏把图例移到图形下方，避免挤压、裁切；宽屏仍放在右侧。
+  var legendX = compact ? 18 : cx + radius + 40;
+  var legendY = compact ? 270 : cy - (weatherData.length * 22) / 2;
+  ctx.textBaseline = 'middle';
+  weatherData.forEach(function(d, idx) {
+    var column = compact ? idx % 2 : 0;
+    var row = compact ? Math.floor(idx / 2) : idx;
+    var x = compact ? legendX + column * (W / 2) : legendX;
+    var y = legendY + row * 28;
+    // 色块
+    ctx.fillStyle = d.color;
+    roundRect(ctx, x, y - 8, 16, 16, 3);
+    ctx.fill();
+    // 文字
+    ctx.fillStyle = '#2d3748';
+    ctx.font = '13px "Microsoft YaHei"';
+    ctx.textAlign = 'left';
+    var percent = ((d.value / total) * 100).toFixed(1);
+    ctx.fillText(compact ? d.name + ' ' + percent + '%' : d.name + '：' + d.value + '天 (' + percent + '%)', x + 22, y);
+  });
+  ctx.textBaseline = 'alphabetic';
+}
+
+// 图表切换按钮事件绑定
+document.querySelectorAll('.chart-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var type = this.getAttribute('data-chart');
+    drawChart(type);
+  });
+});
+
+
+/* ============================================================
+ * 环节4：平均数、中位数、众数
+ * ============================================================ */
+
+// 当前数据点数组
+var dataPoints = [];
+
+// 预设数据集
+var presetDataSets = {
+  exam:   { name: '考试成绩', data: [78, 85, 92, 65, 78, 88, 72, 95, 78, 60, 82, 90] },
+  height: { name: '身高数据(cm)', data: [155, 160, 162, 165, 158, 160, 170, 168, 160, 163, 175, 160] },
+  money:  { name: '零花钱(元)', data: [10, 20, 15, 20, 30, 10, 25, 20, 10, 50, 20, 15, 20] }
+};
+
+// 添加数据点
+function addDataPoint(val) {
+  if (isNaN(val) || val < 1 || val > 100) {
+    alert('请输入 1 到 100 之间的整数！');
+    return;
+  }
+  dataPoints.push(Math.round(val));
+  calculateStats();
+  drawNumberLine();
+}
+
+// 计算并显示平均数、中位数、众数
+function calculateStats() {
+  var display = document.getElementById('dataDisplay');
+  if (dataPoints.length === 0) {
+    document.getElementById('meanValue').textContent = '--';
+    document.getElementById('medianValue').textContent = '--';
+    document.getElementById('modeValue').textContent = '--';
+    display.innerHTML = '暂无数据，请添加或选择预设数据集';
+    return;
+  }
+
+  // 显示数据点
+  display.innerHTML = '<b>当前数据（共 ' + dataPoints.length + ' 个）：</b><br>';
+  dataPoints.forEach(function(v) {
+    display.innerHTML += '<span class="data-tag">' + v + '</span>';
+  });
+
+  // 1. 平均数 = 总和 ÷ 个数
+  var sum = dataPoints.reduce(function(a, b){return a + b;}, 0);
+  var mean = sum / dataPoints.length;
+  document.getElementById('meanValue').textContent = mean.toFixed(2);
+
+  // 2. 中位数 = 排序后中间值
+  var sorted = dataPoints.slice().sort(function(a, b){return a - b;});
+  var mid = Math.floor(sorted.length / 2);
+  var median;
+  if (sorted.length % 2 === 0) {
+    // 偶数个：取中间两数平均
+    median = (sorted[mid - 1] + sorted[mid]) / 2;
+  } else {
+    // 奇数个：取中间数
+    median = sorted[mid];
+  }
+  document.getElementById('medianValue').textContent = median.toFixed(2);
+
+  // 3. 众数 = 出现次数最多的数
+  var countMap = {};
+  var maxCount = 0;
+  sorted.forEach(function(v) {
+    countMap[v] = (countMap[v] || 0) + 1;
+    if (countMap[v] > maxCount) maxCount = countMap[v];
+  });
+  var modes = [];
+  for (var k in countMap) {
+    if (countMap[k] === maxCount) modes.push(parseFloat(k));
+  }
+  // 所数都只出现1次 → 没有众数
+  var modeText;
+  if (maxCount === 1) {
+    modeText = '无';
+  } else {
+    modeText = modes.join(', ') + ' (出现' + maxCount + '次)';
+  }
+  document.getElementById('modeValue').textContent = modeText;
+}
+
+// 在数轴上可视化数据点分布
+function drawNumberLine() {
+  var canvas = document.getElementById('numberLineCanvas');
+  var ctx = setupCanvas(canvas, 720, 180);
+  var size = getCanvasLogicalSize(canvas, 720, 180);
+  var W = size.width, H = size.height;
+  ctx.clearRect(0, 0, W, H);
+
+  if (dataPoints.length === 0) {
+    ctx.fillStyle = '#a0aec0';
+    ctx.font = '14px "Microsoft YaHei"';
+    ctx.textAlign = 'center';
+    ctx.fillText('请添加数据点后查看数轴分布', W / 2, H / 2);
+    return;
+  }
+
+  // 排序数据
+  var sorted = dataPoints.slice().sort(function(a, b){return a - b;});
+  var minV = Math.min.apply(null, sorted);
+  var maxV = Math.max.apply(null, sorted);
+  // 数轴范围留余量
+  var padLeft = Math.max(1, Math.floor(minV - 5));
+  var padRight = Math.min(100, Math.ceil(maxV + 5));
+  var range = padRight - padLeft;
+
+  var compact = W < 520;
+  var padX = compact ? 28 : 50;
+  var lineY = compact ? H - 55 : 110;
+  var lineW = W - padX * 2;
+
+  // 绘制数轴主线
+  ctx.strokeStyle = '#4a5568';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(padX, lineY);
+  ctx.lineTo(W - padX, lineY);
+  ctx.stroke();
+
+  // 箭头
+  ctx.beginPath();
+  ctx.moveTo(W - padX, lineY);
+  ctx.lineTo(W - padX - 8, lineY - 5);
+  ctx.lineTo(W - padX - 8, lineY + 5);
+  ctx.closePath();
+  ctx.fillStyle = '#4a5568';
+  ctx.fill();
+
+  // 刻度
+  var tickStep = Math.max(1, Math.ceil(range / (compact ? 8 : 15)));
+  ctx.fillStyle = '#718096';
+  ctx.font = '12px "Microsoft YaHei"';
+  ctx.textAlign = 'center';
+  var tickValues = [];
+  for (var tick = padLeft; tick <= padRight; tick += tickStep) tickValues.push(tick);
+  if (tickValues[tickValues.length - 1] !== padRight) tickValues.push(padRight);
+  tickValues.forEach(function(v, tickIndex) {
+    var x = padX + ((v - padLeft) / range) * lineW;
+    ctx.strokeStyle = '#cbd5e0';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(x, lineY - 4);
+    ctx.lineTo(x, lineY + 4);
+    ctx.stroke();
+    if (!compact || tickIndex % 2 === 0 || v === padLeft || v === padRight) {
+      ctx.fillText(v, x, lineY + 18);
+    }
+  });
+
+  // 计算中位数与众数
+  var mid = Math.floor(sorted.length / 2);
+  var median;
+  if (sorted.length % 2 === 0) {
+    median = (sorted[mid - 1] + sorted[mid]) / 2;
+  } else {
+    median = sorted[mid];
+  }
+
+  // 计算众数
+  var countMap = {};
+  var maxCount = 0;
+  sorted.forEach(function(v) {
+    countMap[v] = (countMap[v] || 0) + 1;
+    if (countMap[v] > maxCount) maxCount = countMap[v];
+  });
+  var modes = [];
+  if (maxCount > 1) {
+    for (var key in countMap) {
+      if (countMap[key] === maxCount) modes.push(parseFloat(key));
+    }
+  }
+
+  // 绘制数据点（堆叠展示重复值）
+  var pointStack = {}; // 记录每个位置已绘制的点数
+  sorted.forEach(function(v) {
+    var x = padX + ((v - padLeft) / range) * lineW;
+    var stackIdx = pointStack[v] || 0;
+    pointStack[v] = stackIdx + 1;
+    var y = lineY - 12 - stackIdx * 14;
+
+    // 普通数据点
+    ctx.fillStyle = '#667eea';
+    ctx.beginPath();
+    ctx.arc(x, y, 5, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = 'white';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  });
+
+  // 高亮标注中位数位置
+  var medianX = padX + ((median - padLeft) / range) * lineW;
+  ctx.strokeStyle = '#e53e3e';
+  ctx.lineWidth = 2;
+  ctx.setLineDash([5, 3]);
+  ctx.beginPath();
+  ctx.moveTo(medianX, lineY - 60);
+  ctx.lineTo(medianX, lineY + 8);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = '#e53e3e';
+  ctx.font = 'bold 12px "Microsoft YaHei"';
+  ctx.textAlign = 'center';
+  ctx.fillText('中位数 ' + median.toFixed(2), medianX, lineY - 65);
+
+  // 高亮标注众数位置
+  if (modes.length > 0) {
+    modes.forEach(function(m, idx) {
+      var mx = padX + ((m - padLeft) / range) * lineW;
+      ctx.strokeStyle = '#38a169';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath();
+      ctx.moveTo(mx, lineY - 75);
+      ctx.lineTo(mx, lineY + 8);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = '#38a169';
+      ctx.font = 'bold 12px "Microsoft YaHei"';
+      ctx.textAlign = 'center';
+      ctx.fillText('众数 ' + m, mx, lineY - 80 - idx * 0);
+    });
+  }
+
+  // 图例
+  ctx.fillStyle = '#4a5568';
+  ctx.font = '12px "Microsoft YaHei"';
+  ctx.textAlign = 'left';
+  ctx.fillText('● 数据点', padX, 25);
+  ctx.fillStyle = '#e53e3e';
+  ctx.fillText('┄ 中位数', padX + 90, 25);
+  ctx.fillStyle = '#38a169';
+  ctx.fillText('┄ 众数', padX + 180, 25);
+}
+
+// 添加按钮事件
+document.getElementById('addDataBtn').addEventListener('click', function() {
+  var input = document.getElementById('dataInput');
+  var val = parseFloat(input.value);
+  addDataPoint(val);
+  input.value = '';
+  input.focus();
+});
+
+// 回车键添加
+document.getElementById('dataInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    var val = parseFloat(this.value);
+    addDataPoint(val);
+    this.value = '';
+  }
+});
+
+// 清空按钮
+document.getElementById('clearDataBtn').addEventListener('click', function() {
+  dataPoints = [];
+  calculateStats();
+  drawNumberLine();
+});
+
+// 预设数据集按钮事件
+document.querySelectorAll('.preset-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var key = this.getAttribute('data-preset');
+    var preset = presetDataSets[key];
+    if (preset) {
+      dataPoints = preset.data.slice();
+      calculateStats();
+      drawNumberLine();
+    }
+  });
+});
+
+
+/* ============================================================
+ * 通用工具函数
+ * ============================================================ */
+
+// Canvas 高 DPI 处理：根据 devicePixelRatio 设置真实分辨率
+function setupCanvas(canvas, cssW, cssH) {
+  var dpr = window.devicePixelRatio || 1;
+  var parentStyle = window.getComputedStyle(canvas.parentElement);
+  var availableWidth = canvas.parentElement.clientWidth
+    - parseFloat(parentStyle.paddingLeft || '0')
+    - parseFloat(parentStyle.paddingRight || '0');
+  // 隐藏标签页在初始化阶段没有可测宽度，先用设计宽度绘制；显示时会立即按真实宽度重绘。
+  var width = availableWidth > 0
+    ? Math.max(1, Math.min(cssW, Math.round(availableWidth)))
+    : cssW;
+  var height;
+  if (canvas.id === 'chartCanvas' && width < 520) {
+    height = 330;
+  } else if (canvas.id === 'numberLineCanvas' && width < 520) {
+    height = 190;
+  } else {
+    height = cssH;
+  }
+  var backingWidth = Math.round(width * dpr);
+  var backingHeight = Math.round(height * dpr);
+  if (canvas.width !== backingWidth || canvas.height !== backingHeight) {
+    canvas.width = backingWidth;
+    canvas.height = backingHeight;
+  }
+  // 使用真实显示尺寸绘制，文字不会随固定大画布一起缩小。
+  canvas.style.width = width + 'px';
+  canvas.style.maxWidth = '100%';
+  canvas.style.height = height + 'px';
+  canvas.dataset.logicalWidth = String(width);
+  canvas.dataset.logicalHeight = String(height);
+  var ctx = canvas.getContext('2d');
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  return ctx;
+}
+
+function getCanvasLogicalSize(canvas, fallbackWidth, fallbackHeight) {
+  return {
+    width: Number(canvas.dataset.logicalWidth) || fallbackWidth,
+    height: Number(canvas.dataset.logicalHeight) || fallbackHeight
+  };
+}
+
+// 绘制圆角矩形
+function roundRect(ctx, x, y, w, h, r) {
+  if (h < 0) { y = y + h; h = -h; }
+  if (w < 2 * r) r = w / 2;
+  if (h < 2 * r) r = h / 2;
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+
+// 颜色变亮（用于渐变），hex 颜色格式
+function lightenColor(hex, percent) {
+  var num = parseInt(hex.replace('#', ''), 16);
+  var r = Math.min(255, (num >> 16) + percent);
+  var g = Math.min(255, ((num >> 8) & 0x00FF) + percent);
+  var b = Math.min(255, (num & 0x0000FF) + percent);
+  return '#' + ((r << 16) | (g << 8) | b).toString(16).padStart(6, '0');
+}
+
+
+/* ============================================================
+ * 页面初始化
+ * ============================================================ */
+window.addEventListener('load', function() {
+  renderScenarios();          // 渲染环节1场景
+  updateGrouping(6);          // 初始化环节2频数表（默认6组）
+  drawChart('bar');           // 初始化环节3图表（默认条形图）
+  calculateStats();           // 初始化环节4统计值
+  drawNumberLine();           // 初始化环节4数轴
+});
+
+// 窗口尺寸变化时重绘 Canvas（保持清晰度）
+window.addEventListener('resize', function() {
+  if (document.getElementById('section3').classList.contains('active')) {
+    drawChart(currentChartType);
+  }
+  if (document.getElementById('section4').classList.contains('active')) {
+    drawNumberLine();
+  }
+});
+
+// 检测是否被 iframe 嵌入，如果是则启用精简模式（隐藏大标题）
+(function () {
+    try {
+        if (window.self !== window.top) {
+            document.body.classList.add('embedded');
+        }
+    } catch (e) { /* 跨域访问报错时忽略 */ }
+})();</script>
+</body>
+</html>
+

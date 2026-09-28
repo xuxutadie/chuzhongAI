@@ -1,0 +1,980 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第二章 相交线与平行线 · 互动教学</title>
+<style>
+  /* ===== 全局重置 ===== */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+    line-height: 1.6;
+  }
+  /* ===== 顶部标题栏 ===== */
+  .header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    padding: 26px 30px;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+    margin-bottom: 18px;
+  }
+  .header h1 { font-size: 23px; margin-bottom: 6px; letter-spacing: 0.5px; }
+  .header p { font-size: 13px; opacity: 0.92; }
+
+  /* ===== 标签页按钮 ===== */
+  .tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+/* 被 iframe 嵌入时：隐藏大标题、压缩 tabs */
+body.embedded .header { display: none; }
+body.embedded .tabs { padding: 6px 12px; gap: 4px; }
+body.embedded .tab-btn { padding: 6px 14px; font-size: 13px; border-radius: 18px; }
+
+@media (max-width: 620px) {
+  body.embedded .tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+    margin-bottom: 10px;
+    padding: 4px 0;
+  }
+  body.embedded .tab-btn {
+    min-width: 0;
+    padding: 7px 6px;
+    border-radius: 10px;
+    line-height: 1.35;
+  }
+}
+
+  .tab-btn {
+    flex: 1;
+    min-width: 180px;
+    padding: 13px 14px;
+    border: none;
+    background: #fff;
+    color: #555;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: all 0.25s ease;
+  }
+  .tab-btn.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.35);
+  }
+  .tab-btn:hover:not(.active) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  /* ===== 卡片容器 ===== */
+  .card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    display: none;
+  }
+  .card.active { display: block; }
+  .card h2 {
+    font-size: 18px;
+    color: #4a3a7a;
+    margin-bottom: 6px;
+  }
+  .card .desc {
+    color: #666;
+    font-size: 13px;
+    margin-bottom: 14px;
+  }
+
+  /* ===== 画布与面板布局 ===== */
+  .stage {
+    display: grid;
+    grid-template-columns: 1fr 290px;
+    gap: 18px;
+  }
+  @media (max-width: 820px) {
+    .stage { grid-template-columns: 1fr; }
+  }
+  .canvas-wrap {
+    background: #fafbff;
+    border: 2px solid #ece8f8;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  canvas { display: block; width: 100%; height: 430px; touch-action: none; cursor: default; }
+
+  .panel {
+    background: #f7f5fc;
+    border-radius: 12px;
+    padding: 14px;
+  }
+  .panel h3 {
+    font-size: 14px;
+    color: #4a3a7a;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #e3dcf2;
+    padding-bottom: 6px;
+  }
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 10px;
+    background: #fff;
+    border-radius: 8px;
+    margin-bottom: 7px;
+    font-size: 13px;
+  }
+  .info-row .val { font-weight: 700; color: #764ba2; }
+  .info-row .ok { color: #28a745; font-weight: 700; }
+  .info-row .no { color: #dc3545; font-weight: 700; }
+
+  .controls { margin-top: 12px; }
+  .controls label {
+    font-size: 13px; color: #555; display: block; margin-bottom: 6px;
+  }
+  .controls input[type=range] { width: 100%; accent-color: #764ba2; }
+
+  .btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff; border: none;
+    padding: 10px 14px; border-radius: 8px;
+    cursor: pointer; font-size: 13px; font-weight: 600;
+    width: 100%; margin-top: 8px; transition: opacity 0.2s;
+  }
+  .btn:hover { opacity: 0.9; }
+  .btn.ghost {
+    background: #fff; color: #764ba2; border: 2px solid #d8d0ee;
+  }
+
+  .tip {
+    background: #fff8e6;
+    border-left: 4px solid #ffc107;
+    padding: 9px 11px; border-radius: 6px;
+    font-size: 12px; color: #8a6d3b;
+    margin-top: 10px; line-height: 1.6;
+  }
+  .tip.success {
+    background: #e8f8ee; border-left-color: #28a745; color: #1e7e34;
+  }
+
+  .legend {
+    display: flex; gap: 12px; flex-wrap: wrap;
+    margin-bottom: 10px; font-size: 12px; color: #555;
+  }
+  .legend span { display: flex; align-items: center; gap: 4px; }
+  .dot { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+
+  /* ===== 练习题 ===== */
+  .quiz { margin-top: 14px; }
+  .quiz-q {
+    background: #f7f5fc; padding: 11px 12px;
+    border-radius: 8px; margin-bottom: 9px;
+  }
+  .quiz-q .qtext { font-size: 13px; margin-bottom: 7px; }
+  .quiz-q button {
+    padding: 5px 12px; margin-right: 6px;
+    border: 2px solid #d8d0ee; background: #fff;
+    border-radius: 6px; cursor: pointer; font-size: 12px;
+  }
+  .quiz-q button.correct { background: #28a745; color: #fff; border-color: #28a745; }
+  .quiz-q button.wrong { background: #dc3545; color: #fff; border-color: #dc3545; }
+  .feedback { font-size: 12px; margin-top: 6px; min-height: 16px; }
+  .feedback.right { color: #28a745; }
+  .feedback.bad { color: #dc3545; }
+</style>
+<link rel="stylesheet" href="./blueprint-theme.css">
+</head>
+<body data-theme="blueprint">
+
+<div class="header">
+  <h1>📐 第二章 相交线与平行线</h1>
+  <p>北师大版七年级数学下册 · 互动教学模拟 · 拖动 / 滑动控制，实时观察角度变化</p>
+</div>
+
+<!-- 标签页按钮 -->
+<div class="tabs">
+  <button class="tab-btn active" data-tab="s1">📐 对顶角与邻补角</button>
+  <button class="tab-btn" data-tab="s2">📏 垂线与垂直</button>
+  <button class="tab-btn" data-tab="s3">🔀 平行线的判定</button>
+  <button class="tab-btn" data-tab="s4">🔁 平行线的性质</button>
+</div>
+
+<!-- ============ 环节1 ============ -->
+<div class="card active" id="s1">
+  <h2>环节一 · 对顶角与邻补角</h2>
+  <p class="desc">两条直线相交形成 4 个角。拖动紫色手柄旋转直线，点击任一角可高亮其<span style="color:#e74c3c">对顶角</span>与<span style="color:#f39c12">邻补角</span>。</p>
+  <div class="legend">
+    <span><i class="dot" style="background:#e74c3c"></i>∠1 与 ∠3（对顶）</span>
+    <span><i class="dot" style="background:#3498db"></i>∠2 与 ∠4（对顶）</span>
+  </div>
+  <div class="stage">
+    <div class="canvas-wrap"><canvas id="cv1"></canvas></div>
+    <div class="panel">
+      <h3>角的关系</h3>
+      <div class="info-row"><span>∠1</span><span class="val" id="s1_a1">60°</span></div>
+      <div class="info-row"><span>∠2</span><span class="val" id="s1_a2">120°</span></div>
+      <div class="info-row"><span>∠3</span><span class="val" id="s1_a3">60°</span></div>
+      <div class="info-row"><span>∠4</span><span class="val" id="s1_a4">120°</span></div>
+      <div class="info-row"><span>对顶角 ∠1=∠3</span><span class="ok" id="s1_v1">相等 ✓</span></div>
+      <div class="info-row"><span>对顶角 ∠2=∠4</span><span class="ok" id="s1_v2">相等 ✓</span></div>
+      <div class="info-row"><span>邻补角 ∠1+∠2</span><span class="ok" id="s1_s1">180° ✓</span></div>
+      <div class="info-row"><span>邻补角 ∠2+∠3</span><span class="ok" id="s1_s2">180° ✓</span></div>
+      <div class="tip">知识点：对顶角相等；邻补角互补（和为 180°）。点击图中任一角可高亮关系。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 环节2 ============ -->
+<div class="card" id="s2">
+  <h2>环节二 · 垂线与垂直</h2>
+  <p class="desc">直线 AB 外有一点 P。拖动 P 或直线上的 Q 点，观察垂线段 PF 与斜线段 PQ 的长度关系。</p>
+  <div class="stage">
+    <div class="canvas-wrap"><canvas id="cv2"></canvas></div>
+    <div class="panel">
+      <h3>距离测量</h3>
+      <div class="info-row"><span>垂线段 PF（最短）</span><span class="val" id="s2_pf">—</span></div>
+      <div class="info-row"><span>斜线段 PQ</span><span class="val" id="s2_pq">—</span></div>
+      <div class="info-row"><span>比较</span><span class="ok" id="s2_cmp">PF ≤ PQ</span></div>
+      <button class="btn" id="s2_btn">📏 画垂线 PF</button>
+      <button class="btn ghost" id="s2_reset" style="margin-top:6px;">↺ 重置位置</button>
+      <div class="tip">知识点：<b>垂线段最短</b>；直线外一点到这条直线的<b>垂线段长度</b>，叫做点到直线的距离。拖动 Q 越靠近 F，PQ 越接近 PF。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 环节3 ============ -->
+<div class="card" id="s3">
+  <h2>环节三 · 平行线的判定</h2>
+  <p class="desc">直线 a 与截线 c 固定，滑块控制直线 b 的倾斜角。当 b 与 a 平行时，三种判定条件同时成立。</p>
+  <div class="legend">
+    <span><i class="dot" style="background:#ff9800"></i>同位角 ∠1∠5</span>
+    <span><i class="dot" style="background:#4caf50"></i>内错角 ∠3∠5</span>
+    <span><i class="dot" style="background:#9b59b6"></i>同旁内角 ∠3∠6</span>
+  </div>
+  <div class="stage">
+    <div class="canvas-wrap"><canvas id="cv3"></canvas></div>
+    <div class="panel">
+      <h3>判定条件</h3>
+      <div class="controls">
+        <label>直线 b 倾角：<b id="s3_val">0°</b>（0° 时 b∥a）</label>
+        <input type="range" id="s3_slider" min="-30" max="30" step="1" value="0">
+      </div>
+      <div class="info-row"><span>同位角 ∠1 / ∠5</span><span id="s3_c1">55° / 55°</span></div>
+      <div class="info-row"><span>内错角 ∠3 / ∠5</span><span id="s3_c2">55° / 55°</span></div>
+      <div class="info-row"><span>同旁内角 ∠3+∠6</span><span id="s3_c3">180°</span></div>
+      <div class="info-row"><span>结论</span><span class="ok" id="s3_concl">a∥b ✓</span></div>
+      <div class="tip" id="s3_tip">滑动改变 b 的倾角，观察三种条件何时同时成立。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 环节4 ============ -->
+<div class="card" id="s4">
+  <h2>环节四 · 平行线的性质</h2>
+  <p class="desc">已设定 a∥b。拖动滑块改变平行线倾角与截线角度，观察三种性质<b>始终成立</b>。</p>
+  <div class="legend">
+    <span><i class="dot" style="background:#ff9800"></i>同位角 ∠1∠5（相等）</span>
+    <span><i class="dot" style="background:#4caf50"></i>内错角 ∠3∠5（相等）</span>
+    <span><i class="dot" style="background:#9b59b6"></i>同旁内角 ∠3∠6（互补）</span>
+  </div>
+  <div class="stage">
+    <div class="canvas-wrap"><canvas id="cv4"></canvas></div>
+    <div class="panel">
+      <h3>性质验证</h3>
+      <div class="controls">
+        <label>平行线倾角：<b id="s4_a">0°</b></label>
+        <input type="range" id="s4_sa" min="0" max="60" step="1" value="0">
+        <label style="margin-top:8px;">截线 c 倾角：<b id="s4_c">55°</b></label>
+        <input type="range" id="s4_sc" min="15" max="165" step="1" value="55">
+      </div>
+      <div class="info-row"><span>同位角 ∠1=∠5</span><span class="ok" id="s4_p1">相等 ✓</span></div>
+      <div class="info-row"><span>内错角 ∠3=∠5</span><span class="ok" id="s4_p2">相等 ✓</span></div>
+      <div class="info-row"><span>同旁内角 ∠3+∠6</span><span class="ok" id="s4_p3">180° ✓</span></div>
+      <div class="tip success">两直线平行 → 同位角相等、内错角相等、同旁内角互补。无论怎样改变角度，关系始终不变。</div>
+
+      <h3 style="margin-top:14px;">小练习</h3>
+      <div class="quiz" id="s4_quiz"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =================================================================
+   通用工具函数
+   ================================================================= */
+const D2R = Math.PI / 180;   // 角度转弧度
+const R2D = 180 / Math.PI;
+
+// 高 DPI 画布初始化：每次重置变换，避免缩放累积
+function setupCanvas(canvas) {
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  const backingWidth = Math.round(rect.width * dpr);
+  const backingHeight = Math.round(rect.height * dpr);
+  if (canvas.width !== backingWidth || canvas.height !== backingHeight) {
+    canvas.width = backingWidth;
+    canvas.height = backingHeight;
+  }
+  const ctx = canvas.getContext('2d');
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  return { ctx, w: rect.width, h: rect.height };
+}
+
+// 获取指针在画布中的坐标（CSS 像素）
+function getPos(canvas, evt) {
+  const rect = canvas.getBoundingClientRect();
+  return { x: evt.clientX - rect.left, y: evt.clientY - rect.top };
+}
+
+// 沿某方向画贯穿画布的直线（angle 为数学角度，y 向上为正）
+function drawLineThrough(ctx, px, py, angleDeg, w, h, color, lw) {
+  const a = angleDeg * D2R;
+  const dx = Math.cos(a), dy = -Math.sin(a);
+  const t = Math.max(w, h) * 2;
+  ctx.beginPath();
+  ctx.moveTo(px - dx * t, py - dy * t);
+  ctx.lineTo(px + dx * t, py + dy * t);
+  ctx.strokeStyle = color;
+  ctx.lineWidth = lw;
+  ctx.stroke();
+}
+
+// 两条直线（点+方向角）求交点
+function lineIntersect(p1, a1, p2, a2) {
+  const d1x = Math.cos(a1 * D2R), d1y = -Math.sin(a1 * D2R);
+  const d2x = Math.cos(a2 * D2R), d2y = -Math.sin(a2 * D2R);
+  const denom = d1x * d2y - d1y * d2x;
+  if (Math.abs(denom) < 1e-9) return null;
+  const t = ((p2.x - p1.x) * d2y - (p2.y - p1.y) * d2x) / denom;
+  return { x: p1.x + t * d1x, y: p1.y + t * d1y };
+}
+
+// 画两射线之间的较小弧（数学角度制，自动取 <180° 的那段）
+function drawAngleArc(ctx, cx, cy, r, a1, a2, color, lw, dash) {
+  let d = ((a2 - a1) % 360 + 360) % 360;
+  if (d > 180) d -= 360;          // 取较小弧
+  ctx.beginPath();
+  if (dash) ctx.setLineDash(dash); else ctx.setLineDash([]);
+  const n = 32;
+  for (let i = 0; i <= n; i++) {
+    const ang = (a1 + d * i / n) * D2R;
+    const x = cx + r * Math.cos(ang), y = cy - r * Math.sin(ang);
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  ctx.strokeStyle = color;
+  ctx.lineWidth = lw;
+  ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+// 填充扇形（高亮用）
+function fillSector(ctx, cx, cy, r, a1, a2, color, alpha) {
+  let d = ((a2 - a1) % 360 + 360) % 360;
+  if (d > 180) d -= 360;
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  const n = 32;
+  for (let i = 0; i <= n; i++) {
+    const ang = (a1 + d * i / n) * D2R;
+    ctx.lineTo(cx + r * Math.cos(ang), cy - r * Math.sin(ang));
+  }
+  ctx.closePath();
+  ctx.globalAlpha = alpha;
+  ctx.fillStyle = color;
+  ctx.fill();
+  ctx.globalAlpha = 1;
+}
+
+// 点到直线（A,B 两点确定）的垂足与距离
+function footPerp(P, A, B) {
+  const abx = B.x - A.x, aby = B.y - A.y;
+  const apx = P.x - A.x, apy = P.y - A.y;
+  const t = (apx * abx + apy * aby) / (abx * abx + aby * aby);
+  return { x: A.x + t * abx, y: A.y + t * aby, t: t };
+}
+
+/* =================================================================
+   标签页切换（不依赖全局 event）
+   ================================================================= */
+function switchSection(id) {
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.tab === id);
+  });
+  document.querySelectorAll('.card').forEach(c => {
+    c.classList.toggle('active', c.id === id);
+  });
+  // 切换后重绘当前环节（确保画布尺寸正确）
+  if (id === 's1') drawIntersect();
+  else if (id === 's2') drawPerpendicular();
+  else if (id === 's3') drawParallelJudge();
+  else if (id === 's4') drawParallelProp();
+}
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => switchSection(btn.dataset.tab));
+});
+
+/* =================================================================
+   环节 1：对顶角与邻补角
+   ================================================================= */
+const cv1 = document.getElementById('cv1');
+const s1 = { theta: 60, highlight: 0, grabbing: false, moved: false, downPos: null };
+
+function drawIntersect() {
+  const { ctx, w, h } = setupCanvas(cv1);
+  ctx.clearRect(0, 0, w, h);
+  const cx = w / 2, cy = h / 2;
+  const len = Math.min(w, h) / 2 - 36;
+  const th = s1.theta;
+
+  // 四个角信息：弧范围 a1~a2，角度值，颜色
+  const arcs = [
+    { a1: 0,        a2: th,        val: th,         name: '∠1', col: '#e74c3c' },
+    { a1: th,       a2: 180,       val: 180 - th,   name: '∠2', col: '#3498db' },
+    { a1: 180,      a2: 180 + th,  val: th,         name: '∠3', col: '#e74c3c' },
+    { a1: 180 + th, a2: 360,       val: 180 - th,   name: '∠4', col: '#3498db' }
+  ];
+
+  // 高亮：点击的角 + 其对顶角 填充；邻补角虚线弧
+  if (s1.highlight > 0) {
+    const k = s1.highlight - 1;
+    const vert = (k + 2) % 4;            // 对顶角
+    const adj1 = (k + 1) % 4;            // 邻补角
+    const adj2 = (k + 3) % 4;            // 邻补角
+    fillSector(ctx, cx, cy, 56, arcs[k].a1, arcs[k].a2, arcs[k].col, 0.22);
+    fillSector(ctx, cx, cy, 56, arcs[vert].a1, arcs[vert].a2, arcs[vert].col, 0.22);
+    drawAngleArc(ctx, cx, cy, 36, arcs[adj1].a1, arcs[adj1].a2, '#f39c12', 3, [5, 4]);
+    drawAngleArc(ctx, cx, cy, 36, arcs[adj2].a1, arcs[adj2].a2, '#f39c12', 3, [5, 4]);
+  }
+
+  // 两条直线
+  drawLineThrough(ctx, cx, cy, 0, w, h, '#555', 2.5);
+  drawLineThrough(ctx, cx, cy, th, w, h, '#555', 2.5);
+
+  // 角度弧
+  arcs.forEach((arc, i) => {
+    const isHi = s1.highlight === i + 1;
+    drawAngleArc(ctx, cx, cy, 24, arc.a1, arc.a2, arc.col, isHi ? 4 : 2.5);
+  });
+
+  // 标注 ∠1~∠4 及度数
+  ctx.font = 'bold 14px sans-serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  arcs.forEach(arc => {
+    const mid = ((arc.a1 + arc.a2) / 2) * D2R;
+    const lx = cx + 46 * Math.cos(mid), ly = cy - 46 * Math.sin(mid);
+    ctx.fillStyle = arc.col;
+    ctx.fillText(arc.name, lx, ly - 8);
+    ctx.font = 'bold 12px sans-serif';
+    ctx.fillText(Math.round(arc.val) + '°', lx, ly + 8);
+    ctx.font = 'bold 14px sans-serif';
+  });
+
+  // 直线端点字母
+  ctx.fillStyle = '#666'; ctx.font = '13px sans-serif'; ctx.textAlign = 'left';
+  ctx.fillText('直线 l₁', 12, cy - 8);
+  ctx.save();
+  ctx.translate(cx + len * Math.cos(th * D2R) + 6, cy - len * Math.sin(th * D2R) - 14);
+  ctx.fillText('直线 l₂', 0, 0);
+  ctx.restore();
+
+  // 拖动手柄（l₂ 上端）
+  const hx = cx + len * 0.82 * Math.cos(th * D2R);
+  const hy = cy - len * 0.82 * Math.sin(th * D2R);
+  ctx.beginPath(); ctx.arc(hx, hy, 11, 0, 2 * Math.PI);
+  ctx.fillStyle = '#764ba2'; ctx.fill();
+  ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+  ctx.fillStyle = '#fff'; ctx.font = 'bold 11px sans-serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('拖', hx, hy);
+
+  // 交点
+  ctx.beginPath(); ctx.arc(cx, cy, 3.5, 0, 2 * Math.PI);
+  ctx.fillStyle = '#333'; ctx.fill();
+
+  // 底部提示
+  ctx.fillStyle = '#999'; ctx.font = '12px sans-serif'; ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
+  ctx.fillText('拖动紫色手柄旋转直线 l₂；点击任一角高亮对顶角与邻补角', 12, h - 12);
+
+  // 更新面板
+  document.getElementById('s1_a1').textContent = Math.round(th) + '°';
+  document.getElementById('s1_a2').textContent = Math.round(180 - th) + '°';
+  document.getElementById('s1_a3').textContent = Math.round(th) + '°';
+  document.getElementById('s1_a4').textContent = Math.round(180 - th) + '°';
+}
+
+// 指针交互：拖动旋转 / 点击高亮
+cv1.addEventListener('pointerdown', e => {
+  const p = getPos(cv1, e);
+  s1.downPos = p; s1.moved = false; s1.grabbing = true;
+  cv1.setPointerCapture(e.pointerId);
+});
+cv1.addEventListener('pointermove', e => {
+  if (!s1.grabbing) return;
+  const p = getPos(cv1, e);
+  if (Math.hypot(p.x - s1.downPos.x, p.y - s1.downPos.y) > 4) s1.moved = true;
+  const { w, h } = { w: cv1.getBoundingClientRect().width, h: cv1.getBoundingClientRect().height };
+  const cx = w / 2, cy = h / 2;
+  // 由鼠标相对中心的角度决定 l₂ 方向（归一到 0~180）
+  let ang = Math.atan2(-(p.y - cy), p.x - cx) * R2D;
+  ang = ((ang % 180) + 180) % 180;
+  if (ang < 8) ang = 8; if (ang > 172) ang = 172;
+  s1.theta = ang;
+  drawIntersect();
+});
+cv1.addEventListener('pointerup', e => {
+  s1.grabbing = false;
+  // 若未拖动，则视为点击 → 高亮对应角
+  if (!s1.moved) {
+    const p = getPos(cv1, e);
+    const { w, h } = { w: cv1.getBoundingClientRect().width, h: cv1.getBoundingClientRect().height };
+    const cx = w / 2, cy = h / 2;
+    const dist = Math.hypot(p.x - cx, p.y - cy);
+    if (dist < 120) {     // 仅在交点附近点击有效
+      let ma = Math.atan2(-(p.y - cy), p.x - cx) * R2D;
+      ma = ((ma % 360) + 360) % 360;
+      const th = s1.theta;
+      let region;
+      if (ma < th || ma >= 180 + th) {
+        // 落在 ∠1 或 ∠4：根据是否在上半
+        region = (ma < th) ? 1 : 4;
+      } else if (ma < 180) {
+        region = 2;
+      } else {
+        region = 3;
+      }
+      s1.highlight = (s1.highlight === region) ? 0 : region;
+      drawIntersect();
+    } else { s1.highlight = 0; drawIntersect(); }
+  }
+});
+cv1.addEventListener('pointercancel', () => { s1.grabbing = false; });
+cv1.addEventListener('lostpointercapture', () => { s1.grabbing = false; });
+
+/* =================================================================
+   环节 2：垂线与垂直
+   ================================================================= */
+const cv2 = document.getElementById('cv2');
+const s2 = {
+  A: null, B: null, P: null, Q: null,
+  showPerp: false,
+  target: null,       // 当前拖动对象 'P' | 'Q'
+  canvasSize: null    // 记录上次绘制尺寸，窗口变化时按比例重映射坐标
+};
+function initS2(width, height) {
+  s2.A = { x: 50, y: height - 50 };
+  s2.B = { x: width - 50, y: 50 };
+  s2.P = { x: width * 0.72, y: height * 0.35 };
+  s2.Q = { x: width * 0.45, y: height * 0.55 };
+  // 把 Q 投影到 AB
+  const f = footPerp(s2.Q, s2.A, s2.B);
+  s2.Q = { x: f.x, y: f.y };
+  s2.canvasSize = { width, height };
+}
+function remapS2(width, height) {
+  const previous = s2.canvasSize;
+  if (!previous || previous.width <= 0 || previous.height <= 0) {
+    s2.canvasSize = { width, height };
+    return;
+  }
+  if (previous.width === width && previous.height === height) return;
+
+  const scaleX = width / previous.width;
+  const scaleY = height / previous.height;
+  ['A', 'B', 'P', 'Q'].forEach(name => {
+    s2[name] = {
+      x: s2[name].x * scaleX,
+      y: s2[name].y * scaleY
+    };
+  });
+  s2.canvasSize = { width, height };
+}
+function drawPerpendicular() {
+  const { ctx, w, h } = setupCanvas(cv2);
+  if (!s2.A) initS2(w, h);
+  else remapS2(w, h);
+  ctx.clearRect(0, 0, w, h);
+  const A = s2.A, B = s2.B, P = s2.P, Q = s2.Q;
+
+  // 直线 AB（贯穿）
+  const abAng = Math.atan2(-(B.y - A.y), B.x - A.x) * R2D;
+  drawLineThrough(ctx, (A.x + B.x) / 2, (A.y + B.y) / 2, abAng, w, h, '#555', 2.5);
+
+  // 垂足 F
+  const F = footPerp(P, A, B);
+
+  // 直角标记 + 垂线 PF
+  if (s2.showPerp) {
+    ctx.beginPath();
+    ctx.setLineDash([6, 5]);
+    ctx.moveTo(P.x, P.y); ctx.lineTo(F.x, F.y);
+    ctx.strokeStyle = '#e74c3c'; ctx.lineWidth = 2.5; ctx.stroke();
+    ctx.setLineDash([]);
+    // 直角符号
+    const len = 16;
+    const abx = B.x - A.x, aby = B.y - A.y;
+    const abl = Math.hypot(abx, aby);
+    const ux = abx / abl, uy = aby / abl;          // AB 单位向量
+    const fx = -(F.y - P.y), fy = (F.x - P.x);     // 垂直方向
+    const fl = Math.hypot(fx, fy) || 1;
+    const nx = fx / fl, ny = fy / fl;
+    const c1 = { x: F.x + ux * len, y: F.y + uy * len };
+    const c2 = { x: c1.x + (P.x - F.x) / Math.hypot(P.x - F.x, P.y - F.y) * len, y: c1.y + (P.y - F.y) / Math.hypot(P.x - F.x, P.y - F.y) * len };
+    const c3 = { x: F.x + (P.x - F.x) / Math.hypot(P.x - F.x, P.y - F.y) * len, y: F.y + (P.y - F.y) / Math.hypot(P.x - F.x, P.y - F.y) * len };
+    ctx.beginPath();
+    ctx.moveTo(c1.x, c1.y); ctx.lineTo(c2.x, c2.y); ctx.lineTo(c3.x, c3.y);
+    ctx.strokeStyle = '#e74c3c'; ctx.lineWidth = 1.5; ctx.stroke();
+  }
+
+  // 斜线段 PQ
+  ctx.beginPath();
+  ctx.moveTo(P.x, P.y); ctx.lineTo(Q.x, Q.y);
+  ctx.strokeStyle = '#3498db'; ctx.lineWidth = 2; ctx.stroke();
+
+  // 点 A B
+  [['A', A], ['B', B]].forEach(([n, pt]) => {
+    ctx.beginPath(); ctx.arc(pt.x, pt.y, 4, 0, 2 * Math.PI);
+    ctx.fillStyle = '#555'; ctx.fill();
+    ctx.fillStyle = '#555'; ctx.font = '13px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText(n, pt.x, pt.y - 10);
+  });
+
+  // 垂足 F
+  if (s2.showPerp) {
+    ctx.beginPath(); ctx.arc(F.x, F.y, 4, 0, 2 * Math.PI);
+    ctx.fillStyle = '#e74c3c'; ctx.fill();
+    ctx.fillStyle = '#e74c3c'; ctx.font = 'bold 13px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText('F（垂足）', F.x, F.y + 16);
+    // 标注 PF
+    ctx.fillStyle = '#e74c3c'; ctx.font = 'bold 13px sans-serif';
+    ctx.fillText('PF 垂线段', (P.x + F.x) / 2 + 6, (P.y + F.y) / 2 - 6);
+  }
+
+  // 点 P
+  ctx.beginPath(); ctx.arc(P.x, P.y, 7, 0, 2 * Math.PI);
+  ctx.fillStyle = '#764ba2'; ctx.fill();
+  ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+  ctx.fillStyle = '#764ba2'; ctx.font = 'bold 14px sans-serif'; ctx.textAlign = 'left';
+  ctx.fillText('P（可拖动）', P.x + 10, P.y - 10);
+
+  // 点 Q
+  ctx.beginPath(); ctx.arc(Q.x, Q.y, 7, 0, 2 * Math.PI);
+  ctx.fillStyle = '#3498db'; ctx.fill();
+  ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+  ctx.fillStyle = '#3498db'; ctx.font = 'bold 13px sans-serif';
+  ctx.fillText('Q（沿直线拖动）', Q.x + 10, Q.y - 10);
+
+  // 直线 AB 标签
+  ctx.fillStyle = '#666'; ctx.font = '13px sans-serif';
+  ctx.fillText('直线 AB', A.x - 24, A.y + 16);
+
+  // 更新面板
+  const pf = Math.hypot(P.x - F.x, P.y - F.y);
+  const pq = Math.hypot(P.x - Q.x, P.y - Q.y);
+  document.getElementById('s2_pf').textContent = pf.toFixed(1) + ' px';
+  document.getElementById('s2_pq').textContent = pq.toFixed(1) + ' px';
+  const cmp = document.getElementById('s2_cmp');
+  if (Math.abs(pf - pq) < 0.5) { cmp.textContent = 'PF = PQ（Q 与 F 重合）'; cmp.className = 'ok'; }
+  else { cmp.textContent = 'PF < PQ（垂线段最短）'; cmp.className = 'ok'; }
+}
+document.getElementById('s2_btn').addEventListener('click', () => {
+  s2.showPerp = !s2.showPerp;
+  document.getElementById('s2_btn').textContent = s2.showPerp ? '🙈 隐藏垂线' : '📏 画垂线 PF';
+  drawPerpendicular();
+});
+document.getElementById('s2_reset').addEventListener('click', () => { s2.A = null; drawPerpendicular(); });
+cv2.addEventListener('pointerdown', e => {
+  const p = getPos(cv2, e);
+  if (Math.hypot(p.x - s2.P.x, p.y - s2.P.y) < 16) s2.target = 'P';
+  else if (Math.hypot(p.x - s2.Q.x, p.y - s2.Q.y) < 16) s2.target = 'Q';
+  else s2.target = null;
+  if (s2.target) cv2.setPointerCapture(e.pointerId);
+});
+cv2.addEventListener('pointermove', e => {
+  if (!s2.target) return;
+  const p = getPos(cv2, e);
+  if (s2.target === 'P') { s2.P = p; }
+  else { // Q 投影到 AB
+    const f = footPerp(p, s2.A, s2.B);
+    s2.Q = { x: f.x, y: f.y };
+  }
+  drawPerpendicular();
+});
+cv2.addEventListener('pointerup', () => { s2.target = null; });
+cv2.addEventListener('pointercancel', () => { s2.target = null; });
+cv2.addEventListener('lostpointercapture', () => { s2.target = null; });
+
+/* =================================================================
+   环节 3：平行线的判定
+   ================================================================= */
+const cv3 = document.getElementById('cv3');
+const s3 = { thetaB: 0, thetaC: 55 };
+function drawParallelJudge() {
+  const { ctx, w, h } = setupCanvas(cv3);
+  ctx.clearRect(0, 0, w, h);
+  const ya = 120, yb = 310, cx = w / 2;
+  const cPoint = { x: cx - 60, y: (ya + yb) / 2 };   // 截线 c 经过的点
+  const thA = 0, thB = s3.thetaB, thC = s3.thetaC;
+
+  // 三条直线
+  drawLineThrough(ctx, cx, ya, thA, w, h, '#2c3e50', 2.5);   // a
+  drawLineThrough(ctx, cx, yb, thB, w, h, '#2c3e50', 2.5);   // b
+  drawLineThrough(ctx, cPoint.x, cPoint.y, thC, w, h, '#7f8c8d', 2); // c
+
+  // 交点
+  const Pa = lineIntersect({ x: 0, y: ya }, thA, cPoint, thC);
+  const Pb = lineIntersect({ x: cx, y: yb }, thB, cPoint, thC);
+
+  // 8 个角的定义：[起点角, 终点角, 值, 名称]
+  const arcsA = [
+    { a1: 0,    a2: thC,          val: thC,            name: '∠1' },
+    { a1: thC,  a2: 180,          val: 180 - thC,      name: '∠2' },
+    { a1: 180,  a2: 180 + thC,    val: thC,            name: '∠3' },
+    { a1: 180 + thC, a2: 360,     val: 180 - thC,      name: '∠4' }
+  ];
+  const arcsB = [
+    { a1: thB,       a2: thC,          val: thC - thB,        name: '∠5' },
+    { a1: thC,       a2: thB + 180,    val: 180 - (thC - thB),name: '∠6' },
+    { a1: thB + 180, a2: 180 + thC,    val: thC - thB,        name: '∠7' },
+    { a1: 180 + thC, a2: thB + 360,    val: 180 - (thC - thB),name: '∠8' }
+  ];
+
+  // 高亮三对角（不同半径）
+  // 同位角 ∠1∠5：橙；内错角 ∠3∠5：绿；同旁内角 ∠3∠6：紫
+  drawAngleArc(ctx, Pa.x, Pa.y, 18, arcsA[0].a1, arcsA[0].a2, '#ff9800', 3);  // ∠1
+  drawAngleArc(ctx, Pb.x, Pb.y, 18, arcsB[0].a1, arcsB[0].a2, '#ff9800', 3);  // ∠5
+  // 内错角 ∠3∠5：绿（半径 28）
+  drawAngleArc(ctx, Pa.x, Pa.y, 28, arcsA[2].a1, arcsA[2].a2, '#4caf50', 3);  // ∠3
+  drawAngleArc(ctx, Pb.x, Pb.y, 28, arcsB[0].a1, arcsB[0].a2, '#4caf50', 3);  // ∠5
+  // 同旁内角 ∠3∠6：紫（半径 38）
+  drawAngleArc(ctx, Pa.x, Pa.y, 38, arcsA[2].a1, arcsA[2].a2, '#9b59b6', 3);  // ∠3
+  drawAngleArc(ctx, Pb.x, Pb.y, 38, arcsB[1].a1, arcsB[1].a2, '#9b59b6', 3);  // ∠6
+
+  // 标注 ∠1~∠4（在 Pa 周围）与 ∠5~∠8（在 Pb 周围）
+  ctx.font = 'bold 13px sans-serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  const labelArcs = [
+    { pt: Pa, arcs: arcsA }, { pt: Pb, arcs: arcsB }
+  ];
+  labelArcs.forEach(({ pt, arcs }) => {
+    arcs.forEach(arc => {
+      const mid = ((arc.a1 + arc.a2) / 2) * D2R;
+      const lx = pt.x + 50 * Math.cos(mid), ly = pt.y - 50 * Math.sin(mid);
+      ctx.fillStyle = '#333';
+      ctx.fillText(arc.name, lx, ly - 7);
+      ctx.font = 'bold 11px sans-serif';
+      ctx.fillStyle = '#555';
+      ctx.fillText(Math.round(Math.abs(arc.val)) + '°', lx, ly + 7);
+      ctx.font = 'bold 13px sans-serif';
+    });
+  });
+
+  // 交点小圆
+  ctx.fillStyle = '#333';
+  [Pa, Pb].forEach(p => { ctx.beginPath(); ctx.arc(p.x, p.y, 3, 0, 2 * Math.PI); ctx.fill(); });
+
+  // 直线名称标签
+  ctx.fillStyle = '#2c3e50'; ctx.font = 'bold 14px sans-serif'; ctx.textAlign = 'left';
+  ctx.fillText('a', 16, ya - 8);
+  ctx.fillText('b', 16, yb + 16);
+  ctx.fillStyle = '#7f8c8d';
+  // 截线 c 标签：放在右上
+  const cEnd = { x: cPoint.x + 200 * Math.cos(thC * D2R), y: cPoint.y - 200 * Math.sin(thC * D2R) };
+  ctx.fillText('c（截线）', cEnd.x + 6, cEnd.y - 6);
+
+  // 计算各角实际值（取绝对值，保证显示为正）
+  const a1v = Math.abs(thC), a3v = Math.abs(thC);
+  const a5v = Math.abs(thC - thB), a6v = Math.abs(180 - (thC - thB));
+  const isPar = Math.abs(thB) < 0.8;
+
+  // 面板更新
+  document.getElementById('s3_val').textContent = thB + '°';
+  document.getElementById('s3_c1').innerHTML = a1v.toFixed(0) + '° / ' + a5v.toFixed(0) + '° ' +
+    (Math.abs(a1v - a5v) < 0.8 ? '<b class="ok">相等✓</b>' : '<b class="no">不等</b>');
+  document.getElementById('s3_c2').innerHTML = a3v.toFixed(0) + '° / ' + a5v.toFixed(0) + '° ' +
+    (Math.abs(a3v - a5v) < 0.8 ? '<b class="ok">相等✓</b>' : '<b class="no">不等</b>');
+  document.getElementById('s3_c3').innerHTML = (a3v + a6v).toFixed(0) + '° ' +
+    (Math.abs(a3v + a6v - 180) < 0.8 ? '<b class="ok">互补✓</b>' : '<b class="no">不补</b>');
+  const concl = document.getElementById('s3_concl');
+  const tip = document.getElementById('s3_tip');
+  if (isPar) {
+    concl.textContent = 'a ∥ b ✓'; concl.className = 'ok';
+    tip.className = 'tip success';
+    tip.innerHTML = '同位角相等、内错角相等、同旁内角互补 → <b>a∥b</b>！三种判定条件同时成立。';
+  } else {
+    concl.textContent = 'a 与 b 不平行'; concl.className = 'no';
+    tip.className = 'tip';
+    tip.innerHTML = '当前 b 未与 a 平行。把倾角调到 <b>0°</b>，使 b∥a，三种条件同时成立。';
+  }
+}
+// 滑块控制直线 b 倾角
+document.getElementById('s3_slider').addEventListener('input', e => {
+  s3.thetaB = parseInt(e.target.value);
+  drawParallelJudge();
+});
+
+/* =================================================================
+   环节 4：平行线的性质（a∥b，性质恒成立）
+   ================================================================= */
+const cv4 = document.getElementById('cv4');
+const s4 = { thetaA: 0, thetaC: 55 };
+function drawParallelProp() {
+  const { ctx, w, h } = setupCanvas(cv4);
+  ctx.clearRect(0, 0, w, h);
+  const ya = 130, yb = 310, cx = w / 2;
+  const thA = s4.thetaA, thC = s4.thetaC;
+  const cPoint = { x: cx - 70, y: (ya + yb) / 2 };
+
+  // a 与 b 同向（平行），c 为截线
+  drawLineThrough(ctx, cx, ya, thA, w, h, '#2c3e50', 2.5);             // a
+  drawLineThrough(ctx, cx, yb, thA, w, h, '#2c3e50', 2.5);             // b（与 a 平行）
+  drawLineThrough(ctx, cPoint.x, cPoint.y, thC, w, h, '#7f8c8d', 2);   // c
+
+  // 交点
+  const Pa = lineIntersect({ x: 0, y: ya }, thA, cPoint, thC);
+  const Pb = lineIntersect({ x: cx, y: yb }, thA, cPoint, thC);
+
+  // β = a 与 c 的夹角（0~180）
+  let beta = ((thC - thA) % 180 + 180) % 180;
+
+  // Pa 处四角
+  const arcsA = [
+    { a1: thA,        a2: thC,           val: beta,         name: '∠1' },
+    { a1: thC,        a2: thA + 180,     val: 180 - beta,    name: '∠2' },
+    { a1: thA + 180,  a2: thC + 180,     val: beta,          name: '∠3' },
+    { a1: thC + 180,  a2: thA + 360,     val: 180 - beta,    name: '∠4' }
+  ];
+  // Pb 处四角（因 a∥b，与 Pa 完全相同）
+  const arcsB = [
+    { a1: thA,        a2: thC,           val: beta,         name: '∠5' },
+    { a1: thC,        a2: thA + 180,     val: 180 - beta,    name: '∠6' },
+    { a1: thA + 180,  a2: thC + 180,     val: beta,          name: '∠7' },
+    { a1: thC + 180,  a2: thA + 360,     val: 180 - beta,    name: '∠8' }
+  ];
+
+  // 高亮三对关系
+  // 同位角 ∠1∠5：橙；内错角 ∠3∠5：绿；同旁内角 ∠3∠6：紫
+  drawAngleArc(ctx, Pa.x, Pa.y, 18, arcsA[0].a1, arcsA[0].a2, '#ff9800', 3);
+  drawAngleArc(ctx, Pb.x, Pb.y, 18, arcsB[0].a1, arcsB[0].a2, '#ff9800', 3);
+  drawAngleArc(ctx, Pa.x, Pa.y, 28, arcsA[2].a1, arcsA[2].a2, '#4caf50', 3);
+  drawAngleArc(ctx, Pb.x, Pb.y, 28, arcsB[0].a1, arcsB[0].a2, '#4caf50', 3);
+  drawAngleArc(ctx, Pa.x, Pa.y, 38, arcsA[2].a1, arcsA[2].a2, '#9b59b6', 3);
+  drawAngleArc(ctx, Pb.x, Pb.y, 38, arcsB[1].a1, arcsB[1].a2, '#9b59b6', 3);
+
+  // 角度标注
+  ctx.font = 'bold 13px sans-serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  [{ pt: Pa, arcs: arcsA }, { pt: Pb, arcs: arcsB }].forEach(({ pt, arcs }) => {
+    arcs.forEach(arc => {
+      const mid = ((arc.a1 + arc.a2) / 2) * D2R;
+      const lx = pt.x + 50 * Math.cos(mid), ly = pt.y - 50 * Math.sin(mid);
+      ctx.fillStyle = '#333';
+      ctx.fillText(arc.name, lx, ly - 7);
+      ctx.font = 'bold 11px sans-serif'; ctx.fillStyle = '#555';
+      ctx.fillText(Math.round(Math.abs(arc.val)) + '°', lx, ly + 7);
+      ctx.font = 'bold 13px sans-serif';
+    });
+  });
+
+  // 交点
+  ctx.fillStyle = '#333';
+  [Pa, Pb].forEach(p => { ctx.beginPath(); ctx.arc(p.x, p.y, 3, 0, 2 * Math.PI); ctx.fill(); });
+
+  // 直线标签
+  ctx.fillStyle = '#2c3e50'; ctx.font = 'bold 14px sans-serif'; ctx.textAlign = 'left';
+  ctx.fillText('a', 16, ya - 8);
+  ctx.fillText('b（∥ a）', 16, yb + 16);
+  ctx.fillStyle = '#7f8c8d';
+  const cEnd = { x: cPoint.x + 200 * Math.cos(thC * D2R), y: cPoint.y - 200 * Math.sin(thC * D2R) };
+  ctx.fillText('c（截线）', cEnd.x + 6, cEnd.y - 6);
+
+  // 面板：性质恒成立
+  const b1 = Math.round(beta), b2 = Math.round(180 - beta);
+  document.getElementById('s4_a').textContent = thA + '°';
+  document.getElementById('s4_c').textContent = thC + '°';
+  document.getElementById('s4_p1').innerHTML = b1 + '° = ' + b1 + '° 相等 ✓';
+  document.getElementById('s4_p2').innerHTML = b1 + '° = ' + b1 + '° 相等 ✓';
+  document.getElementById('s4_p3').innerHTML = b1 + '° + ' + b2 + '° = 180° 互补 ✓';
+}
+
+// 环节4 滑块：平行线倾角 与 截线倾角
+document.getElementById('s4_sa').addEventListener('input', e => {
+  s4.thetaA = parseInt(e.target.value);
+  drawParallelProp();
+});
+document.getElementById('s4_sc').addEventListener('input', e => {
+  s4.thetaC = parseInt(e.target.value);
+  drawParallelProp();
+});
+
+/* =================================================================
+   环节4 小练习：3 道判断题
+   ================================================================= */
+const quizData = [
+  { q: '1. 两直线平行，同位角相等。',          ans: true,  exp: '正确。这是平行线的基本性质之一。' },
+  { q: '2. 两直线平行，内错角互补。',          ans: false, exp: '错误。两直线平行时内错角是"相等"，不是互补；同旁内角才互补。' },
+  { q: '3. 两直线平行，同旁内角互补。',        ans: true,  exp: '正确。同旁内角互补（和为 180°）是平行线的性质。' }
+];
+const quizBox = document.getElementById('s4_quiz');
+quizData.forEach((item, i) => {
+  const div = document.createElement('div');
+  div.className = 'quiz-q';
+  div.innerHTML = '<p class="qtext">' + item.q + '</p>' +
+    '<button data-ans="true">对</button><button data-ans="false">错</button>' +
+    '<div class="feedback"></div>';
+  const fb = div.querySelector('.feedback');
+  div.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const userAns = btn.dataset.ans === 'true';
+      div.querySelectorAll('button').forEach(b => { b.disabled = true; });
+      if (userAns === item.ans) {
+        btn.className = 'correct';
+        fb.className = 'feedback right';
+        fb.textContent = '✓ 答对了！' + item.exp;
+      } else {
+        btn.className = 'wrong';
+        fb.className = 'feedback bad';
+        fb.textContent = '✗ 再想想。' + item.exp;
+      }
+    });
+  });
+  quizBox.appendChild(div);
+});
+
+/* =================================================================
+   初始化与窗口尺寸变化
+   ================================================================= */
+drawIntersect();
+window.addEventListener('resize', () => {
+  const active = document.querySelector('.card.active');
+  if (!active) return;
+  if (active.id === 's1') drawIntersect();
+  else if (active.id === 's2') drawPerpendicular();
+  else if (active.id === 's3') drawParallelJudge();
+  else if (active.id === 's4') drawParallelProp();
+});
+
+// 检测是否被 iframe 嵌入，如果是则启用精简模式（隐藏大标题）
+(function () {
+    try {
+        if (window.self !== window.top) {
+            document.body.classList.add('embedded');
+        }
+    } catch (e) { /* 跨域访问报错时忽略 */ }
+})();</script>
+</body>
+</html>
+

@@ -1,0 +1,25 @@
+.card { padding: 1.5rem; border: 1px solid #cbd9ea; border-top: 4px solid var(--study-blue, #245dcc); border-radius: 1rem; background: white; margin: 1rem 0; color: #19334c; }
+.card h3 { margin: 1rem 0; line-height: 1.6; }
+.badge { color: var(--study-blue, #245dcc); background: #edf3ff; border-radius: .5rem; padding: .35rem .75rem; font-weight: 700; }
+.choices { border: 0; padding: 0; margin: 0; min-width: 0; display: grid; gap: .75rem; }
+.choices legend { color: #51677b; margin-bottom: .75rem; font-size: .9rem; }
+.option { display: flex; align-items: center; gap: .75rem; min-height: 3.25rem; padding: .75rem 1rem; border: 1px solid #cbd9ea; border-radius: .75rem; background: #f8faff; cursor: pointer; overflow-wrap: anywhere; }
+.option:hover, .option[data-selected='true'] { border-color: var(--study-blue, #245dcc); background: #eaf1ff; }
+.option:focus-within { outline: 3px solid #245dcc; outline-offset: 2px; }
+.option input { accent-color: var(--study-blue, #245dcc); width: 1.1rem; height: 1.1rem; flex-shrink: 0; }
+.choices:disabled .option { cursor: default; }
+.letter { font-weight: 700; }
+.answerTag { margin-left: auto; color: #086351; font-size: .85rem; flex-shrink: 0; }
+.actions { display: flex; align-items: center; flex-wrap: wrap; gap: 1rem; margin-top: 1.25rem; }
+.actions span { color: #51677b; font-size: .9rem; }
+.feedback { margin-top: 1.25rem; padding: 1rem; border-radius: .75rem; border-left: 4px solid #ae430b; background: #fff2df; }
+.feedback[data-result='correct'] { border-color: #087565; background: #e5f6ef; }
+.feedback p { line-height: 1.7; }
+.feedback a { color: #174fb5; text-decoration: underline; margin-left: .5rem; }
+.error { color: #993117; line-height: 1.6; }
+.card { border: 2px solid var(--bp-ink); border-top: 6px solid var(--bp-blue); box-shadow: var(--bp-shadow); color: var(--bp-ink); }
+.badge { color: var(--bp-ink); background: var(--bp-yellow); border: 1px solid var(--bp-ink); }
+.option[data-selected='true'] { box-shadow: inset 4px 0 var(--bp-blue); background: var(--bp-blue-soft); }
+.feedback { background: var(--bp-orange-soft); color: var(--bp-ink); }
+.feedback[data-result='correct'] { background: var(--bp-green-soft); }
+@media (max-width: 480px) { .card { padding: 1rem; } .option { gap: .5rem; padding: .75rem; } }

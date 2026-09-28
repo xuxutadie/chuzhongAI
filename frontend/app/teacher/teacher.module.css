@@ -1,0 +1,43 @@
+.section { --teacher-blue: #245bce; --teacher-teal: #087b6b; display: grid; gap: 1.25rem; margin-block: 1.5rem; color: #19334a; }
+.card { padding: 1.5rem; background: #fff; border: 1px solid #d1deea; border-radius: 1rem; }
+.card h2, .card h3 { margin: 0 0 .75rem; }
+.card p { line-height: 1.7; color: #526a7b; }
+.claim { border-top: .3rem solid var(--teacher-teal); background: #f0faf7; }
+.form { display: grid; gap: 1rem; max-width: 42rem; }
+.form label { display: grid; gap: .5rem; font-weight: 600; }
+.form input { width: 100%; min-width: 0; padding: .8rem 1rem; border: 1px solid #a8bfd1; border-radius: .6rem; background: #fff; color: #19334a; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; }
+.primary, .secondary, .danger { display: inline-flex; justify-content: center; align-items: center; min-height: 2.75rem; padding: .7rem 1.1rem; border: 1px solid transparent; border-radius: .6rem; text-decoration: none; cursor: pointer; font-weight: 650; }
+.primary { background: var(--teacher-blue); color: #fff; }
+.secondary { background: #e5f4ef; color: #075e50; border-color: #a9d3c7; }
+.danger { background: #fff; border-color: #dcaaa2; color: #a33122; }
+.section button:disabled { opacity: .6; cursor: not-allowed; }
+.section :is(button, input, a):focus-visible { outline: 3px solid #e2a01c; outline-offset: 3px; }
+.code { display: block; font-size: clamp(1.25rem, 4vw, 2rem); letter-spacing: .15em; padding: 1rem; background: #fff; border: 1px dashed #087b6b; border-radius: .6rem; overflow-wrap: anywhere; }
+.error { background: #fff2ed; color: #9d321f; padding: 1rem; border-left: .25rem solid #c94a2d; }
+.list { display: grid; gap: 1rem; padding: 0; list-style: none; }
+.row { display: flex; justify-content: space-between; flex-wrap: wrap; align-items: center; gap: 1rem; padding-block: 1rem; border-bottom: 1px solid #dfebf0; }
+.muted { color: #526a7b; font-size: .9rem; }
+.tabs { display: flex; flex-wrap: wrap; gap: .5rem; border-bottom: 1px solid #cad9e7; padding-bottom: 1rem; }
+.tabs button { padding: .7rem 1rem; border: 1px solid #b8ccde; border-radius: .5rem; background: white; color: #254d72; cursor: pointer; }
+.tabs button[aria-pressed="true"] { background: #245bce; color: white; }
+.facts { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,12rem),1fr)); gap: 1rem; }
+.facts div { padding: 1rem; background: #f2f7fc; border-radius: .6rem; }
+.facts dt { font-size: .9rem; color: #526a7b; }
+.facts dd { margin: .5rem 0 0; font-weight: 650; overflow-wrap: anywhere; }
+/* 教师与学生共用蓝图语言，管理表单保留白色阅读区。 */
+.section { --teacher-blue: var(--bp-blue); --teacher-teal: var(--bp-green); color: var(--bp-ink); }
+.card { border: 2px solid var(--bp-ink); border-top: 6px solid var(--bp-blue); box-shadow: var(--bp-shadow); }
+.claim { background: var(--bp-green-soft); border-top-color: var(--bp-green); }
+.card p, .muted, .facts dt { color: var(--bp-muted); }
+.primary, .secondary, .danger, .tabs button { border: 1px solid var(--bp-ink); box-shadow: var(--bp-shadow-sm); }
+.secondary { background: var(--bp-green-soft); color: var(--bp-ink); }
+.danger { color: var(--bp-danger); }
+.tabs { gap: .75rem; }
+.tabs button[aria-pressed="true"] { background: var(--bp-blue); }
+.section button:disabled { box-shadow: none; }
+.facts div { background: var(--bp-blue-soft); border: 1px solid var(--bp-ink); }
+.facts div:nth-child(3n+2) { background: var(--bp-purple-soft); }
+.facts div:nth-child(3n) { background: var(--bp-orange-soft); }
+.code { border: 2px dashed var(--bp-green); }
+@media (max-width: 480px) { .card { padding: 1rem; } .actions > * { flex: 1; } }

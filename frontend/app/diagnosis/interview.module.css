@@ -1,0 +1,94 @@
+/* 全屏只固定外壳；长问题、历史记录和小屏键盘均可在各自区域滚动。 */
+.immersive { position: fixed; inset: 0; z-index: 100; height: 100dvh; display: flex; flex-direction: column; overflow: hidden; background: #fbfcfe; }
+.bar { display: flex; flex: 0 0 auto; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 28px; }
+.brand { margin: 0 0 4px; font-size: 15px; font-weight: 600; color: #17334c !important; text-decoration: none; }
+.barActions { display: flex; gap: 8px; align-items: center; }
+.bar button { border: 0; padding: 8px 12px; background: transparent; font-size: 13px; }
+.layout { flex: 1; min-height: 0; display: flex; flex-direction: column; width: 100%; background: #f1f4f6; }
+.thread { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; background: #f1f4f6; padding: 24px; scroll-padding: 24px; }
+.messages { max-width: 1120px; margin: 0 auto; }
+.chatNotice { margin: 0 0 32px; text-align: center; color: #586b7c; font-size: 12px; line-height: 1.8; }
+.aiRow, .studentRow { display: flex; align-items: flex-start; gap: 24px; margin-bottom: 36px; }
+.studentRow { justify-content: flex-end; padding-left: 64px; }
+.messageContent { max-width: min(640px, calc(100% - 88px)); min-width: 0; padding-top: 4px; }
+.sender { display: block; font-size: 12px; color: #53677d; margin-bottom: 8px; }
+.studentRow .sender { text-align: right; }
+.aiBubble, .studentBubble { width: fit-content; margin: 0; padding: 16px 20px; font-size: 17px; line-height: 1.8; white-space: pre-wrap; overflow-wrap: anywhere; }
+.aiBubble { border: 1px solid #e0e6ea; border-radius: 3px 16px 16px; background: #fff; color: #17334c; }
+.studentBubble { margin-left: auto; border-radius: 16px 3px 16px 16px; background: #b3eb88; color: #183e25; }
+.studentAvatar { display: grid; place-items: center; flex-shrink: 0; width: 44px; height: 44px; margin-top: 4px; border-radius: 12px; background: #16786b; color: #fff; font-size: 15px; }
+.robotStatus { margin-left: 8px; color: #53677d; font-size: 11px; }
+.activeQuestion { margin-bottom: 16px; }
+.screenReaderOnly { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.typingCursor { display: inline-block; width: 2px; height: 1em; margin-left: 4px; background: #1767ff; vertical-align: -.1em; }
+.activeQuestion .showAll { margin-top: 8px; padding: 6px 8px; border: 0; border-radius: 4px; background: transparent; color: #365e7a; font-size: 12px; }
+.meta { font-size: 12px; color: #53677d; margin: 0; }
+.progressLine { width: 100%; height: 2px; background: #e7edf5; flex-shrink: 0; }
+.progressLine span { display: block; height: 100%; background: #2b67db; transition: width .3s; }
+.compose { flex: 0 0 auto; align-self: center; width: min(680px, calc(100% - 48px)); max-height: 36dvh; overflow-y: auto; margin: 0 0 max(16px, env(safe-area-inset-bottom)); padding: 8px; border: 1px solid #d9e3e9; border-radius: 16px; background: #fff; box-shadow: 0 4px 16px #17334c08; }
+.questionActions { margin-top: 12px; }
+.answerHint { margin: 0 0 8px; color: #53677d; font-size: 12px; }
+.choices { display: flex; flex-wrap: wrap; gap: 8px; }
+.choices button { font-size: 14px; border-radius: 24px; padding: 8px 15px; }
+.choices button[aria-pressed="true"] { color: #204ea9; border-color: #2b67db; background: #eef4ff; }
+.questionActions .skip { margin-top: 8px; padding: 4px 0; background: transparent; border: 0; color: #53677d; font-size: 12px; }
+.entry { display: flex; gap: 10px; align-items: flex-end; }
+.entry label { flex: 1; margin: 0; font-size: 12px; min-width: 0; }
+.entry input { min-height: 44px; padding: 10px 12px; border: 0; box-shadow: none; background: transparent; }
+.entry button { flex-shrink: 0; }
+.help { position: relative; color: #53677d; font-size: 12px; }
+.help summary { cursor: pointer; padding: 8px; }
+.help > div { position: absolute; z-index: 3; right: 0; top: 100%; width: min(320px, calc(100vw - 32px)); max-height: 55dvh; overflow-y: auto; padding: 16px; border: 1px solid #d9e3e9; border-radius: 12px; background: #fff; box-shadow: 0 8px 24px #17334c14; line-height: 1.8; }
+.help p { margin: 0 0 8px; }
+.review { flex: 1; min-height: 0; overflow-y: auto; padding: 24px max(24px, calc((100vw - 880px) / 2)) 48px; }
+.error { margin: 8px 24px; padding: 10px 16px; background: #fff1e9; color: #9b3e20; line-height: 1.7; }
+.robot { width: 64px; flex-shrink: 0; }
+.activeQuestion .robot { width: 84px; margin-left: -10px; margin-right: -10px; }
+.robot svg { display: block; width: 100%; }
+.robotBody { transform-origin: 90px 135px; }
+.eyes { transform-origin: 90px 74px; }
+.waveArm { transform-origin: 134px 121px; }
+.mouth { transform-origin: 90px 94px; }
+.speechWaves { opacity: 0; }
+/* 提问时挥手、点头和嘴部同时运动；旧消息保持静止，不持续争抢注意力。 */
+.robot[data-state="speaking"] .robotBody { animation: robotNod .8s ease-in-out infinite; }
+.robot[data-state="speaking"] .waveArm { animation: robotWave .6s ease-in-out infinite; }
+.robot[data-state="speaking"] .mouth { animation: robotTalk .4s ease-in-out infinite; }
+.robot[data-state="speaking"] .speechWaves { animation: robotSignal .8s ease-in-out infinite; }
+.robot[data-state="thinking"] .antenna { animation: robotThink 1s ease-in-out infinite; transform-origin: 90px 19px; }
+.robot[data-state="thinking"] .eyes { animation: robotLook 1.6s ease-in-out infinite; }
+@keyframes robotNod { 25% { transform: translateY(-7px) rotate(-7deg); } 75% { transform: translateY(2px) rotate(6deg); } }
+@keyframes robotWave { 50% { transform: rotate(-32deg); } }
+@keyframes robotTalk { 50% { transform: scale(.8, 2.2); } }
+@keyframes robotSignal { 50% { opacity: 1; transform: translateX(2px); } }
+@keyframes robotThink { 50% { transform: scale(1.3); } }
+@keyframes robotLook { 50% { transform: translateX(4px); } }
+.immersive :is(button, input, summary, a, [tabindex]):focus-visible { outline: 3px solid #167ca1; outline-offset: 3px; }
+/* 保留一问一答和小输入框，只为对话加入彩色蓝图外观。 */
+.immersive { background: var(--bp-paper); }
+.bar { background: white; border-bottom: 1px solid var(--bp-ink); }
+.layout, .thread { background-color: var(--bp-paper); background-image: var(--bp-grid); background-size: 28px 28px; }
+.aiBubble { border: 1px solid var(--bp-ink); color: var(--bp-ink); box-shadow: var(--bp-shadow-sm); }
+.studentBubble { color: var(--bp-ink); background: var(--bp-green-soft); border: 1px solid var(--bp-ink); box-shadow: var(--bp-shadow-sm); }
+.studentAvatar { background: var(--bp-purple); border: 1px solid var(--bp-ink); box-shadow: var(--bp-shadow-sm); }
+.compose { border: 2px solid var(--bp-ink); box-shadow: var(--bp-shadow); }
+.choices button { border-color: var(--bp-ink); color: var(--bp-ink); }
+.choices button:nth-child(3n+1) { background: var(--bp-blue-soft); }
+.choices button:nth-child(3n+2) { background: var(--bp-green-soft); }
+.choices button:nth-child(3n) { background: var(--bp-orange-soft); }
+.choices button[aria-pressed="true"] { color: var(--bp-ink); background: var(--bp-yellow); border-color: var(--bp-ink); box-shadow: 2px 2px 0 var(--bp-ink); }
+.chatNotice, .sender, .robotStatus, .meta, .answerHint { color: var(--bp-muted); }
+.progressLine span { background: var(--bp-blue); }
+@media (max-width: 600px) {
+  .bar { padding: 10px 12px; align-items: flex-start; flex-wrap: wrap; gap: 4px; }.barActions { gap: 0; flex-wrap: wrap; }.bar button { padding: 8px; font-size: 12px; }.brand { font-size: 13px; }
+  .compose { width: calc(100% - 24px); padding: 6px; margin-bottom: max(12px, env(safe-area-inset-bottom)); }.thread { padding: 16px 12px; }.chatNotice { margin-bottom: 24px; }
+  .robot { width: 44px; }.activeQuestion .robot { width: 60px; margin-left: -8px; margin-right: -8px; }.aiRow, .studentRow { gap: 16px; margin-bottom: 28px; }
+  .messageContent { max-width: calc(100% - 60px); }.studentRow { padding-left: 32px; }.studentAvatar { width: 36px; height: 36px; }.aiBubble, .studentBubble { padding: 12px 14px; font-size: 16px; }.robotStatus { display: block; margin: 4px 0 0; }
+  .entry { flex-wrap: wrap; }.entry button { padding: 10px !important; }.choices { gap: 6px; }.choices button { padding: 7px 10px; font-size: 13px; }
+  .help { position: static; }.help > div { position: absolute; top: 100%; right: 12px; }.bar { position: relative; z-index: 2; }
+  .entry:has(label:nth-of-type(2)) label { flex-basis: calc(50% - 5px); }
+  .entry:has(label:nth-of-type(2)) button { margin-left: auto; }
+  .entry input { font-size: 16px; }
+}
+@media (max-height: 620px) { .compose { padding-top: 8px; padding-bottom: 8px; }.bar { padding-top: 8px; padding-bottom: 8px; } }
+@media (prefers-reduced-motion: reduce) { .robot * { animation: none !important; }.progressLine span { transition: none; } }

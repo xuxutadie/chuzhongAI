@@ -1,0 +1,1229 @@
+{
+  "id": "g7u-chapter-1",
+  "title": "第一章 丰富的图形世界",
+  "packages": [
+    {
+      "id": "g7u-shapes-solid",
+      "subject": "数学",
+      "grade": 7,
+      "semester": "上册",
+      "textbookVersion": "北师大版",
+      "chapterId": "g7u-chapter-1",
+      "title": "生活中的立体图形",
+      "lessonId": "g7-upper-shapes",
+      "interaction": {
+        "section": "shapes",
+        "supportedDifficulties": [
+          "basic",
+          "advanced",
+          "challenge"
+        ]
+      },
+      "capabilityTags": [
+        "实物抽象",
+        "结构计数",
+        "曲面认识",
+        "旋转观察",
+        "组合体分析"
+      ],
+      "questions": [
+        {
+          "id": "solid-01",
+          "knowledgePointId": "g7u-shapes-solid",
+          "capabilityTag": "实物抽象",
+          "difficulty": "basic",
+          "responseType": "single-choice",
+          "prompt": "篮球可以近似看成哪一种立体图形？",
+          "options": [
+            {
+              "id": "a",
+              "text": "球"
+            },
+            {
+              "id": "b",
+              "text": "圆柱"
+            },
+            {
+              "id": "c",
+              "text": "圆锥"
+            },
+            {
+              "id": "d",
+              "text": "正方体"
+            }
+          ],
+          "correctAnswer": "a",
+          "explanation": "篮球的外形可以近似抽象为球。",
+          "source": "local-reviewed"
+        },
+        {
+          "id": "solid-02",
+          "knowledgePointId": "g7u-shapes-solid",
+          "capabilityTag": "结构计数",
+          "difficulty": "basic",
+          "responseType": "single-choice",
+          "prompt": "一个正方体有多少个面？",
+          "options": [
+            {
+              "id": "a",
+              "text": "4个"
+            },
+            {
+              "id": "b",
+              "text": "6个"
+            },
+            {
+              "id": "c",
+              "text": "8个"
+            },
+            {
+              "id": "d",
+              "text": "12个"
+            }
+          ],
+          "correctAnswer": "b",
+          "explanation": "正方体有6个大小相同的正方形面。",
+          "visual": {
+            "kind": "solid-model",
+            "solid": "cube"
+          },
+          "source": "local-reviewed"
+        },
+        {
+          "id": "solid-03",
+          "knowledgePointId": "g7u-shapes-solid",
+          "capabilityTag": "曲面认识",
+          "difficulty": "basic",
+          "responseType": "true-false",
+          "prompt": "球的表面全部是曲面。",
+          "options": [
+            {
+              "id": "true",
+              "text": "正确"
+            },
+            {
+              "id": "false",
+              "text": "错误"
+            }
+          ],
+          "correctAnswer": "true",
+          "explanation": "球没有平面，整个表面都是曲面。",
+          "visual": {
+            "kind": "solid-model",
+            "solid": "sphere"
+          },
+          "source": "local-reviewed"
+        },
+        {
+          "id": "solid-04",
+          "knowledgePointId": "g7u-shapes-solid",
+          "capabilityTag": "分类辨析",
+          "difficulty": "advanced",
+          "responseType": "multi-choice",
+          "prompt": "下列几何体中，含有曲面的有哪些？",
+          "options": [
+            {
+              "id": "a",
+              "text": "圆柱"
+            },
+            {
+              "id": "b",
+              "text": "圆锥"
+            },
+            {
+              "id": "c",
+              "text": "正方体"
+            },
+            {
+              "id": "d",
+              "text": "球"
+            }
+          ],
+          "correctAnswer": [
+            "a",
+            "b",
+            "d"
+          ],
+          "explanation": "圆柱、圆锥和球都含有曲面，正方体只含平面。",
+          "source": "local-reviewed"
+        },
+        {
+          "id": "solid-05",
+          "knowledgePointId": "g7u-shapes-solid",
+          "capabilityTag": "结构计数",
+          "difficulty": "advanced",
+          "responseType": "single-choice",
+          "prompt": "一个正方体有多少条棱？",
+          "options": [
+            {
+              "id": "a",
+              "text": "6条"
+            },
+            {
+              "id": "b",
+              "text": "8条"
+            },
+            {
+              "id": "c",
+              "text": "12条"
+            },
+            {
+              "id": "d",
+              "text": "16条"
+            }
+          ],
+          "correctAnswer": "c",
+          "explanation": "正方体共有12条棱。",
+          "visual": {
+            "kind": "solid-model",
+            "solid": "cube"
+          },
+          "source": "local-reviewed"
+        },
+        {
+          "id": "solid-06",
+          "knowledgePointId": "g7u-shapes-solid",
+          "capabilityTag": "结构辨析",
+          "difficulty": "advanced",
+          "responseType": "true-false",
+          "prompt": "圆柱有两个互相平行且大小相同的圆形底面。",
+          "options": [
+            {
+              "id": "true",
+              "text": "正确"
+            },
+            {
+              "id": "false",
+              "text": "错误"
+            }
+          ],
+          "correctAnswer": "true",
+          "explanation": "圆柱的两个底面是互相平行且大小相同的圆。",
+          "visual": {
+            "kind": "solid-model",
+            "solid": "cylinder"
+          },
+          "source": "local-reviewed"
+        },
+        {
+          "id": "solid-07",
+          "knowledgePointId": "g7u-shapes-solid",
+          "capabilityTag": "实物抽象",
+          "difficulty": "challenge",
+          "responseType": "multi-choice",
+          "prompt": "下列物体可以近似看成长方体的有哪些？",
+          "options": [
+            {
+              "id": "a",
+              "text": "书本"
+            },
+            {
+              "id": "b",
+              "text": "鞋盒"
+            },
+            {
+              "id": "c",
+              "text": "篮球"
+            },
+            {
+              "id": "d",
+              "text": "易拉罐"
+            }
+          ],
+          "correctAnswer": [
+            "a",
+            "b"
+          ],
+          "explanation": "书本和鞋盒通常可以近似抽象成长方体。",
+          "source": "local-reviewed"
+        },
+        {
+          "id": "solid-08",
+          "knowledgePointId": "g7u-shapes-solid",
+          "capabilityTag": "组合体分析",
+          "difficulty": "challenge",
+          "responseType": "single-choice",
+          "prompt": "把一个圆柱放在一个正方体上组成组合体，两个几何体接触处的面最接近什么形状？",
+          "options": [
+            {
+              "id": "a",
+              "text": "圆"
+            },
+            {
+              "id": "b",
+              "text": "三角形"
+            },
+            {
+              "id": "c",
+              "text": "正方形"
+            },
+            {
+              "id": "d",
+              "text": "扇形"
+            }
+          ],
+          "correctAnswer": "a",
+          "explanation": "圆柱底面是圆，接触区域最接近圆。",
+          "source": "local-reviewed"
+        },
+        {
+          "id": "solid-09",
+          "knowledgePointId": "g7u-shapes-solid",
+          "capabilityTag": "旋转观察",
+          "difficulty": "advanced",
+          "responseType": "interactive",
+          "prompt": "旋转正方体，找到并确认它的面、棱和顶点。",
+          "correctAnswer": {
+            "challengeId": "solid-cube-parts",
+            "passed": true
+          },
+          "explanation": "通过旋转可以从不同方向确认正方体的6个面、12条棱和8个顶点。",
+          "visual": {
+            "kind": "solid-model",
+            "solid": "cube"
+          },
+          "source": "local-reviewed"
+        },
+        {
+          "id": "solid-10",
+          "knowledgePointId": "g7u-shapes-solid",
+          "capabilityTag": "曲面观察",
+          "difficulty": "challenge",
+          "responseType": "interactive",
+          "prompt": "旋转圆柱，分别指出两个底面和一个侧面。",
+          "correctAnswer": {
+            "challengeId": "solid-cylinder-surfaces",
+            "passed": true
+          },
+          "explanation": "圆柱由两个圆形底面和一个曲面侧面围成。",
+          "visual": {
+            "kind": "solid-model",
+            "solid": "cylinder"
+          },
+          "source": "local-reviewed"
+        }
+      ]
+    },
+    {
+      "id": "g7u-shapes-folding",
+      "subject": "数学",
+      "grade": 7,
+      "semester": "上册",
+      "textbookVersion": "北师大版",
+      "chapterId": "g7u-chapter-1",
+      "title": "展开与折叠",
+      "lessonId": "g7-upper-shapes",
+      "interaction": {
+        "section": "fold",
+        "supportedDifficulties": [
+          "basic",
+          "advanced",
+          "challenge"
+        ]
+      },
+      "capabilityTags": [
+        "展开图组成",
+        "展开图判断",
+        "相对面判断",
+        "动态折叠"
+      ],
+      "questions": [
+        {
+          "id": "fold-01",
+          "knowledgePointId": "g7u-shapes-folding",
+          "capabilityTag": "展开图组成",
+          "difficulty": "basic",
+          "responseType": "single-choice",
+          "prompt": "正方体的完整展开图由几个大小相同的正方形组成？",
+          "options": [
+            {
+              "id": "a",
+              "text": "4个"
+            },
+            {
+              "id": "b",
+              "text": "5个"
+            },
+            {
+              "id": "c",
+              "text": "6个"
+            },
+            {
+              "id": "d",
+              "text": "8个"
+            }
+          ],
+          "correctAnswer": "c",
+          "explanation": "正方体有6个面，因此完整展开图由6个正方形组成。",
+          "source": "local-reviewed"
+        },
+        {
+          "id": "fold-02",
+          "knowledgePointId": "g7u-shapes-folding",
+          "capabilityTag": "展开图判断",
+          "difficulty": "basic",
+          "responseType": "true-false",
+          "prompt": "任意六个相连的正方形都能折成正方体。",
+          "options": [
+            {
+              "id": "true",
+              "text": "正确"
+            },
+            {
+              "id": "false",
+              "text": "错误"
+            }
+          ],
+          "correctAnswer": "false",
+          "explanation": "六个正方形的相对位置必须满足折叠后不重叠、也不缺面。",
+          "visual": {
+            "kind": "folding-net",
+            "netId": "cube-cross"
+          },
+          "source": "local-reviewed"
+        },
+        {
+          "id": "fold-03",
+          "knowledgePointId": "g7u-shapes-folding",
+          "capabilityTag": "相对面判断",
+          "difficulty": "advanced",
+          "responseType": "single-choice",
+          "prompt": "正方体折好后，两个相对面之间的关系是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "共用一条棱"
+            },
+            {
+              "id": "b",
+              "text": "只共用一个顶点"
+            },
+            {
+              "id": "c",
+              "text": "互相平行且不相邻"
+            },
+            {
+              "id": "d",
+              "text": "完全重合"
+            }
+          ],
+          "correctAnswer": "c",
+          "explanation": "正方体的相对面互相平行且不相邻。",
+          "visual": {
+            "kind": "folding-net",
+            "netId": "cube-cross"
+          },
+          "source": "local-reviewed"
+        },
+        {
+          "id": "fold-04",
+          "knowledgePointId": "g7u-shapes-folding",
+          "capabilityTag": "折叠条件",
+          "difficulty": "advanced",
+          "responseType": "multi-choice",
+          "prompt": "判断一个图形能否折成正方体时，需要检查哪些条件？",
+          "options": [
+            {
+              "id": "a",
+              "text": "是否恰好有6个正方形"
+            },
+            {
+              "id": "b",
+              "text": "折叠后是否有面重叠"
+            },
+            {
+              "id": "c",
+              "text": "是否能围成封闭立体"
+            },
+            {
+              "id": "d",
+              "text": "颜色是否相同"
+            }
+          ],
+          "correctAnswer": [
+            "a",
+            "b",
+            "c"
+          ],
+          "explanation": "数量、重叠和能否封闭是关键，颜色不影响几何折叠。",
+          "source": "local-reviewed"
+        },
+        {
+          "id": "fold-05",
+          "knowledgePointId": "g7u-shapes-folding",
+          "capabilityTag": "相邻面判断",
+          "difficulty": "advanced",
+          "responseType": "true-false",
+          "prompt": "展开图中共用一条边的两个正方形，折叠后对应的两个面一定相邻。",
+          "options": [
+            {
+              "id": "true",
+              "text": "正确"
+            },
+            {
+              "id": "false",
+              "text": "错误"
+            }
+          ],
+          "correctAnswer": "true",
+          "explanation": "共用的边会成为正方体的一条棱，因此两个面相邻。",
+          "visual": {
+            "kind": "folding-net",
+            "netId": "cube-zigzag"
+          },
+          "source": "local-reviewed"
+        },
+        {
+          "id": "fold-06",
+          "knowledgePointId": "g7u-shapes-folding",
+          "capabilityTag": "折叠过程",
+          "difficulty": "basic",
+          "responseType": "single-choice",
+          "prompt": "把展开图沿公共边折叠时，每个小正方形最终成为正方体的什么？",
+          "options": [
+            {
+              "id": "a",
+              "text": "顶点"
+            },
+            {
+              "id": "b",
+              "text": "棱"
+            },
+            {
+              "id": "c",
+              "text": "面"
+            },
+            {
+              "id": "d",
+              "text": "对角线"
+            }
+          ],
+          "correctAnswer": "c",
+          "explanation": "展开图中的每个正方形对应正方体的一个面。",
+          "source": "local-reviewed"
+        },
+        {
+          "id": "fold-07",
+          "knowledgePointId": "g7u-shapes-folding",
+          "capabilityTag": "展开图特征",
+          "difficulty": "challenge",
+          "responseType": "multi-choice",
+          "prompt": "一个有效的正方体展开图折叠后应满足哪些结果？",
+          "options": [
+            {
+              "id": "a",
+              "text": "形成6个面"
+            },
+            {
+              "id": "b",
+              "text": "内部封闭"
+            },
+            {
+              "id": "c",
+              "text": "两个面完全重叠"
+            },
+            {
+              "id": "d",
+              "text": "每个面都是正方形"
+            }
+          ],
+          "correctAnswer": [
+            "a",
+            "b",
+            "d"
+          ],
+          "explanation": "有效展开图折叠后形成封闭正方体，6个正方形分别成为6个面。",
+          "source": "local-reviewed"
+        },
+        {
+          "id": "fold-08",
+          "knowledgePointId": "g7u-shapes-folding",
+          "capabilityTag": "相对面判断",
+          "difficulty": "challenge",
+          "responseType": "single-choice",
+          "prompt": "折叠正方体展开图时，已经确定为相对的两个面会怎样？",
+          "options": [
+            {
+              "id": "a",
+              "text": "成为同一个面"
+            },
+            {
+              "id": "b",
+              "text": "互相平行"
+            },
+            {
+              "id": "c",
+              "text": "共用一条棱"
+            },
+            {
+              "id": "d",
+              "text": "互相垂直"
+            }
+          ],
+          "correctAnswer": "b",
+          "explanation": "相对面在正方体中互相平行。",
+          "visual": {
+            "kind": "folding-net",
+            "netId": "cube-t"
+          },
+          "source": "local-reviewed"
+        },
+        {
+          "id": "fold-09",
+          "knowledgePointId": "g7u-shapes-folding",
+          "capabilityTag": "动态折叠",
+          "difficulty": "advanced",
+          "responseType": "interactive",
+          "prompt": "拖动折叠进度，把十字形展开图完整折成立方体。",
+          "correctAnswer": {
+            "challengeId": "fold-cross-net",
+            "passed": true
+          },
+          "explanation": "折叠完成且各面不重叠，说明展开图有效。",
+          "visual": {
+            "kind": "folding-net",
+            "netId": "cube-cross"
+          },
+          "source": "local-reviewed"
+        },
+        {
+          "id": "fold-10",
+          "knowledgePointId": "g7u-shapes-folding",
+          "capabilityTag": "对应面定位",
+          "difficulty": "challenge",
+          "responseType": "interactive",
+          "prompt": "折叠展开图并选择与标记面相对的面。",
+          "correctAnswer": {
+            "challengeId": "fold-opposite-face",
+            "passed": true
+          },
+          "explanation": "可以通过连续折叠追踪每个面的空间位置。",
+          "visual": {
+            "kind": "folding-net",
+            "netId": "cube-zigzag",
+            "targetFace": "F"
+          },
+          "source": "local-reviewed"
+        }
+      ]
+    },
+    {
+      "id": "g7u-shapes-section",
+      "subject": "数学",
+      "grade": 7,
+      "semester": "上册",
+      "textbookVersion": "北师大版",
+      "chapterId": "g7u-chapter-1",
+      "title": "截一个几何体",
+      "lessonId": "g7-upper-shapes",
+      "interaction": {
+        "section": "cut",
+        "supportedDifficulties": [
+          "basic",
+          "advanced",
+          "challenge"
+        ]
+      },
+      "capabilityTags": [
+        "截面识别",
+        "可能性判断",
+        "截面变化",
+        "截法反推"
+      ],
+      "questions": [
+        {
+          "id": "section-01",
+          "knowledgePointId": "g7u-shapes-section",
+          "capabilityTag": "截面识别",
+          "difficulty": "basic",
+          "responseType": "single-choice",
+          "prompt": "用平行于圆柱底面的平面截圆柱，截面是什么形状？",
+          "options": [
+            {
+              "id": "a",
+              "text": "圆"
+            },
+            {
+              "id": "b",
+              "text": "三角形"
+            },
+            {
+              "id": "c",
+              "text": "梯形"
+            },
+            {
+              "id": "d",
+              "text": "扇形"
+            }
+          ],
+          "correctAnswer": "a",
+          "explanation": "截面与圆柱底面平行，因此截面是圆。",
+          "visual": {
+            "kind": "cross-section",
+            "solid": "cylinder",
+            "planePreset": "parallel-base"
+          },
+          "source": "local-reviewed"
+        },
+        {
+          "id": "section-02",
+          "knowledgePointId": "g7u-shapes-section",
+          "capabilityTag": "可能性判断",
+          "difficulty": "basic",
+          "responseType": "true-false",
+          "prompt": "用平面截球，只要平面与球相交，截面就是圆。",
+          "options": [
+            {
+              "id": "true",
+              "text": "正确"
+            },
+            {
+              "id": "false",
+              "text": "错误"
+            }
+          ],
+          "correctAnswer": "true",
+          "explanation": "球被任意相交平面截得的截面都是圆。",
+          "visual": {
+            "kind": "cross-section",
+            "solid": "sphere",
+            "planePreset": "center"
+          },
+          "source": "local-reviewed"
+        },
+        {
+          "id": "section-03",
+          "knowledgePointId": "g7u-shapes-section",
+          "capabilityTag": "不可能截面",
+          "difficulty": "advanced",
+          "responseType": "single-choice",
+          "prompt": "用一个平面截正方体，下面哪种图形不可能成为截面？",
+          "options": [
+            {
+              "id": "a",
+              "text": "三角形"
+            },
+            {
+              "id": "b",
+              "text": "正方形"
+            },
+            {
+              "id": "c",
+              "text": "六边形"
+            },
+            {
+              "id": "d",
+              "text": "圆"
+            }
+          ],
+          "correctAnswer": "d",
+          "explanation": "正方体由平面围成，平面截得的边界由线段组成，不可能是圆。",
+          "visual": {
+            "kind": "cross-section",
+            "solid": "cube",
+            "planePreset": "diagonal"
+          },
+          "source": "local-reviewed"
+        },
+        {
+          "id": "section-04",
+          "knowledgePointId": "g7u-shapes-section",
+          "capabilityTag": "可能截面",
+          "difficulty": "advanced",
+          "responseType": "multi-choice",
+          "prompt": "用平面截正方体，可能得到哪些截面？",
+          "options": [
+            {
+              "id": "a",
+              "text": "三角形"
+            },
+            {
+              "id": "b",
+              "text": "四边形"
+            },
+            {
+              "id": "c",
+              "text": "五边形"
+            },
+            {
+              "id": "d",
+              "text": "六边形"
+            }
+          ],
+          "correctAnswer": [
+            "a",
+            "b",
+            "c",
+            "d"
+          ],
+          "explanation": "改变截面位置和角度，可以得到三至六边形。",
+          "source": "local-reviewed"
+        },
+        {
+          "id": "section-05",
+          "knowledgePointId": "g7u-shapes-section",
+          "capabilityTag": "截面变化",
+          "difficulty": "advanced",
+          "responseType": "true-false",
+          "prompt": "截面形状只由立体图形种类决定，与截取位置和角度无关。",
+          "options": [
+            {
+              "id": "true",
+              "text": "正确"
+            },
+            {
+              "id": "false",
+              "text": "错误"
+            }
+          ],
+          "correctAnswer": "false",
+          "explanation": "同一立体图形会因截取位置和角度不同产生不同截面。",
+          "source": "local-reviewed"
+        },
+        {
+          "id": "section-06",
+          "knowledgePointId": "g7u-shapes-section",
+          "capabilityTag": "圆锥截面",
+          "difficulty": "basic",
+          "responseType": "single-choice",
+          "prompt": "用平行于圆锥底面的平面截圆锥，截面是什么形状？",
+          "options": [
+            {
+              "id": "a",
+              "text": "圆"
+            },
+            {
+              "id": "b",
+              "text": "长方形"
+            },
+            {
+              "id": "c",
+              "text": "三角形"
+            },
+            {
+              "id": "d",
+              "text": "五边形"
+            }
+          ],
+          "correctAnswer": "a",
+          "explanation": "与圆锥底面平行的截面是圆。",
+          "visual": {
+            "kind": "cross-section",
+            "solid": "cone",
+            "planePreset": "parallel-base"
+          },
+          "source": "local-reviewed"
+        },
+        {
+          "id": "section-07",
+          "knowledgePointId": "g7u-shapes-section",
+          "capabilityTag": "圆柱截面",
+          "difficulty": "challenge",
+          "responseType": "multi-choice",
+          "prompt": "用不同方向的平面截圆柱，可能得到哪些常见截面？",
+          "options": [
+            {
+              "id": "a",
+              "text": "圆"
+            },
+            {
+              "id": "b",
+              "text": "长方形"
+            },
+            {
+              "id": "c",
+              "text": "椭圆"
+            },
+            {
+              "id": "d",
+              "text": "正六边形"
+            }
+          ],
+          "correctAnswer": [
+            "a",
+            "b",
+            "c"
+          ],
+          "explanation": "平行、垂直或倾斜底面截取时，可得到圆、长方形或椭圆等。",
+          "source": "local-reviewed"
+        },
+        {
+          "id": "section-08",
+          "knowledgePointId": "g7u-shapes-section",
+          "capabilityTag": "截法反推",
+          "difficulty": "challenge",
+          "responseType": "single-choice",
+          "prompt": "想从正方体截出六边形，截面至少需要穿过正方体的几个面？",
+          "options": [
+            {
+              "id": "a",
+              "text": "3个"
+            },
+            {
+              "id": "b",
+              "text": "4个"
+            },
+            {
+              "id": "c",
+              "text": "5个"
+            },
+            {
+              "id": "d",
+              "text": "6个"
+            }
+          ],
+          "correctAnswer": "d",
+          "explanation": "六边形截面的六条边分别位于正方体的六个面上。",
+          "visual": {
+            "kind": "cross-section",
+            "solid": "cube",
+            "planePreset": "hexagon"
+          },
+          "source": "local-reviewed"
+        },
+        {
+          "id": "section-09",
+          "knowledgePointId": "g7u-shapes-section",
+          "capabilityTag": "截面操作",
+          "difficulty": "advanced",
+          "responseType": "interactive",
+          "prompt": "拖动截面平面，使正方体的截面成为三角形。",
+          "correctAnswer": {
+            "challengeId": "cut-cube-triangle",
+            "passed": true
+          },
+          "explanation": "截面平面靠近一个顶点并穿过与该顶点相连的三条棱时，可得到三角形。",
+          "visual": {
+            "kind": "cross-section",
+            "solid": "cube",
+            "planePreset": "vertex"
+          },
+          "source": "local-reviewed"
+        },
+        {
+          "id": "section-10",
+          "knowledgePointId": "g7u-shapes-section",
+          "capabilityTag": "截面变化",
+          "difficulty": "challenge",
+          "responseType": "interactive",
+          "prompt": "旋转并移动截面平面，找到正方体的六边形截面。",
+          "correctAnswer": {
+            "challengeId": "cut-cube-hexagon",
+            "passed": true
+          },
+          "explanation": "截面同时穿过正方体六个面时可以形成六边形。",
+          "visual": {
+            "kind": "cross-section",
+            "solid": "cube",
+            "planePreset": "hexagon"
+          },
+          "source": "local-reviewed"
+        }
+      ]
+    },
+    {
+      "id": "g7u-shapes-views",
+      "subject": "数学",
+      "grade": 7,
+      "semester": "上册",
+      "textbookVersion": "北师大版",
+      "chapterId": "g7u-chapter-1",
+      "title": "从三个方向看物体",
+      "lessonId": "g7-upper-shapes",
+      "interaction": {
+        "section": "views",
+        "supportedDifficulties": [
+          "basic",
+          "advanced",
+          "challenge"
+        ]
+      },
+      "capabilityTags": [
+        "观察方向",
+        "视图差异",
+        "尺寸理解",
+        "遮挡理解",
+        "三视图重建"
+      ],
+      "questions": [
+        {
+          "id": "views-01",
+          "knowledgePointId": "g7u-shapes-views",
+          "capabilityTag": "观察方向",
+          "difficulty": "basic",
+          "responseType": "single-choice",
+          "prompt": "从物体正面观察得到的图形称为什么？",
+          "options": [
+            {
+              "id": "a",
+              "text": "主视图"
+            },
+            {
+              "id": "b",
+              "text": "左视图"
+            },
+            {
+              "id": "c",
+              "text": "俯视图"
+            },
+            {
+              "id": "d",
+              "text": "展开图"
+            }
+          ],
+          "correctAnswer": "a",
+          "explanation": "从正面观察得到主视图。",
+          "source": "local-reviewed"
+        },
+        {
+          "id": "views-02",
+          "knowledgePointId": "g7u-shapes-views",
+          "capabilityTag": "视图差异",
+          "difficulty": "basic",
+          "responseType": "true-false",
+          "prompt": "从不同方向观察同一个立体物体，看到的平面图形不一定相同。",
+          "options": [
+            {
+              "id": "true",
+              "text": "正确"
+            },
+            {
+              "id": "false",
+              "text": "错误"
+            }
+          ],
+          "correctAnswer": "true",
+          "explanation": "物体在不同方向上的轮廓和遮挡关系可能不同。",
+          "source": "local-reviewed"
+        },
+        {
+          "id": "views-03",
+          "knowledgePointId": "g7u-shapes-views",
+          "capabilityTag": "标准视图",
+          "difficulty": "basic",
+          "responseType": "multi-choice",
+          "prompt": "学习从三个方向看物体时，通常包括哪些方向？",
+          "options": [
+            {
+              "id": "a",
+              "text": "正面"
+            },
+            {
+              "id": "b",
+              "text": "左面"
+            },
+            {
+              "id": "c",
+              "text": "上面"
+            },
+            {
+              "id": "d",
+              "text": "物体内部"
+            }
+          ],
+          "correctAnswer": [
+            "a",
+            "b",
+            "c"
+          ],
+          "explanation": "标准的三个观察方向是正面、左面和上面。",
+          "source": "local-reviewed"
+        },
+        {
+          "id": "views-04",
+          "knowledgePointId": "g7u-shapes-views",
+          "capabilityTag": "尺寸理解",
+          "difficulty": "advanced",
+          "responseType": "single-choice",
+          "prompt": "主视图主要反映物体的哪两个方向尺寸？",
+          "options": [
+            {
+              "id": "a",
+              "text": "宽和高"
+            },
+            {
+              "id": "b",
+              "text": "宽和深"
+            },
+            {
+              "id": "c",
+              "text": "深和高"
+            },
+            {
+              "id": "d",
+              "text": "面积和体积"
+            }
+          ],
+          "correctAnswer": "a",
+          "explanation": "从正面观察能反映物体的宽和高。",
+          "visual": {
+            "kind": "orthographic-view",
+            "structureId": "stairs-01",
+            "view": "front"
+          },
+          "source": "local-reviewed"
+        },
+        {
+          "id": "views-05",
+          "knowledgePointId": "g7u-shapes-views",
+          "capabilityTag": "尺寸理解",
+          "difficulty": "advanced",
+          "responseType": "single-choice",
+          "prompt": "俯视图主要反映物体的哪两个方向尺寸？",
+          "options": [
+            {
+              "id": "a",
+              "text": "宽和高"
+            },
+            {
+              "id": "b",
+              "text": "宽和深"
+            },
+            {
+              "id": "c",
+              "text": "深和高"
+            },
+            {
+              "id": "d",
+              "text": "棱长和体积"
+            }
+          ],
+          "correctAnswer": "b",
+          "explanation": "从上面观察能反映物体的宽和深。",
+          "visual": {
+            "kind": "orthographic-view",
+            "structureId": "stairs-01",
+            "view": "top"
+          },
+          "source": "local-reviewed"
+        },
+        {
+          "id": "views-06",
+          "knowledgePointId": "g7u-shapes-views",
+          "capabilityTag": "遮挡理解",
+          "difficulty": "advanced",
+          "responseType": "true-false",
+          "prompt": "只看一个方向的视图，通常不能唯一确定复杂立体结构。",
+          "options": [
+            {
+              "id": "true",
+              "text": "正确"
+            },
+            {
+              "id": "false",
+              "text": "错误"
+            }
+          ],
+          "correctAnswer": "true",
+          "explanation": "不同立体结构可能拥有相同的某一个方向视图。",
+          "source": "local-reviewed"
+        },
+        {
+          "id": "views-07",
+          "knowledgePointId": "g7u-shapes-views",
+          "capabilityTag": "信息综合",
+          "difficulty": "challenge",
+          "responseType": "multi-choice",
+          "prompt": "要更完整地描述由小立方块搭成的物体，哪些信息有帮助？",
+          "options": [
+            {
+              "id": "a",
+              "text": "主视图"
+            },
+            {
+              "id": "b",
+              "text": "左视图"
+            },
+            {
+              "id": "c",
+              "text": "俯视图"
+            },
+            {
+              "id": "d",
+              "text": "小立方块颜色"
+            }
+          ],
+          "correctAnswer": [
+            "a",
+            "b",
+            "c"
+          ],
+          "explanation": "三个方向的视图共同提供宽、高、深和遮挡信息。",
+          "source": "local-reviewed"
+        },
+        {
+          "id": "views-08",
+          "knowledgePointId": "g7u-shapes-views",
+          "capabilityTag": "位置分布",
+          "difficulty": "challenge",
+          "responseType": "single-choice",
+          "prompt": "从上面观察由小立方块搭成的物体，最容易确定什么？",
+          "options": [
+            {
+              "id": "a",
+              "text": "每列准确高度"
+            },
+            {
+              "id": "b",
+              "text": "底层位置分布"
+            },
+            {
+              "id": "c",
+              "text": "内部颜色"
+            },
+            {
+              "id": "d",
+              "text": "物体重量"
+            }
+          ],
+          "correctAnswer": "b",
+          "explanation": "俯视图直接显示水平方向的位置分布，但不能独立给出每列高度。",
+          "visual": {
+            "kind": "orthographic-view",
+            "structureId": "blocks-l-01",
+            "view": "top"
+          },
+          "source": "local-reviewed"
+        },
+        {
+          "id": "views-09",
+          "knowledgePointId": "g7u-shapes-views",
+          "capabilityTag": "视图匹配",
+          "difficulty": "advanced",
+          "responseType": "interactive",
+          "prompt": "旋转立体结构，选出与它一致的主视图。",
+          "correctAnswer": {
+            "challengeId": "views-match-front",
+            "passed": true
+          },
+          "explanation": "主视图由正面轮廓和可见方块位置决定。",
+          "visual": {
+            "kind": "orthographic-view",
+            "structureId": "stairs-01",
+            "view": "front"
+          },
+          "source": "local-reviewed"
+        },
+        {
+          "id": "views-10",
+          "knowledgePointId": "g7u-shapes-views",
+          "capabilityTag": "三视图重建",
+          "difficulty": "challenge",
+          "responseType": "interactive",
+          "prompt": "根据主视图、左视图和俯视图，选择正确的立体结构。",
+          "correctAnswer": {
+            "challengeId": "views-rebuild-solid",
+            "passed": true
+          },
+          "explanation": "需要同时使用三个方向的信息排除只满足单一视图的结构。",
+          "visual": {
+            "kind": "orthographic-view",
+            "structureId": "blocks-l-01",
+            "view": "left"
+          },
+          "source": "local-reviewed"
+        }
+      ]
+    }
+  ]
+}

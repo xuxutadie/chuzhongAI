@@ -1,0 +1,12 @@
+import type { Diagram } from '../diagnosis/model';
+import type { MathVisualSpec } from '../math-learning/types';
+export type LearningRoute={date:string;revision:number;started:boolean;current_step:number|null;course:{titles:string[]}|null;steps:Array<{step:number;title:string;status:string;legacy?:boolean}>};
+export type Question={id:string;prompt:string;options:{id:string;text:string}[];response_type:string;diagram?:Diagram;visual?:MathVisualSpec;knowledge_points?:string[];answer?:string;explanation?:string};
+export type Activity={route:LearningRoute;questions:Array<Question&{assignment_id:string;submitted:boolean;student_answer:string|string[]|null;result:string|null}>;guides:{id:string;title:string;lesson_id:string;steps:string[];pitfalls:string[]}[]};
+export type ReviewGroup={learning_id:number;question_id:number;title:string;stage:string;outcome:string|null};
+export type DailyReview={date:string;started:boolean;groups:ReviewGroup[]};
+export type CollectionItem={id:number;question_text:string;has_image:boolean;stage:string;source:string;wrong_count:number;last_wrong_at:string|null;knowledge_points:string[]};
+export type Analysis={mode:string;knowledge_points:string[];observed_facts:string[];possible_causes:{claim:string;confidence:string}[];clarifying_question:string;hints:string[];next_action:string};
+export type CollectionDetail={id:number;question:Question;events:{id:number;answer:unknown;result:string;source:string;occurred_at:string}[];stage:string;revision:number;evidence_version:number;has_image:boolean;analysis:Analysis|null;analysis_stale?:boolean};
+export type Practice={status:string;message?:string;item_id:string;question:Question;stage:string;revision:number;mode:string;hint_used?:boolean};
+export type PracticeResult={result:string;answer:string;explanation:string;stage:string;revision:number;independent:boolean;needs_help:boolean};

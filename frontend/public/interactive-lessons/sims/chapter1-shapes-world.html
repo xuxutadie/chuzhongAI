@@ -1,0 +1,1847 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第一章：丰富的图形世界 - 互动教学模拟</title>
+<style>
+/* ===== 全局样式 ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+    background: linear-gradient(135deg, #e0e7ff 0%, #f0f4f8 50%, #fdf2f8 100%);
+    min-height: 100vh;
+    color: #333;
+    overflow-x: hidden;
+}
+
+/* ===== 顶部标题 ===== */
+.header {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 18px 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.header h1 { font-size: 20px; display: flex; align-items: center; gap: 10px; }
+.header .chapter { background: rgba(255,255,255,0.25); padding: 4px 14px; border-radius: 16px; font-size: 12px; }
+
+/* ===== 标签栏 ===== */
+.tabs {
+    display: flex;
+    gap: 8px;
+    padding: 12px 20px;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    flex-wrap: wrap;
+    justify-content: center;
+}
+/* 整课嵌入时仅隐藏重复标题，只有题内图形才隐藏课程导航。 */
+body.embedded .header { display: none; }
+body.embedded-question .tabs { display: none; }
+/* 普通测试题只需要辅助图形，不能把课件的任务与即时挑战再次塞给学生。 */
+body.preview .mission-board,
+body.preview .lesson-challenge,
+body.preview .shape-grid,
+body.preview .preset-grid,
+body.preview .slider-group,
+body.preview .structure-select,
+body.preview .color-legend { display: none; }
+.tab {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 22px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    background: #f0f2f8;
+    color: #555;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.tab:hover { transform: translateY(-2px); }
+.tab.active {
+    color: white;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    box-shadow: 0 4px 12px rgba(102,126,234,0.3);
+}
+
+/* ===== 主区域 ===== */
+.main {
+    display: flex;
+    gap: 16px;
+    padding: 16px 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+.canvas-area {
+    flex: 1;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    overflow: hidden;
+    min-height: 480px;
+    position: relative;
+}
+#canvas3d { width: 100%; height: 480px; display: block; }
+.canvas-hint {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    background: rgba(0,0,0,0.5);
+    color: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    pointer-events: none;
+}
+.canvas-runtime-message {
+    display: none;
+    position: absolute;
+    inset: 24px;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    border: 1px solid rgba(246, 160, 160, 0.55);
+    border-radius: 8px;
+    background: rgba(48, 20, 25, 0.92);
+    color: #ffe1e1;
+    text-align: center;
+    font-size: 13px;
+    line-height: 1.7;
+    z-index: 2;
+}
+.canvas-runtime-message.visible { display: flex; }
+
+/* ===== 控制面板 ===== */
+.panel {
+    width: 280px;
+    flex-shrink: 0;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    padding: 20px;
+    max-height: 520px;
+    overflow-y: auto;
+}
+.panel h3 {
+    font-size: 15px;
+    color: #4a3f8c;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f0f2f8;
+}
+.panel-section { display: none; }
+.panel-section.active { display: block; animation: fadeIn 0.3s; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* ===== 形状按钮（Section 1） ===== */
+.shape-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+.shape-btn {
+    padding: 10px 8px;
+    border: 2px solid #e0e7ff;
+    border-radius: 10px;
+    background: #f8faff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-align: center;
+    color: #555;
+}
+.shape-btn:hover { border-color: #667eea; background: #eef2ff; }
+.shape-btn.active {
+    border-color: #667eea;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+}
+.shape-btn .icon { font-size: 24px; display: block; margin-bottom: 4px; }
+
+/* ===== 信息卡片 ===== */
+.info-card {
+    background: #f8faff;
+    border-radius: 12px;
+    padding: 14px;
+    margin-top: 8px;
+}
+.info-card .name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #4a3f8c;
+    margin-bottom: 6px;
+}
+.info-card .desc { font-size: 12px; color: #666; line-height: 1.6; margin-bottom: 10px; }
+.info-card .stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+}
+.info-card .stat {
+    text-align: center;
+    background: white;
+    padding: 8px 4px;
+    border-radius: 8px;
+}
+.info-card .stat .num { font-size: 20px; font-weight: 700; color: #667eea; }
+.info-card .stat .label { font-size: 11px; color: #999; }
+
+/* ===== 按钮 ===== */
+.btn {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+    width: 100%;
+    margin-bottom: 8px;
+    color: white;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+}
+.btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(102,126,234,0.3); }
+.btn.green { background: linear-gradient(135deg, #43e97b, #38d9a9); }
+.btn.orange { background: linear-gradient(135deg, #f093fb, #f5576c); }
+.btn.blue { background: linear-gradient(135deg, #4facfe, #00c6fb); }
+.btn:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+
+/* ===== 滑块 ===== */
+.slider-group { margin-bottom: 14px; }
+.slider-group label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+.slider-group label .value { color: #667eea; font-weight: 700; }
+input[type="range"] {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: #e0e7ff;
+    -webkit-appearance: none;
+    outline: none;
+}
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: #667eea;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(102,126,234,0.4);
+}
+
+/* ===== 截面预设按钮 ===== */
+.preset-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+.preset-btn {
+    padding: 8px 6px;
+    border: 2px solid #e0e7ff;
+    border-radius: 8px;
+    background: #f8faff;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #555;
+    font-weight: 500;
+}
+.preset-btn:hover { border-color: #667eea; }
+.preset-btn.active { border-color: #667eea; background: #eef2ff; color: #667eea; }
+
+/* ===== 截面信息 ===== */
+.cut-result {
+    background: linear-gradient(135deg, #f0f4ff, #fce4ec);
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+    margin-top: 8px;
+}
+.cut-result .shape-name {
+    font-size: 22px;
+    font-weight: 700;
+    color: #4a3f8c;
+}
+.cut-result .shape-desc { font-size: 12px; color: #777; margin-top: 4px; }
+
+/* ===== 三视图 ===== */
+.view-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+.view-box {
+    background: #f8faff;
+    border-radius: 10px;
+    padding: 10px 6px;
+    text-align: center;
+}
+.view-box .view-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #4a3f8c;
+    margin-bottom: 8px;
+}
+.view-box canvas {
+    display: block;
+    margin: 0 auto;
+    background: white;
+    border-radius: 6px;
+    border: 1px solid #e0e7ff;
+}
+.structure-select {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+.struct-btn {
+    flex: 1;
+    padding: 8px;
+    border: 2px solid #e0e7ff;
+    border-radius: 8px;
+    background: #f8faff;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #555;
+    font-weight: 600;
+}
+.struct-btn.active { border-color: #43e97b; background: #e6fff5; color: #0b6e4f; }
+
+/* ===== 颜色图例 ===== */
+.color-legend {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+    font-size: 11px;
+    color: #666;
+}
+.color-legend span { display: flex; align-items: center; gap: 4px; }
+.color-dot { width: 12px; height: 12px; border-radius: 3px; }
+
+/* ===== 响应式 ===== */
+@media (max-width: 900px) {
+    .main { flex-direction: column; }
+    .panel { width: 100%; max-height: none; }
+    #canvas3d { height: 360px; }
+}
+
+/* ===== 互动微课任务层 ===== */
+body {
+    background: radial-gradient(circle at 15% 0%, #16362f 0%, #0a1714 42%, #06100d 100%);
+    color: #eaf7f1;
+}
+.header {
+    background: rgba(7, 24, 19, 0.92);
+    border-bottom: 1px solid rgba(103, 231, 181, 0.24);
+    box-shadow: none;
+}
+.header .chapter { background: rgba(74, 222, 160, 0.12); color: #a7f3d0; }
+.tabs {
+    background: rgba(5, 19, 15, 0.88);
+    border-bottom: 1px solid rgba(103, 231, 181, 0.16);
+    box-shadow: none;
+}
+.tab { background: transparent; color: #93afa5; border: 1px solid transparent; }
+.tab:hover { background: rgba(74, 222, 160, 0.1); transform: none; }
+.tab.active { background: #123a2e; color: #d9fff0; border-color: rgba(103, 231, 181, 0.35); box-shadow: none; }
+.mission-board {
+    max-width: 1360px;
+    margin: 16px auto 0;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 340px);
+    gap: 16px;
+}
+.mission-copy,
+.mission-status {
+    background: rgba(11, 35, 28, 0.88);
+    border: 1px solid rgba(103, 231, 181, 0.22);
+    border-radius: 10px;
+    padding: 16px 18px;
+}
+.mission-kicker { color: #5ee7ad; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; }
+.mission-copy h2 { margin: 6px 0; font-size: 22px; color: #f2fffa; }
+.mission-copy p { color: #b9d3c8; font-size: 14px; line-height: 1.7; }
+.mission-status { display: flex; flex-direction: column; justify-content: center; gap: 10px; }
+.mission-count { display: flex; justify-content: space-between; color: #c7e7da; font-size: 13px; }
+.mission-count strong { color: #f6cb64; font-size: 15px; }
+.mission-progress { height: 8px; border-radius: 999px; overflow: hidden; background: #1a3c31; }
+.mission-progress span { display: block; height: 100%; width: 25%; border-radius: inherit; background: linear-gradient(90deg, #3adf9d, #76e5d1); transition: width 0.3s ease; }
+.mission-steps { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.mission-step {
+    min-height: 42px;
+    padding: 8px 10px;
+    border: 1px solid rgba(131, 170, 154, 0.2);
+    border-radius: 7px;
+    color: #89a99d;
+    background: rgba(8, 27, 21, 0.68);
+    cursor: pointer;
+    font: inherit;
+    font-size: 12px;
+    text-align: left;
+}
+.mission-step:hover { border-color: rgba(103, 231, 181, 0.45); color: #dffff0; }
+.mission-step.active { border-color: #48dca2; color: #dffff0; background: #123c2f; }
+.mission-step.done::after { content: " 已完成"; color: #5ee7ad; }
+.main { max-width: 1360px; padding-top: 16px; }
+.canvas-area,
+.panel {
+    background: rgba(10, 30, 24, 0.92);
+    border: 1px solid rgba(103, 231, 181, 0.2);
+    border-radius: 10px;
+    box-shadow: none;
+}
+.canvas-area { min-height: 500px; }
+#canvas3d { height: 500px; }
+.canvas-hint { background: rgba(2, 12, 9, 0.78); color: #c7e7da; }
+.panel h3 { color: #dffff0; border-bottom-color: rgba(103, 231, 181, 0.16); }
+.task-note {
+    margin: -4px 0 14px;
+    padding: 10px;
+    background: rgba(94, 231, 173, 0.08);
+    border-left: 2px solid #5ee7ad;
+    color: #b9d3c8;
+    font-size: 12px;
+    line-height: 1.65;
+}
+.shape-btn,
+.preset-btn,
+.struct-btn { border-color: rgba(103, 231, 181, 0.18); background: #0d251e; color: #c7e7da; }
+.shape-btn:hover,
+.preset-btn:hover { border-color: #5ee7ad; background: #123a2e; }
+.shape-btn.active { border-color: #5ee7ad; background: #164c3b; color: #f2fffa; }
+.preset-btn.active { border-color: #5ee7ad; background: #123c2f; color: #b9ffe0; }
+.struct-btn.active { border-color: #5ee7ad; background: #123c2f; color: #b9ffe0; }
+.info-card { background: #0d251e; }
+.info-card .name,
+.info-card .stat .num { color: #6de6c0; }
+.info-card .desc,
+.info-card .label,
+.slider-group label,
+.color-legend,
+.cut-result .shape-desc { color: #a6c3b7; }
+.info-card .stat,
+.view-box { background: #102b22; }
+.cut-result { background: #102b22; border: 1px solid rgba(103, 231, 181, 0.18); }
+.cut-result .shape-name,
+.view-box .view-title { color: #dffff0; }
+.view-box canvas { background: #eefcf5; border-color: rgba(103, 231, 181, 0.24); }
+input[type="range"] { background: #1a4537; }
+input[type="range"]::-webkit-slider-thumb { background: #5ee7ad; }
+.lesson-challenge {
+    max-width: 1360px;
+    margin: 0 auto 24px;
+    padding: 0 20px;
+}
+.challenge-card {
+    border: 1px solid rgba(103, 231, 181, 0.24);
+    border-radius: 10px;
+    background: rgba(11, 35, 28, 0.92);
+    padding: 18px;
+}
+.challenge-topline { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.challenge-label { color: #5ee7ad; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; }
+.challenge-state { color: #a6c3b7; font-size: 12px; }
+.challenge-card h3 { margin: 8px 0 14px; color: #f2fffa; font-size: 18px; }
+.challenge-options { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.challenge-option {
+    min-height: 42px;
+    border: 1px solid rgba(131, 170, 154, 0.26);
+    border-radius: 7px;
+    background: #0b211a;
+    color: #d9eee4;
+    cursor: pointer;
+    font: inherit;
+    font-size: 13px;
+    padding: 8px;
+}
+.challenge-option:hover { border-color: #5ee7ad; }
+.challenge-option.correct { border-color: #5ee7ad; background: #123c2f; color: #dffff0; }
+.challenge-option.wrong { border-color: #f6a0a0; background: #381d20; color: #ffd4d4; }
+.challenge-feedback { min-height: 22px; margin: 12px 0 0; color: #b9d3c8; font-size: 13px; line-height: 1.6; }
+.challenge-feedback.success { color: #6de6c0; }
+.challenge-actions { display: flex; justify-content: flex-end; margin-top: 12px; }
+.next-step-btn {
+    min-width: 132px;
+    border: 1px solid #48dca2;
+    border-radius: 7px;
+    background: #1dbe82;
+    color: #04130d;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+    padding: 10px 16px;
+}
+.next-step-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+body.embedded-question .mission-board { display: none; }
+body.embedded-question .mission-status,
+body.embedded-question .mission-steps,
+body.embedded-question .challenge-actions { display: none; }
+body.embedded-question .shape-grid { display: none; }
+@media (max-width: 900px) {
+    .mission-board { grid-template-columns: 1fr; padding: 0 12px; }
+    .mission-steps { grid-template-columns: 1fr 1fr; }
+    .main { width: 100%; min-width: 0; padding: 12px; }
+    .lesson-challenge { padding: 0 12px; }
+    .challenge-options { grid-template-columns: 1fr 1fr; }
+    .canvas-area,
+    .panel { width: 100%; min-width: 0; }
+    .canvas-area { min-height: 360px; }
+    #canvas3d { width: 100%; max-width: 100%; height: 360px; }
+}
+
+/* ===== 明亮学生主题：与今日学习工作台保持一致 ===== */
+body { background: #f4f7fc; color: #17243b; }
+.header { background: #ffffff; border-bottom-color: #d8e2ef; color: #17243b; }
+.header .chapter { background: #eaf8f2; color: #087b5a; }
+.tabs { background: #ffffff; border-bottom-color: #d8e2ef; }
+.tab { color: #586a82; }
+.tab:hover { background: #eef4ff; color: #245fbf; }
+.tab.active { border-color: #3478f6; background: #3478f6; color: #ffffff; }
+.mission-copy,
+.mission-status { border-color: #d8e2ef; background: #ffffff; }
+.mission-kicker { color: #d6336c; }
+.mission-copy h2 { color: #17243b; }
+.mission-copy p,
+.mission-count { color: #61738d; }
+.mission-count strong { color: #a75900; }
+.mission-progress { background: #e5ecf5; }
+.mission-progress span { background: #20a878; }
+.mission-step { border-color: #d8e2ef; background: #ffffff; color: #60728a; }
+.mission-step:hover { border-color: #79a7fa; color: #245fbf; }
+.mission-step.active { border-color: #3478f6; background: #eaf2ff; color: #174f9f; }
+.mission-step.done::after { color: #087b5a; }
+.canvas-area,
+.panel { border-color: #cfdbea; background: #ffffff; box-shadow: 0 10px 26px rgba(45, 71, 111, 0.08); }
+.canvas-hint { background: rgba(23, 36, 59, 0.82); color: #ffffff; }
+.panel h3 { color: #17243b; border-bottom-color: #e2e9f2; }
+.task-note { border-left-color: #20a878; background: #eaf8f2; color: #315b4e; }
+.shape-btn,
+.preset-btn,
+.struct-btn { border-color: #d7e2ef; background: #f7f9fc; color: #40536d; }
+.shape-btn:hover,
+.preset-btn:hover { border-color: #79a7fa; background: #eef4ff; }
+.shape-btn.active,
+.preset-btn.active,
+.struct-btn.active { border-color: #3478f6; background: #3478f6; color: #ffffff; }
+.info-card { background: #eef4ff; }
+.info-card .name,
+.info-card .stat .num { color: #245fbf; }
+.info-card .desc,
+.info-card .label,
+.slider-group label,
+.color-legend,
+.cut-result .shape-desc { color: #5b6f88; }
+.info-card .stat,
+.view-box { background: #ffffff; }
+.cut-result { border-color: #ffd18a; background: #fff7e8; }
+.cut-result .shape-name { color: #a75900; }
+.view-box .view-title { color: #17243b; }
+.view-box canvas { border-color: #c8d7ea; background: #f7faff; }
+input[type="range"] { background: #dfe8f4; }
+input[type="range"]::-webkit-slider-thumb { background: #d6336c; }
+.challenge-card { border-color: #ffc2d6; background: #ffffff; }
+.challenge-label { color: #d6336c; }
+.challenge-state,
+.challenge-feedback { color: #60728a; }
+.challenge-card h3 { color: #17243b; }
+.challenge-option { border-color: #d8e2ef; background: #f8fafd; color: #243650; }
+.challenge-option:hover { border-color: #f05b91; }
+.challenge-option.correct { border-color: #20a878; background: #eaf8f2; color: #087b5a; }
+.challenge-option.wrong { border-color: #e54876; background: #fff0f5; color: #b42355; }
+.challenge-feedback.success { color: #087b5a; }
+.next-step-btn { border-color: #d6336c; background: #d6336c; color: #ffffff; }
+</style>
+<link rel="stylesheet" href="./blueprint-theme.css">
+</head>
+<body data-theme="blueprint">
+
+<!-- 顶部标题 -->
+<div class="header">
+    <h1>🔬 第一章：丰富的图形世界</h1>
+    <span class="chapter">北师大版七年级上册 · 自制互动模拟</span>
+</div>
+
+<!-- 标签栏 -->
+<div class="tabs">
+    <button class="tab active" onclick="switchSection('shapes')">🔷 认识立体图形</button>
+    <button class="tab" onclick="switchSection('fold')">📦 展开与折叠</button>
+    <button class="tab" onclick="switchSection('cut')">✂️ 截几何体</button>
+    <button class="tab" onclick="switchSection('views')">👁️ 三视图</button>
+</div>
+
+<!-- 学习任务导航：让学生始终知道当前要完成什么。 -->
+<section class="mission-board" aria-live="polite">
+    <div class="mission-copy">
+        <div class="mission-kicker" id="missionKicker">第 1 步 · 先观察</div>
+        <h2 id="missionTitle">认识立体图形</h2>
+        <p id="missionInstruction">先转动正方体，再观察它的面、棱和顶点；完成下方小挑战后进入下一步。</p>
+    </div>
+    <div class="mission-status">
+        <div class="mission-count"><span id="missionCount">任务 1 / 4</span><strong id="missionScore">0 / 4 已完成</strong></div>
+        <div class="mission-progress"><span id="missionProgress"></span></div>
+    </div>
+    <div class="mission-steps" id="missionSteps"></div>
+</section>
+
+<!-- 主区域 -->
+<div class="main">
+    <!-- 3D画布区域 -->
+    <div class="canvas-area">
+        <canvas id="canvas3d"></canvas>
+        <div class="canvas-hint">🖱️ 拖动旋转 · 滚轮缩放</div>
+        <div class="canvas-runtime-message" id="canvasRuntimeMessage"></div>
+    </div>
+
+    <!-- 控制面板 -->
+    <div class="panel">
+        <!-- Section 1: 认识立体图形 -->
+        <div class="panel-section active" id="panel-shapes">
+            <h3>🔷 选择立体图形</h3>
+            <p class="task-note" id="shapesTaskNote">本步任务：先选择正方体，拖动画面观察它，再确认“面、棱、顶点”的数量。</p>
+            <div class="shape-grid">
+                <button class="shape-btn active" onclick="selectShape('cube')">
+                    <span class="icon">🎲</span>正方体
+                </button>
+                <button class="shape-btn" onclick="selectShape('cuboid')">
+                    <span class="icon">📦</span>长方体
+                </button>
+                <button class="shape-btn" onclick="selectShape('cylinder')">
+                    <span class="icon">🥫</span>圆柱
+                </button>
+                <button class="shape-btn" onclick="selectShape('cone')">
+                    <span class="icon">🍦</span>圆锥
+                </button>
+                <button class="shape-btn" onclick="selectShape('sphere')">
+                    <span class="icon">⚽</span>球
+                </button>
+                <button class="shape-btn" onclick="selectShape('prism')">
+                    <span class="icon">🔺</span>三棱柱
+                </button>
+                <button class="shape-btn" onclick="selectShape('pyramid')">
+                    <span class="icon">🏔️</span>三棱锥
+                </button>
+                <button class="shape-btn" onclick="selectShape('octahedron')">
+                    <span class="icon">💎</span>正八面体
+                </button>
+            </div>
+            <div class="info-card" id="shapeInfo">
+                <div class="name">正方体</div>
+                <div class="desc">由六个完全相同的正方形面围成的几何体，是最基本的正多面体之一。</div>
+                <div class="stats">
+                    <div class="stat"><div class="num">6</div><div class="label">面</div></div>
+                    <div class="stat"><div class="num">12</div><div class="label">棱</div></div>
+                    <div class="stat"><div class="num">8</div><div class="label">顶点</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: 展开与折叠 -->
+        <div class="panel-section" id="panel-fold">
+            <h3>📦 正方体展开与折叠</h3>
+            <p class="task-note">本步任务：先点“展开成平面图”，再点“折叠成正方体”，观察六个面如何回到立体图形。</p>
+            <p style="font-size:12px;color:#666;margin-bottom:12px;line-height:1.6;">
+                正方体共有 <b>11种</b> 不同的展开图。下方动画演示十字形展开图的折叠过程，点击按钮控制。
+            </p>
+            <button class="btn green" onclick="setFoldTarget(1)">📦 折叠成正方体</button>
+            <button class="btn orange" onclick="setFoldTarget(0)">📋 展开成平面图</button>
+            <div class="slider-group">
+                <label>手动控制 <span class="value" id="foldVal">0%</span></label>
+                <input type="range" id="foldSlider" min="0" max="100" value="0" oninput="manualFold(this.value)">
+            </div>
+            <div class="color-legend">
+                <span><div class="color-dot" style="background:#ff6b6b"></div>底面</span>
+                <span><div class="color-dot" style="background:#4ecdc4"></div>左面</span>
+                <span><div class="color-dot" style="background:#45b7d1"></div>右面</span>
+                <span><div class="color-dot" style="background:#f9ca24"></div>后面</span>
+                <span><div class="color-dot" style="background:#6c5ce7"></div>前面</span>
+                <span><div class="color-dot" style="background:#fd79a8"></div>顶面</span>
+            </div>
+            <div style="margin-top:12px;font-size:12px;color:#888;line-height:1.6;">
+                💡 <b>知识点：</b>不是所有6个正方形的组合都能折成正方体！只有11种排列方式可以。
+            </div>
+        </div>
+
+        <!-- Section 3: 截几何体 -->
+        <div class="panel-section" id="panel-cut">
+            <h3>✂️ 用平面截几何体</h3>
+            <p class="task-note">本步任务：选择“横切（水平）”，看清切面和截面；再尝试改变角度，比较结果。</p>
+            <p id="cutExplainer" style="font-size:12px;color:#666;margin-bottom:12px;line-height:1.6;">
+                用一个平面去截正方体，截面的形状取决于切面的方向和位置。试试不同的切法！
+            </p>
+            <div class="preset-grid">
+                <button class="preset-btn active" onclick="setCutPreset('horizontal', this)">横切（水平）</button>
+                <button class="preset-btn" onclick="setCutPreset('vertical', this)">纵切（垂直）</button>
+                <button class="preset-btn" onclick="setCutPreset('diagonal', this)">对角切</button>
+                <button class="preset-btn" onclick="setCutPreset('corner', this)">切角（三角形）</button>
+                <button class="preset-btn" onclick="setCutPreset('edge', this)">切棱（五边形）</button>
+                <button class="preset-btn" onclick="setCutPreset('space', this)">空间对角线</button>
+            </div>
+            <div class="slider-group">
+                <label>切面角度 <span class="value" id="cutAngleVal">0°</span></label>
+                <input type="range" id="cutAngleSlider" min="0" max="90" value="0" oninput="updateCutAngle(this.value)">
+            </div>
+            <div class="slider-group">
+                <label>切面位置 <span class="value" id="cutPosVal">0</span></label>
+                <input type="range" id="cutPosSlider" min="-100" max="100" value="0" oninput="updateCutPos(this.value)">
+            </div>
+            <div class="cut-result" id="cutResult">
+                <div class="shape-name">正方形</div>
+                <div class="shape-desc">水平切面通过正方体，截面为正方形</div>
+            </div>
+        </div>
+
+        <!-- Section 4: 三视图 -->
+        <div class="panel-section" id="panel-views">
+            <h3>👁️ 从三个方向看</h3>
+            <p class="task-note">本步任务：选择一种结构，对照正面、左面和上面三个小图，理解三视图来自不同方向。</p>
+            <p style="font-size:12px;color:#666;margin-bottom:12px;line-height:1.6;">
+                从正面、左面、上面观察由小正方体搭成的几何体，画出三种视图。
+            </p>
+            <div class="structure-select">
+                <button class="struct-btn active" onclick="selectStructure(1, this)">结构一</button>
+                <button class="struct-btn" onclick="selectStructure(2, this)">结构二</button>
+                <button class="struct-btn" onclick="selectStructure(3, this)">结构三</button>
+            </div>
+            <div class="view-grid">
+                <div class="view-box">
+                    <div class="view-title">从正面看</div>
+                    <canvas id="viewFront" width="80" height="80"></canvas>
+                </div>
+                <div class="view-box">
+                    <div class="view-title">从左面看</div>
+                    <canvas id="viewLeft" width="80" height="80"></canvas>
+                </div>
+                <div class="view-box">
+                    <div class="view-title">从上面看</div>
+                    <canvas id="viewTop" width="80" height="80"></canvas>
+                </div>
+            </div>
+            <div style="font-size:12px;color:#888;line-height:1.6;">
+                💡 <b>知识点：</b>三视图是工程制图的基础。主视图（正面）、左视图、俯视图分别从不同方向观察物体。
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 每一步只保留一个可判断的微挑战，避免学生只看演示却没有学习产出。 -->
+<section class="lesson-challenge">
+    <div class="challenge-card">
+        <div class="challenge-topline">
+            <span class="challenge-label">即时挑战</span>
+            <span class="challenge-state" id="challengeState">完成本题即可解锁下一步</span>
+        </div>
+        <h3 id="challengeQuestion"></h3>
+        <div class="challenge-options" id="challengeOptions"></div>
+        <p class="challenge-feedback" id="challengeFeedback">先操作上方模型，再选择你的答案。</p>
+        <div class="challenge-actions">
+            <button class="next-step-btn" id="nextStepBtn" type="button" onclick="goNextMission()" disabled>完成本步后继续</button>
+        </div>
+    </div>
+</section>
+
+<!-- 使用项目内置的原版本 Three.js，避免依赖外部 CDN。 -->
+<script src="../vendor/three-r128.min.js"></script>
+<script src="../vendor/OrbitControls-r128.js"></script>
+<script>
+// ============================================================
+//  全局变量
+// ============================================================
+let renderer, scene, camera, controls;
+const allowedSections = ['shapes', 'fold', 'cut', 'views'];
+const allowedDifficulties = ['basic', 'advanced', 'challenge'];
+const lessonParams = new URLSearchParams(window.location.search);
+const requestedSection = lessonParams.get('section');
+const requestedDifficulty = lessonParams.get('difficulty');
+const requestedChallengeId = lessonParams.get('challenge');
+const displayMode = lessonParams.get('mode');
+const isPreview = displayMode === 'preview';
+const allowedSolids = ['cube', 'cuboid', 'cylinder', 'cone', 'sphere'];
+const requestedSolid = allowedSolids.includes(lessonParams.get('solid')) ? lessonParams.get('solid') : null;
+const requestedPlanePreset = ['parallel-base', 'diagonal', 'vertex', 'hexagon', 'center'].includes(lessonParams.get('planePreset'))
+    ? lessonParams.get('planePreset')
+    : null;
+let currentSection = allowedSections.includes(requestedSection) ? requestedSection : 'shapes';
+let currentDifficulty = allowedDifficulties.includes(requestedDifficulty) ? requestedDifficulty : 'basic';
+const isEmbeddedQuestion = lessonParams.get('embedded') === 'question';
+const lockedSection = isEmbeddedQuestion ? currentSection : null;
+const currentChallengeId = /^[a-z0-9-]{1,80}$/i.test(requestedChallengeId || '')
+    ? requestedChallengeId
+    : currentSection + '-' + currentDifficulty + '-challenge';
+let currentShape = null;      // Section 1 当前形状
+let autoRotate = true;        // Section 1 自动旋转
+let foldPivots = null;        // Section 2 折叠枢轴
+let foldProgress = 0;         // Section 2 折叠进度 0~1
+let foldTarget = 0;           // Section 2 目标进度
+let foldAnimating = false;    // Section 2 是否动画中
+let cutPlane = null;          // Section 3 切割平面
+let cutCube = null;           // Section 3 被切的立方体
+let cutMesh = null;           // Section 3 截面网格
+let currentStructure = 1;     // Section 4 当前结构
+let cutSolid = requestedSolid || 'cube';
+
+document.body.classList.toggle('preview', isPreview);
+// 不能仅凭 iframe 判断题内模式，互动教学也通过 iframe 加载完整课程。
+document.body.classList.toggle('embedded-question', isEmbeddedQuestion);
+
+// 四步微课状态：演示操作和答题判断分离，只有答对才解锁下一步。
+const lessonSteps = [
+    {
+        id: 'shapes',
+        kicker: '第 1 步 · 先观察',
+        title: '认识立体图形',
+        instruction: '选择正方体并拖动模型，找出它的面、棱和顶点；再完成一个判断题。',
+        question: '正方体有多少个面？',
+        options: ['4 个', '6 个', '8 个', '12 个'],
+        answer: 1,
+        hint: '可以先看右侧“正方体”的数据，再从不同角度观察模型。',
+        success: '答对了。正方体由 6 个完全相同的正方形面围成。'
+    },
+    {
+        id: 'fold',
+        kicker: '第 2 步 · 动手验证',
+        title: '展开与折叠',
+        instruction: '先将正方体展开成平面图，再折叠回来，观察 6 个面如何围成立体。',
+        question: '一个正方体的展开图需要几张正方形纸片？',
+        options: ['4 张', '5 张', '6 张', '8 张'],
+        answer: 2,
+        hint: '滑块从 0% 到 100% 的过程中，数一数参与折叠的彩色面。',
+        success: '答对了。正方体的 6 个面全部是正方形。'
+    },
+    {
+        id: 'cut',
+        kicker: '第 3 步 · 变化中找规律',
+        title: '截几何体',
+        instruction: '选择“横切（水平）”，让切面平行于正方体底面，再观察截面形状。',
+        question: '用一个平行于正方体底面的平面横切，截面是什么？',
+        options: ['三角形', '正方形', '圆形', '五边形'],
+        answer: 1,
+        hint: '切面与底面平行时，截面与底面的形状相同。',
+        success: '答对了。横切正方体得到的截面是正方形。'
+    },
+    {
+        id: 'views',
+        kicker: '第 4 步 · 换角度看',
+        title: '三视图',
+        instruction: '切换不同结构，对照正面、左面和上面的图形，理解三视图来自不同方向。',
+        question: '从物体上面看到的图，叫做什么？',
+        options: ['主视图', '左视图', '俯视图', '侧视图'],
+        answer: 2,
+        hint: '“俯”表示从上往下看。',
+        success: '答对了。俯视图就是从上面向下观察得到的图。'
+    }
+];
+
+// 学习工作台中的每道互动题都有独立挑战，避免题干和课件内问题不一致。
+const challengeVariants = {
+    'solid-cube-parts': {
+        section: 'shapes',
+        shape: 'cube',
+        title: '正方体的面、棱和顶点',
+        instruction: '拖动正方体旋转，从不同方向确认它的面、棱和顶点。',
+        question: '正方体有多少个面？',
+        options: ['4 个', '6 个', '8 个', '12 个'],
+        answer: 1,
+        hint: '旋转后数一数：前后、左右、上下各有一个面。',
+        success: '答对了。正方体有 6 个面、12 条棱和 8 个顶点。'
+    },
+    'solid-cylinder-surfaces': {
+        section: 'shapes',
+        shape: 'cylinder',
+        title: '圆柱的平面和曲面',
+        instruction: '拖动圆柱旋转，观察上下两个圆形底面和中间的曲面侧面。',
+        question: '一个圆柱有几个圆形底面？',
+        options: ['1 个', '2 个', '3 个', '没有'],
+        answer: 1,
+        hint: '观察圆柱的顶部和底部，它们是大小相同的圆。',
+        success: '答对了。圆柱有 2 个圆形底面和 1 个曲面侧面。'
+    },
+    'fold-cross-net': {
+        section: 'fold',
+        title: '把展开图折成立方体',
+        instruction: '拖动折叠进度，观察六个正方形怎样围成封闭的正方体。',
+        question: '正方体展开图需要几个正方形面？',
+        options: ['4 个', '5 个', '6 个', '8 个'],
+        answer: 2,
+        hint: '折叠完成后，每个小正方形都对应正方体的一个面。',
+        success: '答对了。六个正方形分别成为正方体的六个面。'
+    },
+    'fold-opposite-face': {
+        section: 'fold',
+        title: '追踪正方体的相对面',
+        instruction: '缓慢拖动折叠进度，追踪展开图中每个面的空间位置。',
+        question: '正方体中两个相对面折好后是什么关系？',
+        options: ['共用一条棱', '互相平行且不相邻', '完全重合', '只共用一个顶点'],
+        answer: 1,
+        hint: '相对面位于正方体两侧，不会接触。',
+        success: '答对了。相对面互相平行，而且不共用棱或顶点。'
+    },
+    'cut-cube-triangle': {
+        section: 'cut',
+        title: '找到三角形截面',
+        instruction: '旋转切割方向并移动平面，使它靠近正方体的一个顶点。',
+        question: '切面同时穿过同一顶点附近的三条棱时，截面是什么形状？',
+        options: ['三角形', '正方形', '五边形', '圆形'],
+        answer: 0,
+        hint: '三个交点依次连接，会围成三条边。',
+        success: '答对了。切面穿过三条相邻棱时会形成三角形截面。'
+    },
+    'cut-cube-hexagon': {
+        section: 'cut',
+        title: '找到六边形截面',
+        instruction: '旋转并平移切面，尝试让它同时经过正方体的六个面。',
+        question: '切面与正方体六个面都相交时，最多得到什么截面？',
+        options: ['三角形', '四边形', '五边形', '六边形'],
+        answer: 3,
+        hint: '截面在每个被穿过的面上形成一条边。',
+        success: '答对了。切面穿过六个面时可以形成六边形截面。'
+    },
+    'views-match-front': {
+        section: 'views',
+        title: '匹配物体的正面图',
+        instruction: '旋转结构并回到正面观察，比较每一列可见方块的高度。',
+        question: '从物体正面观察得到的图形叫什么？',
+        options: ['主视图', '左视图', '俯视图', '展开图'],
+        answer: 0,
+        hint: '“主”对应最主要的正面观察方向。',
+        success: '答对了。从正面观察得到的图形称为主视图。'
+    },
+    'views-rebuild-solid': {
+        section: 'views',
+        title: '用三个方向还原结构',
+        instruction: '切换正面、左面和上面，比较三个视图提供的宽、高和深信息。',
+        question: '要更准确还原小立方块结构，应该怎样观察？',
+        options: ['只看正面', '只看上面', '结合三个方向', '只数颜色'],
+        answer: 2,
+        hint: '单一方向会丢失深度或高度信息。',
+        success: '答对了。结合主视图、左视图和俯视图才能更完整地还原结构。'
+    }
+};
+const stepCompletion = { shapes: false, fold: false, cut: false, views: false };
+const stepInteractions = { shapes: false, fold: false, cut: false, views: false };
+const stepAttempts = { shapes: 0, fold: 0, cut: 0, views: 0 };
+const knowledgePointBySection = {
+    shapes: 'g7u-shapes-solid',
+    fold: 'g7u-shapes-folding',
+    cut: 'g7u-shapes-section',
+    views: 'g7u-shapes-views'
+};
+
+function sendMathInteractionResult(passed) {
+    try {
+        window.parent.postMessage({
+            type: 'math-interaction-result',
+            lessonId: 'g7-upper-shapes',
+            knowledgePointId: knowledgePointBySection[currentSection],
+            section: currentSection,
+            difficulty: currentDifficulty,
+            challengeId: currentChallengeId,
+            passed: passed,
+            attempts: stepAttempts[currentSection]
+        }, window.location.origin);
+    } catch (error) { /* 嵌入页面不可用时不影响课件操作。 */ }
+}
+
+// 嵌入在测试题中的课件若内部运行失败，主动通知外层切换到文字替代题。
+function sendMathInteractionRuntimeError() {
+    try {
+        if (window.parent === window) return;
+        window.parent.postMessage({
+            type: 'math-interaction-runtime-error',
+            lessonId: 'g7-upper-shapes',
+            knowledgePointId: knowledgePointBySection[currentSection],
+            challengeId: currentChallengeId
+        }, window.location.origin);
+    } catch (error) { /* 嵌入页面不可用时不影响课件错误提示。 */ }
+}
+
+function showCanvasRuntimeMessage(error) {
+    sendMathInteractionRuntimeError();
+    const message = document.getElementById('canvasRuntimeMessage');
+    if (!message) return;
+    message.classList.add('visible');
+    message.textContent = '互动模型暂时没有加载完成，请刷新页面后重试。';
+    console.error(error);
+}
+
+function getLessonStep(id) {
+    const step = lessonSteps.find(item => item.id === id);
+    const variant = challengeVariants[currentChallengeId];
+    return step && variant && variant.section === id ? Object.assign({}, step, variant) : step;
+}
+
+function getCurrentStepIndex() {
+    return lessonSteps.findIndex(step => step.id === currentSection);
+}
+
+function completedStepCount() {
+    return lessonSteps.filter(step => stepCompletion[step.id]).length;
+}
+
+function markInteraction(section) {
+    stepInteractions[section] = true;
+    const feedback = document.getElementById('challengeFeedback');
+    if (section === currentSection && !stepCompletion[section] && feedback) {
+        feedback.className = 'challenge-feedback';
+        feedback.textContent = '已记录你的操作。现在回答挑战题，确认你看懂了这一步。';
+    }
+}
+
+function renderLessonGuidance() {
+    const step = getLessonStep(currentSection);
+    const index = getCurrentStepIndex();
+    const completed = completedStepCount();
+    if (!step || index < 0) return;
+
+    document.getElementById('missionKicker').textContent = step.kicker;
+    document.getElementById('missionTitle').textContent = step.title;
+    document.getElementById('missionInstruction').textContent = step.instruction;
+    document.getElementById('missionCount').textContent = isEmbeddedQuestion
+        ? '当前测试题'
+        : '任务 ' + (index + 1) + ' / ' + lessonSteps.length;
+    document.getElementById('missionScore').textContent = completed + ' / ' + lessonSteps.length + ' 已完成';
+    document.getElementById('missionProgress').style.width = ((completed / lessonSteps.length) * 100) + '%';
+
+    document.getElementById('missionSteps').innerHTML = isEmbeddedQuestion ? '' : lessonSteps.map((item, itemIndex) => {
+        const classes = ['mission-step'];
+        if (item.id === currentSection) classes.push('active');
+        if (stepCompletion[item.id]) classes.push('done');
+        return '<button class="' + classes.join(' ') + '" type="button" onclick="switchSection(\'' + item.id + '\')">'
+            + (itemIndex + 1) + '. ' + item.title + '</button>';
+    }).join('');
+
+    renderChallenge();
+}
+
+function renderChallenge() {
+    const step = getLessonStep(currentSection);
+    const index = getCurrentStepIndex();
+    if (!step) return;
+    const isComplete = stepCompletion[step.id];
+    const interacted = stepInteractions[step.id];
+    const question = document.getElementById('challengeQuestion');
+    const options = document.getElementById('challengeOptions');
+    const feedback = document.getElementById('challengeFeedback');
+    const state = document.getElementById('challengeState');
+    const next = document.getElementById('nextStepBtn');
+
+    question.textContent = step.question;
+    options.innerHTML = step.options.map((option, index) => {
+        const className = isComplete && index === step.answer ? 'challenge-option correct' : 'challenge-option';
+        return '<button class="' + className + '" type="button" onclick="answerChallenge(' + index + ')">' + option + '</button>';
+    }).join('');
+    feedback.className = isComplete ? 'challenge-feedback success' : 'challenge-feedback';
+    feedback.textContent = isComplete ? step.success : (interacted ? '已记录你的操作。现在回答挑战题，确认你看懂了这一步。' : '先操作上方模型，再选择你的答案。');
+    state.textContent = isComplete
+        ? '本题互动已完成'
+        : (isEmbeddedQuestion ? '完成互动即可作答本题' : '完成本题即可解锁下一步');
+    next.hidden = isEmbeddedQuestion;
+    next.disabled = !isComplete;
+    next.textContent = index === lessonSteps.length - 1 ? (isComplete ? '完成本节互动课' : '完成本步后继续') : (isComplete ? '进入下一步' : '完成本步后继续');
+}
+
+function answerChallenge(choice) {
+    const step = getLessonStep(currentSection);
+    if (!step || stepCompletion[step.id]) return;
+    const buttons = Array.from(document.querySelectorAll('.challenge-option'));
+    buttons.forEach(button => button.classList.remove('correct', 'wrong'));
+    const feedback = document.getElementById('challengeFeedback');
+    if (!stepInteractions[step.id]) {
+        feedback.className = 'challenge-feedback';
+        feedback.textContent = '请先按本题提示操作上方模型，再回答挑战题。';
+        return;
+    }
+    stepAttempts[step.id] += 1;
+    if (choice === step.answer) {
+        stepCompletion[step.id] = true;
+        if (buttons[choice]) buttons[choice].classList.add('correct');
+        feedback.className = 'challenge-feedback success';
+        feedback.textContent = step.success;
+        sendMathInteractionResult(true);
+        renderLessonGuidance();
+    } else {
+        if (buttons[choice]) buttons[choice].classList.add('wrong');
+        feedback.className = 'challenge-feedback';
+        feedback.textContent = '再想一想：' + step.hint;
+        sendMathInteractionResult(false);
+    }
+}
+
+function goNextMission() {
+    if (isEmbeddedQuestion) return;
+    const index = getCurrentStepIndex();
+    if (!stepCompletion[currentSection]) return;
+    if (index < lessonSteps.length - 1) {
+        switchSection(lessonSteps[index + 1].id);
+        return;
+    }
+
+    const feedback = document.getElementById('challengeFeedback');
+    feedback.className = 'challenge-feedback success';
+    feedback.textContent = '本节已完成。你已经经历了观察、展开、截面和三视图四个关键学习步骤。返回学习页面后，写下你的观察并保存记录。';
+    document.getElementById('nextStepBtn').disabled = true;
+    document.getElementById('nextStepBtn').textContent = '本节已完成';
+    try {
+        window.parent.postMessage({ type: 'interactive-lesson-complete', lessonId: 'g7-upper-shapes' }, window.location.origin);
+    } catch (error) { /* 嵌入页面不可用时不影响课件完成。 */ }
+}
+
+// ============================================================
+//  形状数据（Section 1）
+// ============================================================
+const shapesData = {
+    cube:       { name: '正方体', desc: '由六个完全相同的正方形面围成的几何体，是最基本的正多面体之一。', faces: 6, edges: 12, vertices: 8 },
+    cuboid:     { name: '长方体', desc: '由六个长方形面围成（可能有两个相对的面是正方形），对棱平行且相等。', faces: 6, edges: 12, vertices: 8 },
+    cylinder:   { name: '圆柱', desc: '由两个相同的圆形底面和一个曲面（侧面）围成。侧面展开是长方形。', faces: 3, edges: 2, vertices: 0 },
+    cone:       { name: '圆锥', desc: '由一个圆形底面和一个曲面（侧面）围成。侧面展开是扇形。有一个顶点。', faces: 2, edges: 1, vertices: 1 },
+    sphere:     { name: '球', desc: '由一个连续的曲面围成。球面上任意一点到球心的距离相等（半径）。', faces: 1, edges: 0, vertices: 0 },
+    prism:      { name: '三棱柱', desc: '由两个三角形底面和三个长方形侧面围成。上下底面平行且全等。', faces: 5, edges: 9, vertices: 6 },
+    pyramid:    { name: '三棱锥', desc: '由四个三角形面围成。底面是三角形，三个侧面都是三角形，共4个面。', faces: 4, edges: 6, vertices: 4 },
+    octahedron: { name: '正八面体', desc: '由八个正三角形面围成，是五种正多面体之一。像一个双棱锥。', faces: 8, edges: 12, vertices: 6 }
+};
+
+// ============================================================
+//  初始化 Three.js
+// ============================================================
+function init() {
+    const canvas = document.getElementById('canvas3d');
+    renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+    renderer.localClippingEnabled = true; // 启用局部裁剪（用于截面展示）
+
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xf5f7fa);
+
+    camera = new THREE.PerspectiveCamera(50, canvas.clientWidth / canvas.clientHeight, 0.1, 100);
+    camera.position.set(5, 4, 6);
+    camera.lookAt(0, 0, 0);
+
+    controls = new THREE.OrbitControls(camera, canvas);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.08;
+    controls.addEventListener('start', () => markInteraction(currentSection));
+
+    // 添加灯光
+    scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+    const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    dirLight.position.set(5, 10, 7);
+    scene.add(dirLight);
+    const fillLight = new THREE.DirectionalLight(0xccddff, 0.3);
+    fillLight.position.set(-5, 3, -5);
+    scene.add(fillLight);
+
+    // 根据学习任务直达对应场景，非法参数已回退到基础认识。
+    switchSection(currentSection);
+
+    // 窗口大小调整
+    window.addEventListener('resize', onResize);
+    if ('ResizeObserver' in window && canvas.parentElement) {
+        new ResizeObserver(onResize).observe(canvas.parentElement);
+    }
+}
+
+function onResize() {
+    const canvas = document.getElementById('canvas3d');
+    camera.aspect = canvas.clientWidth / canvas.clientHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+}
+
+// ============================================================
+//  场景清理：移除所有物体（保留灯光）
+// ============================================================
+function clearScene() {
+    const toRemove = [];
+    scene.traverse(obj => {
+        if (obj.isMesh || obj.isLineSegments || obj.isGroup) {
+            toRemove.push(obj);
+        }
+    });
+    toRemove.forEach(obj => {
+        scene.remove(obj);
+        if (obj.geometry) obj.geometry.dispose();
+        if (obj.material) {
+            if (Array.isArray(obj.material)) obj.material.forEach(m => m.dispose());
+            else obj.material.dispose();
+        }
+    });
+    autoRotate = true;
+    currentShape = null;  // 重置当前形状引用，避免残留已销毁的对象
+}
+
+// ============================================================
+//  Section 1: 认识立体图形
+// ============================================================
+function createShapeMesh(type) {
+    const mat = new THREE.MeshPhongMaterial({
+        color: 0x667eea,
+        transparent: true,
+        opacity: 0.75,
+        flatShading: false
+    });
+    const edgeMat = new THREE.LineBasicMaterial({ color: 0x4a3f8c, linewidth: 2 });
+    let geo, mesh;
+
+    switch (type) {
+        case 'cube':
+            geo = new THREE.BoxGeometry(2.5, 2.5, 2.5);
+            break;
+        case 'cuboid':
+            geo = new THREE.BoxGeometry(3.5, 2, 2);
+            break;
+        case 'cylinder':
+            geo = new THREE.CylinderGeometry(1.3, 1.3, 2.8, 40);
+            break;
+        case 'cone':
+            geo = new THREE.ConeGeometry(1.5, 2.8, 40);
+            break;
+        case 'sphere':
+            geo = new THREE.SphereGeometry(1.6, 40, 40);
+            break;
+        case 'prism':
+            geo = new THREE.CylinderGeometry(1.5, 1.5, 2.8, 3);
+            break;
+        case 'pyramid':
+            geo = new THREE.ConeGeometry(1.5, 2.5, 3);
+            break;
+        case 'octahedron':
+            geo = new THREE.OctahedronGeometry(1.7);
+            break;
+    }
+
+    mesh = new THREE.Mesh(geo, mat);
+    // 添加边线
+    const edges = new THREE.EdgesGeometry(geo, 1);
+    const lines = new THREE.LineSegments(edges, edgeMat);
+    mesh.add(lines);
+    return mesh;
+}
+
+function loadShapesSection() {
+    clearScene();
+    const step = getLessonStep('shapes');
+    const initialShape = requestedSolid || (step && step.shape && shapesData[step.shape] ? step.shape : 'cube');
+    const panelTitle = document.querySelector('#panel-shapes h3');
+    if (panelTitle && isEmbeddedQuestion) panelTitle.textContent = isPreview ? '本题辅助图形' : '观察本题立体图形';
+    const taskNote = document.getElementById('shapesTaskNote');
+    if (taskNote) {
+        taskNote.textContent = isPreview
+            ? '观察' + shapesData[initialShape].name + '的结构特征，再完成下方题目。'
+            : step && step.instruction
+            ? '本题任务：' + step.instruction
+            : '本步任务：先选择正方体，拖动画面观察它，再确认“面、棱、顶点”的数量。';
+    }
+    selectShape(initialShape, true);
+}
+
+function selectShape(type, isInitialLoad) {
+    const step = getLessonStep('shapes');
+    const lockedShape = isEmbeddedQuestion ? (requestedSolid || (step && step.shape ? step.shape : null)) : null;
+    if (lockedShape && type !== lockedShape) return;
+    if (!isInitialLoad) markInteraction('shapes');
+    // 更新按钮状态（不依赖 event 全局变量，通过 type 匹配按钮）
+    document.querySelectorAll('.shape-btn').forEach(b => b.classList.remove('active'));
+    const activeBtn = document.querySelector('.shape-btn[onclick*="' + type + '"]');
+    if (activeBtn) activeBtn.classList.add('active');
+
+    // 移除旧形状
+    if (currentShape) {
+        scene.remove(currentShape);
+        currentShape.geometry.dispose();
+    }
+
+    // 创建新形状
+    currentShape = createShapeMesh(type);
+    scene.add(currentShape);
+
+    // 更新信息面板
+    const data = shapesData[type];
+    document.getElementById('shapeInfo').innerHTML = `
+        <div class="name">${data.name}</div>
+        <div class="desc">${data.desc}</div>
+        <div class="stats">
+            <div class="stat"><div class="num">${data.faces}</div><div class="label">面</div></div>
+            <div class="stat"><div class="num">${data.edges}</div><div class="label">棱</div></div>
+            <div class="stat"><div class="num">${data.vertices}</div><div class="label">顶点</div></div>
+        </div>
+    `;
+}
+
+// ============================================================
+//  Section 2: 展开与折叠
+// ============================================================
+function loadFoldSection() {
+    clearScene();
+    autoRotate = false;
+
+    const size = 2;        // 正方体边长
+    const thick = 0.08;    // 面厚度
+    const faceColors = [0xff6b6b, 0x4ecdc4, 0x45b7d1, 0xf9ca24, 0x6c5ce7, 0xfd79a8];
+
+    // 创建一个面的函数
+    function makeFace(color) {
+        const g = new THREE.BoxGeometry(size, thick, size);
+        const m = new THREE.MeshPhongMaterial({ color: color, transparent: true, opacity: 0.88 });
+        const mesh = new THREE.Mesh(g, m);
+        // 加边线
+        const e = new THREE.EdgesGeometry(g);
+        mesh.add(new THREE.LineSegments(e, new THREE.LineBasicMaterial({ color: 0x333333 })));
+        return mesh;
+    }
+
+    // 底面（固定不动）
+    const bottom = makeFace(faceColors[0]);
+    bottom.position.y = 0;
+    scene.add(bottom);
+
+    // 左面枢轴（绕左边缘旋转）
+    const leftPivot = new THREE.Group();
+    leftPivot.position.set(-size / 2, 0, 0);
+    const left = makeFace(faceColors[1]);
+    left.position.set(-size / 2, 0, 0);
+    leftPivot.add(left);
+    scene.add(leftPivot);
+
+    // 右面枢轴
+    const rightPivot = new THREE.Group();
+    rightPivot.position.set(size / 2, 0, 0);
+    const right = makeFace(faceColors[2]);
+    right.position.set(size / 2, 0, 0);
+    rightPivot.add(right);
+    scene.add(rightPivot);
+
+    // 后面枢轴
+    const backPivot = new THREE.Group();
+    backPivot.position.set(0, 0, -size / 2);
+    const back = makeFace(faceColors[3]);
+    back.position.set(0, 0, -size / 2);
+    backPivot.add(back);
+    scene.add(backPivot);
+
+    // 前面枢轴
+    const frontPivot = new THREE.Group();
+    frontPivot.position.set(0, 0, size / 2);
+    const front = makeFace(faceColors[4]);
+    front.position.set(0, 0, size / 2);
+    frontPivot.add(front);
+    scene.add(frontPivot);
+
+    // 顶面枢轴（挂在前面枢轴上）
+    const topPivot = new THREE.Group();
+    topPivot.position.set(0, 0, size);
+    const top = makeFace(faceColors[5]);
+    top.position.set(0, 0, size / 2);
+    topPivot.add(top);
+    frontPivot.add(topPivot);
+
+    foldPivots = { leftPivot, rightPivot, backPivot, frontPivot, topPivot };
+    foldProgress = 0;
+    foldTarget = 0;
+    document.getElementById('foldSlider').value = 0;
+    document.getElementById('foldVal').textContent = '0%';
+    updateFold(0);
+
+    // 调整相机位置，俯视角度更好
+    camera.position.set(4, 6, 7);
+    controls.update();
+}
+
+function updateFold(progress) {
+    if (!foldPivots) return;
+    foldProgress = progress;
+    const angle = progress * Math.PI / 2;
+
+    // 左面：绕Z轴负方向旋转（向上折起）
+    foldPivots.leftPivot.rotation.z = -angle;
+    // 右面：绕Z轴正方向旋转
+    foldPivots.rightPivot.rotation.z = angle;
+    // 后面：绕X轴正方向旋转
+    foldPivots.backPivot.rotation.x = angle;
+    // 前面：绕X轴负方向旋转
+    foldPivots.frontPivot.rotation.x = -angle;
+    // 顶面：跟随前面，再绕X轴负方向旋转（盖到顶部）
+    foldPivots.topPivot.rotation.x = -angle;
+
+    // 更新滑块和显示
+    const pct = Math.round(progress * 100);
+    document.getElementById('foldSlider').value = pct;
+    document.getElementById('foldVal').textContent = pct + '%';
+}
+
+function setFoldTarget(target) {
+    markInteraction('fold');
+    foldTarget = target;
+    foldAnimating = true;
+}
+
+function manualFold(val) {
+    markInteraction('fold');
+    foldAnimating = false;
+    updateFold(val / 100);
+}
+
+// ============================================================
+//  Section 3: 截几何体
+// ============================================================
+const cutPresets = {
+    horizontal: { angle: 0,  pos: 0,   name: '正方形',   desc: '水平切面通过正方体，截面为正方形', normal: [0, 1, 0] },
+    vertical:   { angle: 90,  pos: 0,   name: '正方形',   desc: '垂直切面平行于侧面，截面为正方形', normal: [1, 0, 0] },
+    diagonal:   { angle: 45,  pos: 0,   name: '矩形',     desc: '切面过四条棱，截面为矩形（对角面）', normal: [0, 1, 1] },
+    corner:     { angle: 45,  pos: 60,  name: '三角形',   desc: '切面截取一个顶点附近，截面为三角形', normal: [1, 1, 1] },
+    edge:       { angle: 30,  pos: 40,  name: '五边形',   desc: '切面截取一条棱附近，截面为五边形', normal: [0.3, 1, 0.5] },
+    space:      { angle: 55,  pos: 0,   name: '正六边形', desc: '切面垂直于空间对角线，截面为正六边形', normal: [1, 1, 1] }
+};
+
+function loadCrossSectionSection() {
+    clearScene();
+    autoRotate = false;
+
+    const size = 2.6;
+    cutSolid = requestedSolid || 'cube';
+    // 使用题目指定的实体创建半透明模型，不能固定回退为正方体。
+    const cubeGeo = createCutSolidGeometry(cutSolid, size);
+    const cubeMat = new THREE.MeshPhongMaterial({
+        color: 0x667eea,
+        transparent: true,
+        opacity: 0.25,
+        side: THREE.DoubleSide,
+        clippingPlanes: []
+    });
+    cutCube = new THREE.Mesh(cubeGeo, cubeMat);
+    scene.add(cutCube);
+
+    // 添加边线
+    const edges = new THREE.EdgesGeometry(cubeGeo);
+    const lines = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x4a3f8c, linewidth: 2 }));
+    cutCube.add(lines);
+
+    // 创建切面平面（可视化）
+    const planeGeo = new THREE.PlaneGeometry(size * 1.8, size * 1.8);
+    const planeMat = new THREE.MeshPhongMaterial({
+        color: 0xff6b6b,
+        transparent: true,
+        opacity: 0.35,
+        side: THREE.DoubleSide
+    });
+    cutPlane = new THREE.Mesh(planeGeo, planeMat);
+    scene.add(cutPlane);
+
+    const panelTitle = document.querySelector('#panel-cut h3');
+    const panelNote = document.querySelector('#panel-cut .task-note');
+    const cutExplainer = document.getElementById('cutExplainer');
+    if (isPreview && panelTitle) panelTitle.textContent = '本题辅助图形';
+    if (isPreview && panelNote) panelNote.textContent = `观察${cutSolidLabel(cutSolid)}被平面截取后的截面。`;
+    if (isPreview && cutExplainer) {
+        cutExplainer.textContent = `本题展示${cutSolidLabel(cutSolid)}的截面，切面位置和结果由当前题目参数决定。`;
+    }
+
+    // 设置由题目指定的默认预设。
+    setCutPreset(requestedPlanePreset || (cutSolid === 'cube' ? 'horizontal' : 'parallel-base'), null);
+    camera.position.set(5, 4, 6);
+    controls.update();
+}
+
+function createCutSolidGeometry(solid, size) {
+    if (solid === 'cylinder') return new THREE.CylinderGeometry(size * 0.5, size * 0.5, size, 40);
+    if (solid === 'cone') return new THREE.ConeGeometry(size * 0.55, size, 40);
+    if (solid === 'sphere') return new THREE.SphereGeometry(size * 0.55, 40, 32);
+    if (solid === 'cuboid') return new THREE.BoxGeometry(size * 1.3, size * 0.8, size);
+    return new THREE.BoxGeometry(size, size, size);
+}
+
+function cutSolidLabel(solid) {
+    return ({ cube: '正方体', cuboid: '长方体', cylinder: '圆柱', cone: '圆锥', sphere: '球' })[solid] || solid;
+}
+
+function resolveCutPreset(presetName) {
+    if (cutSolid === 'cylinder' && presetName === 'parallel-base') {
+        return { angle: 0, pos: 0, name: '圆形', desc: '平行于圆柱底面的平面截圆柱，截面是圆形。', normal: [0, 1, 0] };
+    }
+    if (cutSolid === 'cone' && presetName === 'parallel-base') {
+        return { angle: 0, pos: 0, name: '圆形', desc: '平行于圆锥底面的平面截圆锥，截面是圆形。', normal: [0, 1, 0] };
+    }
+    if (cutSolid === 'sphere' && presetName === 'center') {
+        return { angle: 0, pos: 0, name: '圆形', desc: '平面经过球心截球，截面是最大的圆。', normal: [0, 1, 0] };
+    }
+    const aliases = { 'parallel-base': 'horizontal', vertex: 'corner', hexagon: 'space' };
+    return cutPresets[aliases[presetName] || presetName] || cutPresets.horizontal;
+}
+
+function setCutPreset(presetName, btn) {
+    if (btn) markInteraction('cut');
+    const p = resolveCutPreset(presetName);
+    if (!p) return;
+
+    // 更新按钮状态
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    else {
+        const defaultBtn = document.querySelector('.preset-btn');
+        if (defaultBtn) defaultBtn.classList.add('active');
+    }
+
+    // 更新滑块
+    document.getElementById('cutAngleSlider').value = p.angle;
+    document.getElementById('cutPosSlider').value = p.pos;
+    document.getElementById('cutAngleVal').textContent = p.angle + '°';
+    document.getElementById('cutPosVal').textContent = p.pos;
+
+    // 更新切面
+    updateCutPlane(p.normal, p.pos / 100);
+
+    // 更新结果显示
+    document.getElementById('cutResult').innerHTML = `
+        <div class="shape-name">${p.name}</div>
+        <div class="shape-desc">${p.desc}</div>
+    `;
+}
+
+function updateCutAngle(val) {
+    markInteraction('cut');
+    const angle = parseInt(val);
+    document.getElementById('cutAngleVal').textContent = angle + '°';
+    // 根据角度计算法向量
+    const rad = angle * Math.PI / 180;
+    const normal = [Math.sin(rad), Math.cos(rad), 0];
+    const pos = parseInt(document.getElementById('cutPosSlider').value) / 100;
+    updateCutPlane(normal, pos);
+    updateCutResult(angle, pos);
+}
+
+function updateCutPos(val) {
+    markInteraction('cut');
+    const pos = parseInt(val);
+    document.getElementById('cutPosVal').textContent = pos;
+    const angle = parseInt(document.getElementById('cutAngleSlider').value);
+    const rad = angle * Math.PI / 180;
+    const normal = [Math.sin(rad), Math.cos(rad), 0];
+    updateCutPlane(normal, pos / 100);
+    updateCutResult(angle, pos / 100);
+}
+
+function updateCutPlane(normal, pos) {
+    if (!cutPlane) return;
+    const n = new THREE.Vector3(normal[0], normal[1], normal[2]).normalize();
+    // 设置平面朝向
+    cutPlane.lookAt(cutPlane.position.x + n.x, cutPlane.position.y + n.y, cutPlane.position.z + n.z);
+    // 设置平面位置（沿法向量偏移）
+    cutPlane.position.set(n.x * pos * 1.3, n.y * pos * 1.3, n.z * pos * 1.3);
+
+    // 更新裁剪平面
+    const clipPlane = new THREE.Plane(n.clone().negate(), pos * 1.3);
+    if (cutCube.material.clippingPlanes) {
+        cutCube.material.clippingPlanes = [clipPlane];
+    }
+}
+
+function updateCutResult(angle, pos) {
+    if (cutSolid === 'cylinder') {
+        document.getElementById('cutResult').innerHTML = '<div class="shape-name">圆形</div><div class="shape-desc">平行于圆柱底面的平面截圆柱，截面是圆形。</div>';
+        return;
+    }
+    if (cutSolid === 'cone') {
+        document.getElementById('cutResult').innerHTML = '<div class="shape-name">圆形</div><div class="shape-desc">平行于圆锥底面的平面截圆锥，截面是圆形。</div>';
+        return;
+    }
+    if (cutSolid === 'sphere') {
+        document.getElementById('cutResult').innerHTML = '<div class="shape-name">圆形</div><div class="shape-desc">平面截球得到圆形截面。</div>';
+        return;
+    }
+    // 根据角度和位置推断截面形状
+    let name = '正方形';
+    let desc = '';
+
+    if (angle === 0) {
+        name = '正方形';
+        desc = '水平切面通过正方体，截面为正方形';
+    } else if (angle < 30) {
+        name = '矩形';
+        desc = '切面略微倾斜，截面为矩形';
+    } else if (angle < 55) {
+        if (Math.abs(pos) > 0.3) {
+            name = '三角形';
+            desc = '切面截取顶点附近，截面为三角形';
+        } else {
+            name = '矩形';
+            desc = '切面过四条棱，截面为矩形';
+        }
+    } else if (angle < 75) {
+        if (Math.abs(pos) > 0.35) {
+            name = '三角形';
+            desc = '切面截取顶点附近，截面为三角形';
+        } else if (Math.abs(pos) > 0.15) {
+            name = '五边形';
+            desc = '切面截取棱附近，截面为五边形';
+        } else {
+            name = '六边形';
+            desc = '切面截六条棱，截面为六边形';
+        }
+    } else {
+        name = '正方形';
+        desc = '垂直切面平行于侧面，截面为正方形';
+    }
+
+    document.getElementById('cutResult').innerHTML = `
+        <div class="shape-name">${name}</div>
+        <div class="shape-desc">${desc}</div>
+    `;
+}
+
+// ============================================================
+//  Section 4: 三视图
+// ============================================================
+const structuresData = {
+    1: {
+        name: 'L形结构',
+        cubes: [
+            [0,0,0], [1,0,0], [0,0,1],
+            [0,1,0],
+            [0,2,0]
+        ]
+    },
+    2: {
+        name: '阶梯结构',
+        cubes: [
+            [0,0,0], [1,0,0], [2,0,0],
+            [0,0,1], [1,0,1],
+            [0,0,2]
+        ]
+    },
+    3: {
+        name: '十字结构',
+        cubes: [
+            [0,0,0], [1,0,0], [2,0,0],
+            [1,0,1], [1,0,-1],
+            [1,1,0]
+        ]
+    }
+};
+
+function loadThreeViewsSection() {
+    clearScene();
+    autoRotate = false;
+    selectStructure(1, null);
+    camera.position.set(6, 5, 7);
+    controls.update();
+}
+
+function selectStructure(id, btn) {
+    if (btn) markInteraction('views');
+    currentStructure = id;
+
+    // 更新按钮状态
+    document.querySelectorAll('.struct-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    else {
+        const first = document.querySelector('.struct-btn');
+        if (first) first.classList.add('active');
+    }
+
+    // 清除旧结构
+    clearScene();
+
+    // 构建新的3D结构
+    const data = structuresData[id];
+    const unitSize = 1;
+    const colors = [0x667eea, 0x43e97b, 0xf9ca24, 0xf5576c, 0x4ecdc4, 0xfd79a8, 0xa29bfe];
+
+    data.cubes.forEach((pos, i) => {
+        const geo = new THREE.BoxGeometry(unitSize * 0.95, unitSize * 0.95, unitSize * 0.95);
+        const mat = new THREE.MeshPhongMaterial({
+            color: colors[pos[1] % colors.length],
+            transparent: true,
+            opacity: 0.85
+        });
+        const mesh = new THREE.Mesh(geo, mat);
+        // 居中到原点
+        const offsetX = -0.5;
+        const offsetZ = -0.5;
+        mesh.position.set(
+            pos[0] + offsetX,
+            pos[1] + 0.5,
+            pos[2] + offsetZ
+        );
+
+        // 加边线
+        const edges = new THREE.EdgesGeometry(geo);
+        mesh.add(new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x333 })));
+        scene.add(mesh);
+    });
+
+    // 渲染三视图
+    renderThreeViews(id);
+}
+
+function renderThreeViews(structureId) {
+    const data = structuresData[structureId];
+    const cubes = data.cubes;
+
+    // 计算坐标范围
+    let maxX = 0, maxY = 0, maxZ = 0;
+    cubes.forEach(p => {
+        maxX = Math.max(maxX, p[0]);
+        maxY = Math.max(maxY, p[1]);
+        maxZ = Math.max(maxZ, p[2]);
+    });
+
+    // 正视图（从正面看）：x横 y纵
+    const front = new Set();
+    cubes.forEach(p => front.add(p[0] + ',' + p[1]));
+
+    // 左视图（从左面看）：z横 y纵
+    const left = new Set();
+    cubes.forEach(p => left.add(p[2] + ',' + p[1]));
+
+    // 俯视图（从上面看）：x横 z纵
+    const top = new Set();
+    cubes.forEach(p => top.add(p[0] + ',' + p[2]));
+
+    // 绘制三个视图
+    drawView('viewFront', front, maxX, maxY);
+    drawView('viewLeft', left, maxZ, maxY);
+    drawView('viewTop', top, maxX, maxZ);
+}
+
+function drawView(canvasId, points, maxX, maxY) {
+    const canvas = document.getElementById(canvasId);
+    const ctx = canvas.getContext('2d');
+    const w = canvas.width;
+    const h = canvas.height;
+
+    ctx.clearRect(0, 0, w, h);
+
+    // 计算格子大小
+    const cols = maxX + 1;
+    const rows = maxY + 1;
+    const cellW = w / Math.max(cols, 1);
+    const cellH = h / Math.max(rows, 1);
+    const cell = Math.min(cellW, cellH);
+    const offsetX = (w - cell * cols) / 2;
+    const offsetY = (h - cell * rows) / 2;
+
+    // 绘制网格
+    ctx.strokeStyle = '#e0e7ff';
+    ctx.lineWidth = 1;
+    for (let i = 0; i <= cols; i++) {
+        ctx.beginPath();
+        ctx.moveTo(offsetX + i * cell, offsetY);
+        ctx.lineTo(offsetX + i * cell, offsetY + rows * cell);
+        ctx.stroke();
+    }
+    for (let j = 0; j <= rows; j++) {
+        ctx.beginPath();
+        ctx.moveTo(offsetX, offsetY + j * cell);
+        ctx.lineTo(offsetX + cols * cell, offsetY + j * cell);
+        ctx.stroke();
+    }
+
+    // 填充存在的格子
+    ctx.fillStyle = '#667eea';
+    ctx.strokeStyle = '#4a3f8c';
+    ctx.lineWidth = 1.5;
+    points.forEach(pt => {
+        const [x, y] = pt.split(',').map(Number);
+        // y轴翻转（canvas y向下）
+        const px = offsetX + x * cell;
+        const py = offsetY + (maxY - y) * cell;
+        ctx.fillRect(px + 1, py + 1, cell - 2, cell - 2);
+        ctx.strokeRect(px + 1, py + 1, cell - 2, cell - 2);
+    });
+}
+
+// ============================================================
+//  切换区域
+// ============================================================
+function switchSection(id) {
+    if (!allowedSections.includes(id)) id = 'shapes';
+    // 测试题只允许显示题目指定的场景，防止上一题或内部导航串到其他模型。
+    if (isEmbeddedQuestion && id !== lockedSection) return;
+    currentSection = id;
+
+    // 更新标签栏（不依赖 event，通过 id 匹配按钮）
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    const activeTab = document.querySelector('.tab[onclick*="' + id + '"]');
+    if (activeTab) activeTab.classList.add('active');
+
+    // 更新面板
+    document.querySelectorAll('.panel-section').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + id).classList.add('active');
+
+    // 加载对应场景
+    switch (id) {
+        case 'shapes':   loadShapesSection(); break;
+        case 'fold':     loadFoldSection(); break;
+        case 'cut':      loadCrossSectionSection(); break;
+        case 'views':    loadThreeViewsSection(); break;
+    }
+
+    renderLessonGuidance();
+}
+
+// ============================================================
+//  动画循环
+// ============================================================
+function animate() {
+    requestAnimationFrame(animate);
+
+    // Section 1: 自动旋转
+    if (autoRotate && currentShape) {
+        currentShape.rotation.y += 0.005;
+    }
+
+    // Section 2: 折叠动画
+    if (foldAnimating && foldPivots) {
+        const diff = foldTarget - foldProgress;
+        if (Math.abs(diff) > 0.005) {
+            updateFold(foldProgress + diff * 0.06);
+        } else {
+            updateFold(foldTarget);
+            foldAnimating = false;
+        }
+    }
+
+    controls.update();
+    renderer.render(scene, camera);
+}
+
+// ============================================================
+//  启动
+// ============================================================
+// 检测是否被 iframe 嵌入，如果是则启用精简模式（隐藏大标题）
+(function () {
+    try {
+        if (window.self !== window.top || isEmbeddedQuestion) {
+            document.body.classList.add('embedded');
+        }
+    } catch (e) { /* 跨域访问报错时忽略 */ }
+})();
+try {
+    init();
+    animate();
+} catch (error) {
+    showCanvasRuntimeMessage(error);
+}
+</script>
+
+</body>
+</html>

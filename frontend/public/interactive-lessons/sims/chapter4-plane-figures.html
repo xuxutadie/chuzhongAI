@@ -1,0 +1,1302 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第四章：基本平面图形 - 互动教学模拟</title>
+<style>
+/* ===== 全局样式 ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+    background: linear-gradient(135deg, #e0e7ff 0%, #f0f4f8 50%, #fdf2f8 100%);
+    min-height: 100vh;
+    color: #333;
+    overflow-x: hidden;
+}
+
+/* ===== 顶部标题 ===== */
+.header {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 18px 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.header h1 { font-size: 20px; display: flex; align-items: center; gap: 10px; }
+.header .chapter { background: rgba(255,255,255,0.25); padding: 4px 14px; border-radius: 16px; font-size: 12px; }
+
+/* ===== 标签栏 ===== */
+.tabs {
+    display: flex;
+    gap: 8px;
+    padding: 12px 20px;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    flex-wrap: wrap;
+    justify-content: center;
+}
+/* 被 iframe 嵌入时：隐藏大标题、压缩 tabs */
+body.embedded .header { display: none; }
+body.embedded .tabs { padding: 6px 12px; gap: 4px; }
+body.embedded .tab { padding: 6px 14px; font-size: 13px; border-radius: 18px; }
+
+.tab {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 22px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    background: #f0f2f8;
+    color: #555;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.tab:hover { transform: translateY(-2px); }
+.tab.active {
+    color: white;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    box-shadow: 0 4px 12px rgba(102,126,234,0.3);
+}
+
+/* ===== 主区域 ===== */
+.main {
+    display: flex;
+    gap: 16px;
+    padding: 16px 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+.canvas-area {
+    flex: 1;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    overflow: hidden;
+    min-height: 480px;
+    position: relative;
+}
+.canvas-area canvas {
+    width: 100%;
+    height: 480px;
+    display: none;
+    background: #fafbff;
+    touch-action: none;
+}
+.canvas-area canvas.active { display: block; }
+.canvas-hint {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    background: rgba(76, 75, 140, 0.78);
+    color: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    pointer-events: none;
+}
+
+/* ===== 控制面板 ===== */
+.panel {
+    width: 300px;
+    flex-shrink: 0;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    padding: 20px;
+    max-height: 540px;
+    overflow-y: auto;
+}
+.panel h3 {
+    font-size: 15px;
+    color: #4a3f8c;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f0f2f8;
+}
+.panel-section { display: none; }
+.panel-section.active { display: block; animation: fadeIn 0.3s; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* ===== 模式按钮组 ===== */
+.mode-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+.mode-btn {
+    padding: 12px 6px;
+    border: 2px solid #e0e7ff;
+    border-radius: 10px;
+    background: #f8faff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-align: center;
+    color: #555;
+}
+.mode-btn:hover { border-color: #667eea; background: #eef2ff; }
+.mode-btn.active {
+    border-color: #667eea;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+}
+.mode-btn .icon { font-size: 22px; display: block; margin-bottom: 4px; }
+
+/* ===== 角类型按钮 ===== */
+.angle-type-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+.angle-type-btn {
+    padding: 10px 6px;
+    border: 2px solid #e0e7ff;
+    border-radius: 10px;
+    background: #f8faff;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+    color: #555;
+}
+.angle-type-btn:hover { border-color: #667eea; background: #eef2ff; }
+.angle-type-btn.active {
+    border-color: #667eea;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+}
+
+/* ===== 按钮 ===== */
+.btn {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+    width: 100%;
+    margin-bottom: 8px;
+    color: white;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+}
+.btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(102,126,234,0.3); }
+.btn.green { background: linear-gradient(135deg, #43e97b, #38d9a9); }
+.btn.orange { background: linear-gradient(135deg, #f093fb, #f5576c); }
+.btn.blue { background: linear-gradient(135deg, #4facfe, #00c6fb); }
+.btn.gray { background: linear-gradient(135deg, #a0a4b8, #8e94a8); }
+.btn.small { padding: 7px 10px; font-size: 12px; width: auto; display: inline-block; }
+
+/* ===== 滑块 ===== */
+.slider-group { margin-bottom: 14px; }
+.slider-group label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+.slider-group label .value { color: #667eea; font-weight: 700; }
+input[type="range"] {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: #e0e7ff;
+    -webkit-appearance: none;
+    outline: none;
+}
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: #667eea;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(102,126,234,0.4);
+}
+
+/* ===== 信息卡片 ===== */
+.info-card {
+    background: #f8faff;
+    border-radius: 12px;
+    padding: 14px;
+    margin-top: 8px;
+}
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px dashed #e0e7ff;
+    font-size: 13px;
+}
+.info-row:last-child { border-bottom: none; }
+.info-row .label { color: #666; }
+.info-row .val { color: #4a3f8c; font-weight: 700; }
+.info-row .val.big { font-size: 16px; color: #667eea; }
+
+.formula-box {
+    background: linear-gradient(135deg, #f0f4ff, #fce4ec);
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin: 8px 0;
+    font-size: 13px;
+    color: #4a3f8c;
+    line-height: 1.7;
+}
+.formula-box b { color: #f5576c; }
+
+.knowledge {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #888;
+    line-height: 1.7;
+    background: #fffbe6;
+    border-left: 3px solid #f9ca24;
+    padding: 8px 10px;
+    border-radius: 6px;
+}
+.knowledge b { color: #4a3f8c; }
+
+/* ===== 颜色图例 ===== */
+.color-legend {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 8px 0;
+    font-size: 11px;
+    color: #666;
+}
+.color-legend span { display: flex; align-items: center; gap: 4px; }
+.color-dot { width: 14px; height: 4px; border-radius: 2px; }
+
+/* ===== 度分秒练习 ===== */
+.dms-item {
+    background: #f8faff;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+.dms-item .q { font-size: 13px; color: #333; margin-bottom: 6px; font-weight: 600; }
+.dms-inputs { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.dms-inputs input {
+    width: 46px;
+    padding: 5px 4px;
+    border: 1.5px solid #e0e7ff;
+    border-radius: 6px;
+    font-size: 13px;
+    text-align: center;
+    outline: none;
+}
+.dms-inputs input:focus { border-color: #667eea; }
+.dms-inputs .unit { font-size: 12px; color: #888; }
+.dms-feedback { font-size: 12px; margin-top: 6px; min-height: 16px; }
+.dms-feedback.ok { color: #0b6e4f; }
+.dms-feedback.no { color: #f5576c; }
+
+/* ===== 响应式 ===== */
+@media (max-width: 900px) {
+    .main { flex-direction: column; }
+    .panel { width: 100%; max-height: none; }
+    .canvas-area canvas { height: 360px; }
+}
+</style>
+<link rel="stylesheet" href="./blueprint-theme.css">
+</head>
+<body data-theme="blueprint">
+
+<!-- 顶部标题 -->
+<div class="header">
+    <h1>📐 第四章：基本平面图形</h1>
+    <span class="chapter">北师大版七年级上册 · 互动教学模拟</span>
+</div>
+
+<!-- 标签栏 -->
+<div class="tabs">
+    <button class="tab active" onclick="switchSection('lines')">📏 线的世界</button>
+    <button class="tab" onclick="switchSection('angles')">📐 角的世界</button>
+    <button class="tab" onclick="switchSection('polygons')">🔷 多边形</button>
+    <button class="tab" onclick="switchSection('circles')">⭕ 圆的世界</button>
+</div>
+
+<!-- 主区域 -->
+<div class="main">
+    <!-- 画布区域（4个 Canvas 对应4个环节） -->
+    <div class="canvas-area">
+        <canvas id="canvasLines" class="active"></canvas>
+        <canvas id="canvasAngles"></canvas>
+        <canvas id="canvasPolygons"></canvas>
+        <canvas id="canvasCircles"></canvas>
+        <div class="canvas-hint" id="canvasHint">🖱️ 选择模式后在画布上点击/拖拽绘制</div>
+    </div>
+
+    <!-- 控制面板 -->
+    <div class="panel">
+        <!-- ============ 环节1：线段、射线、直线 ============ -->
+        <div class="panel-section active" id="panel-lines">
+            <h3>📏 线段 · 射线 · 直线</h3>
+            <div class="mode-grid">
+                <button class="mode-btn active" onclick="setDrawMode('segment', this)">
+                    <span class="icon">━</span>线段
+                </button>
+                <button class="mode-btn" onclick="setDrawMode('ray', this)">
+                    <span class="icon">→</span>射线
+                </button>
+                <button class="mode-btn" onclick="setDrawMode('line', this)">
+                    <span class="icon">↔</span>直线
+                </button>
+            </div>
+            <div class="color-legend">
+                <span><div class="color-dot" style="background:#4facfe"></div>线段（蓝）</span>
+                <span><div class="color-dot" style="background:#43e97b"></div>射线（绿）</span>
+                <span><div class="color-dot" style="background:#f5576c"></div>直线（红）</span>
+            </div>
+            <button class="btn blue" onclick="undoLine()">↩️ 撤销上一条</button>
+            <button class="btn gray" onclick="clearLines()">🗑️ 清除全部</button>
+            <div class="info-card">
+                <div class="info-row"><span class="label">当前模式</span><span class="val" id="linesModeText">线段</span></div>
+                <div class="info-row"><span class="label">已绘制图形</span><span class="val" id="linesCount">0</span></div>
+            </div>
+            <div class="knowledge">
+                <b>💡 知识点：</b><br>
+                • <b>线段</b>：有两个端点，长度可度量。<br>
+                • <b>射线</b>：有一个端点，向一方无限延伸。<br>
+                • <b>直线</b>：没有端点，向两方无限延伸。<br>
+                • 两点确定一条直线。
+            </div>
+        </div>
+
+        <!-- ============ 环节2：角的认识与度量 ============ -->
+        <div class="panel-section" id="panel-angles">
+            <h3>📐 角的认识与度量</h3>
+            <p style="font-size:12px;color:#666;margin-bottom:10px;line-height:1.6;">
+                拖动画布中的<b>终边</b>改变角度，或选择角的类型。
+            </p>
+            <div class="angle-type-grid">
+                <button class="angle-type-btn" onclick="setAngleType('acute', this)">锐角 (&lt;90°)</button>
+                <button class="angle-type-btn" onclick="setAngleType('right', this)">直角 (=90°)</button>
+                <button class="angle-type-btn" onclick="setAngleType('obtuse', this)">钝角 (&gt;90°)</button>
+                <button class="angle-type-btn" onclick="setAngleType('straight', this)">平角 (=180°)</button>
+            </div>
+            <div class="info-card">
+                <div class="info-row"><span class="label">当前角度</span><span class="val big" id="angleValueText">60°</span></div>
+                <div class="info-row"><span class="label">角的类型</span><span class="val" id="angleTypeText">锐角</span></div>
+            </div>
+            <div class="knowledge">
+                <b>💡 知识点：</b><br>
+                • 角由两条有公共端点的射线组成。<br>
+                • 1° = 60′，1′ = 60″（度分秒六十进制）。<br>
+                • 锐角&lt;90°，直角=90°，钝角介于90°与180°之间，平角=180°。
+            </div>
+
+            <h3 style="margin-top:16px;">✏️ 度分秒换算练习</h3>
+            <button class="btn green" onclick="generateDMS()">🔄 换一组题</button>
+            <div id="dmsList"></div>
+        </div>
+
+        <!-- ============ 环节3：多边形探索 ============ -->
+        <div class="panel-section" id="panel-polygons">
+            <h3>🔷 多边形探索</h3>
+            <div class="slider-group">
+                <label>边数 n <span class="value" id="polySidesText">6</span></label>
+                <input type="range" id="polySlider" min="3" max="12" value="6" oninput="updatePolygon(this.value)">
+            </div>
+            <button class="btn blue" onclick="toggleDiagonals(this)">🧵 显示对角线（从一个顶点出发）</button>
+            <div class="info-card">
+                <div class="info-row"><span class="label">名称</span><span class="val" id="polyName">六边形</span></div>
+                <div class="info-row"><span class="label">边数</span><span class="val" id="polyN">6</span></div>
+                <div class="info-row"><span class="label">内角和</span><span class="val" id="polySum">720°</span></div>
+                <div class="info-row"><span class="label">每个内角</span><span class="val" id="polyEach">120°</span></div>
+                <div class="info-row"><span class="label">对角线条数</span><span class="val" id="polyDiag">9</span></div>
+            </div>
+            <div class="formula-box">
+                内角和公式：<b>(n−2)×180°</b><br>
+                每个内角：<b>(n−2)×180°÷n</b><br>
+                对角线条数：<b>n(n−3)÷2</b>
+            </div>
+            <div class="knowledge">
+                <b>💡 知识点：</b><br>
+                • 从n边形一个顶点出发可画 <b>n−3</b> 条对角线。<br>
+                • 这些对角线把n边形分成 <b>n−2</b> 个三角形。<br>
+                • 这就是内角和公式 (n−2)×180° 的由来。
+            </div>
+        </div>
+
+        <!-- ============ 环节4：圆的认识 ============ -->
+        <div class="panel-section" id="panel-circles">
+            <h3>⭕ 圆的认识</h3>
+            <div class="slider-group">
+                <label>半径 r <span class="value" id="circleRText">5</span></label>
+                <input type="range" id="circleSlider" min="1" max="10" value="5" oninput="updateCircle(this.value)">
+            </div>
+            <div class="slider-group">
+                <label>扇形圆心角 n <span class="value" id="circleAngleText">90°</span></label>
+                <input type="range" id="sectorSlider" min="1" max="360" value="90" oninput="updateSector(this.value)">
+            </div>
+            <div class="info-card">
+                <div class="info-row"><span class="label">半径 r</span><span class="val" id="circleR">5</span></div>
+                <div class="info-row"><span class="label">直径 d=2r</span><span class="val" id="circleD">10</span></div>
+                <div class="info-row"><span class="label">周长 C=2πr</span><span class="val" id="circleC">31.4</span></div>
+                <div class="info-row"><span class="label">面积 S=πr²</span><span class="val" id="circleS">78.5</span></div>
+                <div class="info-row"><span class="label">扇形面积</span><span class="val big" id="circleSector">19.63</span></div>
+            </div>
+            <div class="formula-box">
+                周长：<b>C = 2πr</b><br>
+                面积：<b>S = πr²</b>（π取3.14）<br>
+                扇形面积：<b>S扇 = nπr²÷360</b>
+            </div>
+            <div class="knowledge">
+                <b>💡 知识点：</b><br>
+                • 圆是到定点距离相等的所有点的集合。<br>
+                • 圆上任意两点间的线段叫做<b>弦</b>。<br>
+                • 过圆心的弦叫做<b>直径</b>，直径是最大的弦。<br>
+                • 扇形由两条半径和一段弧围成。
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// ============================================================
+//  全局状态
+// ============================================================
+let currentSection = 'lines';
+const PI = 3.14; // 题目要求 π 取 3.14
+
+// 各画布的逻辑尺寸（CSS 像素）与上下文
+let linesCtx, linesW, linesH;
+let angleCtx, angleW, angleH;
+let polyCtx, polyW, polyH;
+let circleCtx, circleW, circleH;
+
+// ============================================================
+//  环节1：线段、射线、直线 —— 状态
+// ============================================================
+let linesMode = 'segment';                 // 当前绘制模式
+let linesShapes = [];                       // 已绘制图形数组
+let linesPending = null;                    // 线段/直线模式下第一个点击点
+let linesDragging = false;                  // 射线模式是否正在拖拽
+let linesDragStart = null;                  // 射线起点
+let linesMousePos = null;                   // 当前鼠标位置（用于预览）
+let linesLabelIndex = 0;                    // 字母标注索引（A=0,B=1...）
+
+const LINES_COLORS = { segment: '#4facfe', ray: '#43e97b', line: '#f5576c' };
+const LINES_NAMES = { segment: '线段', ray: '射线', line: '直线' };
+
+// ============================================================
+//  环节2：角 —— 状态
+// ============================================================
+let angleValue = 60;                        // 当前角度（0~180）
+let angleDragging = false;                  // 是否正在拖拽终边
+let dmsQuestions = [];                      // 度分秒练习题
+
+// ============================================================
+//  环节3：多边形 —— 状态
+// ============================================================
+let polySides = 6;
+let polyShowDiagonals = false;
+
+// ============================================================
+//  环节4：圆 —— 状态
+// ============================================================
+let circleR = 5;                            // 半径（单位长度）
+let circleSectorAngle = 90;                 // 扇形圆心角（度）
+
+// ============================================================
+//  画布高 DPI 适配：返回逻辑宽高与上下文
+// ============================================================
+function fitCanvas(canvas) {
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    const w = Math.max(1, rect.width);
+    const h = Math.max(1, rect.height);
+    canvas.width = Math.round(w * dpr);
+    canvas.height = Math.round(h * dpr);
+    const ctx = canvas.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); // 重置变换并按 DPR 缩放
+    return { ctx, w, h };
+}
+
+// 获取鼠标在画布中的逻辑坐标（CSS 像素）
+function getCanvasPos(canvas, e) {
+    const rect = canvas.getBoundingClientRect();
+    return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+}
+
+// ============================================================
+//  标签页切换（不依赖全局 event，用 querySelector 匹配按钮）
+// ============================================================
+function switchSection(id) {
+    currentSection = id;
+
+    // 更新标签栏高亮
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    const activeTab = document.querySelector('.tab[onclick*="' + id + '"]');
+    if (activeTab) activeTab.classList.add('active');
+
+    // 更新面板
+    document.querySelectorAll('.panel-section').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + id).classList.add('active');
+
+    // 切换画布显示
+    document.querySelectorAll('.canvas-area canvas').forEach(c => c.classList.remove('active'));
+    const canvasId = 'canvas' + id.charAt(0).toUpperCase() + id.slice(1);
+    document.getElementById(canvasId).classList.add('active');
+
+    // 更新提示文字并重绘当前环节
+    const hints = {
+        lines:    '🖱️ 线段/直线：点击两点；射线：按下并拖拽',
+        angles:   '🖱️ 拖动画布改变角的大小',
+        polygons: '🔷 拖动滑块改变边数，切换对角线',
+        circles:  '⭕ 拖动滑块改变半径和扇形圆心角'
+    };
+    document.getElementById('canvasHint').textContent = hints[id];
+
+    // 切换后画布刚显示，需要重新适配尺寸并重绘
+    requestAnimationFrame(() => {
+        if (id === 'lines')    { const c = document.getElementById('canvasLines');    const f = fitCanvas(c); linesCtx = f.ctx; linesW = f.w; linesH = f.h; drawLines(); }
+        if (id === 'angles')   { const c = document.getElementById('canvasAngles');   const f = fitCanvas(c); angleCtx = f.ctx; angleW = f.w; angleH = f.h; drawAngle(); }
+        if (id === 'polygons') { const c = document.getElementById('canvasPolygons'); const f = fitCanvas(c); polyCtx = f.ctx; polyW = f.w; polyH = f.h; drawPolygon(); }
+        if (id === 'circles')  { const c = document.getElementById('canvasCircles');  const f = fitCanvas(c); circleCtx = f.ctx; circleW = f.w; circleH = f.h; drawCircle(); }
+    });
+}
+
+// 统一的绘制入口（按当前环节分发）
+function drawCanvas() {
+    if (currentSection === 'lines')    drawLines();
+    if (currentSection === 'angles')   drawAngle();
+    if (currentSection === 'polygons') drawPolygon();
+    if (currentSection === 'circles')  drawCircle();
+}
+
+// ============================================================
+//  环节1：线段、射线、直线
+// ============================================================
+function setDrawMode(mode, btn) {
+    linesMode = mode;
+    linesPending = null;
+    linesDragging = false;
+    // 用 querySelector 匹配按钮，不依赖全局 event
+    document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    document.getElementById('linesModeText').textContent = LINES_NAMES[mode];
+    drawLines();
+}
+
+// 计算从 p1 沿 p1->p2 方向延伸到画布边界的端点
+function extendToPoint(p1, p2, w, h) {
+    const dx = p2.x - p1.x;
+    const dy = p2.y - p1.y;
+    if (dx === 0 && dy === 0) return { x: p1.x, y: p1.y };
+    let t = Infinity;
+    if (dx !== 0) { t = Math.min(t, Math.max(0, (dx > 0 ? w - p1.x : -p1.x) / dx)); }
+    if (dy !== 0) { t = Math.min(t, Math.max(0, (dy > 0 ? h - p1.y : -p1.y) / dy)); }
+    return { x: p1.x + dx * t, y: p1.y + dy * t };
+}
+
+function drawLines() {
+    if (!linesCtx) return;
+    const ctx = linesCtx, w = linesW, h = linesH;
+    ctx.clearRect(0, 0, w, h);
+
+    // 画淡色网格（便于教学定位）
+    ctx.strokeStyle = '#eef1f8';
+    ctx.lineWidth = 1;
+    for (let x = 0; x <= w; x += 40) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke(); }
+    for (let y = 0; y <= h; y += 40) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
+
+    // 绘制所有已完成图形
+    linesShapes.forEach(s => drawOneLine(ctx, s, w, h, false));
+
+    // 绘制预览（线段/直线已点第一点，或射线拖拽中）
+    if (linesDragging && linesDragStart && linesMousePos) {
+        drawOneLine(ctx, { type: 'ray', p1: linesDragStart, p2: linesMousePos, label1: '', label2: '' }, w, h, true);
+    } else if (linesPending && linesMousePos && (linesMode === 'segment' || linesMode === 'line')) {
+        drawOneLine(ctx, { type: linesMode, p1: linesPending, p2: linesMousePos, label1: '', label2: '' }, w, h, true);
+    }
+
+    document.getElementById('linesCount').textContent = linesShapes.length;
+}
+
+// 绘制单条线（含端点标记与字母标注）
+function drawOneLine(ctx, s, w, h, isPreview) {
+    const color = LINES_COLORS[s.type];
+    ctx.strokeStyle = color;
+    ctx.lineWidth = isPreview ? 2 : 3;
+    if (isPreview) ctx.setLineDash([6, 5]); else ctx.setLineDash([]);
+
+    let start = s.p1, end = s.p2;
+    if (s.type === 'ray') {
+        // 射线：从 p1 出发经过 p2 延伸到边界
+        end = extendToPoint(s.p1, s.p2, w, h);
+    } else if (s.type === 'line') {
+        // 直线：向两侧延伸到边界
+        start = extendToPoint(s.p2, s.p1, w, h);
+        end   = extendToPoint(s.p1, s.p2, w, h);
+    }
+
+    ctx.beginPath();
+    ctx.moveTo(start.x, start.y);
+    ctx.lineTo(end.x, end.y);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // 端点标记与字母标注（仅真实图形）
+    if (isPreview) return;
+    if (s.type === 'segment') {
+        drawPoint(ctx, s.p1, s.label1, color);
+        drawPoint(ctx, s.p2, s.label2, color);
+    } else if (s.type === 'ray') {
+        drawPoint(ctx, s.p1, s.label1, color);   // 射线端点
+    }
+    // 直线无端点，不画点标记
+}
+
+// 画一个端点及其字母标注
+function drawPoint(ctx, p, label, color) {
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 5, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+    ctx.fill();
+    if (label) {
+        ctx.fillStyle = '#4a3f8c';
+        ctx.font = 'bold 15px "Microsoft YaHei"';
+        ctx.fillText(label, p.x + 8, p.y - 8);
+    }
+}
+
+// 取下一个字母标注
+function nextLabel() {
+    const ch = String.fromCharCode(65 + linesLabelIndex);
+    linesLabelIndex++;
+    return ch;
+}
+
+function undoLine() {
+    if (linesShapes.length === 0) return;
+    const removed = linesShapes.pop();
+    // 回收两个字母标注
+    if (removed.label1) linesLabelIndex = Math.max(0, linesLabelIndex - 2);
+    linesPending = null;
+    linesDragging = false;
+    drawLines();
+}
+
+function clearLines() {
+    linesShapes = [];
+    linesPending = null;
+    linesDragging = false;
+    linesLabelIndex = 0;
+    drawLines();
+}
+
+// 环节1统一使用 Pointer Events，同时支持鼠标、触控笔和手机触摸。
+function initLinesEvents() {
+    const canvas = document.getElementById('canvasLines');
+
+    canvas.addEventListener('pointerdown', function (e) {
+        if (currentSection !== 'lines') return;
+        const pos = getCanvasPos(canvas, e);
+        if (linesMode === 'ray') {
+            // 射线：按下记录端点，拖拽确定方向
+            linesDragging = true;
+            linesDragStart = pos;
+            linesMousePos = pos;
+        } else {
+            // 线段/直线：第一次点击记录，第二次点击完成
+            if (!linesPending) {
+                linesPending = pos;
+                linesMousePos = pos;
+            } else {
+                linesShapes.push({
+                    type: linesMode,
+                    p1: linesPending,
+                    p2: pos,
+                    label1: nextLabel(),
+                    label2: nextLabel()
+                });
+                linesPending = null;
+            }
+        }
+        try { canvas.setPointerCapture(e.pointerId); } catch (captureError) { /* 合成事件可能无法捕获 */ }
+        drawLines();
+        e.preventDefault();
+    });
+
+    canvas.addEventListener('pointermove', function (e) {
+        if (currentSection !== 'lines') return;
+        linesMousePos = getCanvasPos(canvas, e);
+        if (linesDragging || linesPending) drawLines();
+        if (linesDragging) e.preventDefault();
+    });
+
+    canvas.addEventListener('pointerup', function (e) {
+        if (currentSection !== 'lines') return;
+        if (linesDragging && linesDragStart) {
+            const pos = getCanvasPos(canvas, e);
+            // 起点与终点距离过小则忽略
+            const dx = pos.x - linesDragStart.x, dy = pos.y - linesDragStart.y;
+            if (dx * dx + dy * dy > 25) {
+                linesShapes.push({
+                    type: 'ray',
+                    p1: linesDragStart,
+                    p2: pos,
+                    label1: nextLabel(),
+                    label2: ''
+                });
+            }
+            linesDragging = false;
+            linesDragStart = null;
+            drawLines();
+        }
+        try {
+            if (canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId);
+        } catch (captureError) { /* 结束时捕获可能已由浏览器释放 */ }
+    });
+
+    const cancelLinePointer = function (event) {
+        const hadPreview = linesDragging || (event.type === 'pointercancel' && Boolean(linesPending));
+        linesDragging = false;
+        linesDragStart = null;
+        linesMousePos = null;
+        // pointercancel 表示本次触摸未完成；lostpointercapture 可能只是正常点击结束，不能清掉首个端点。
+        if (event.type === 'pointercancel') linesPending = null;
+        if (hadPreview) drawLines();
+    };
+    canvas.addEventListener('pointercancel', cancelLinePointer);
+    canvas.addEventListener('lostpointercapture', cancelLinePointer);
+
+    // 鼠标移出时仅隐藏未完成的点击预览；已捕获的射线拖拽继续接收事件。
+    canvas.addEventListener('pointerleave', function () {
+        if (currentSection !== 'lines') return;
+        if (!linesDragging && linesPending) { linesMousePos = null; drawLines(); }
+    });
+}
+
+// ============================================================
+//  环节2：角的认识与度量
+// ============================================================
+function setAngleType(type, btn) {
+    // 用 querySelector 匹配按钮
+    document.querySelectorAll('.angle-type-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    // 设置该类型的代表角度
+    const map = { acute: 45, right: 90, obtuse: 135, straight: 180 };
+    angleValue = map[type] || 60;
+    updateAngle();
+}
+
+// 实时更新角度数值与类型显示，并重绘
+function updateAngle() {
+    document.getElementById('angleValueText').textContent = angleValue.toFixed(0) + '°';
+    let t = '锐角';
+    if (angleValue === 90) t = '直角';
+    else if (angleValue === 180) t = '平角';
+    else if (angleValue > 90 && angleValue < 180) t = '钝角';
+    else if (angleValue < 90) t = '锐角';
+    document.getElementById('angleTypeText').textContent = t;
+    drawAngle();
+}
+
+function drawAngle() {
+    if (!angleCtx) return;
+    const ctx = angleCtx, w = angleW, h = angleH;
+    ctx.clearRect(0, 0, w, h);
+
+    // 顶点位于画布中部偏下
+    const Ox = w / 2 - 40, Oy = h / 2 + 40;
+    const R = Math.min(w, h) * 0.32;          // 角的两边长度
+    const Rp = R + 36;                         // 量角器半径
+    const rad = angleValue * Math.PI / 180;
+
+    // 终边端点（数学逆时针方向，canvas 中 y 向上为负）
+    const Tx = Ox + R * Math.cos(rad);
+    const Ty = Oy - R * Math.sin(rad);
+
+    // ---- 1. 绘制量角器（半圆，覆盖在角上方）----
+    drawProtractor(ctx, Ox, Oy, Rp);
+
+    // ---- 2. 绘制角的始边（水平向右）----
+    ctx.strokeStyle = '#4a3f8c';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(Ox, Oy);
+    ctx.lineTo(Ox + R + 10, Oy);
+    ctx.stroke();
+
+    // ---- 3. 绘制角的终边 ----
+    ctx.strokeStyle = '#667eea';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(Ox, Oy);
+    ctx.lineTo(Tx, Ty);
+    ctx.stroke();
+
+    // ---- 4. 绘制角度弧 ----
+    ctx.strokeStyle = '#f5576c';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.arc(Ox, Oy, 32, 0, -rad, true);
+    ctx.stroke();
+
+    // 角度数值标注
+    const midRad = rad / 2;
+    ctx.fillStyle = '#f5576c';
+    ctx.font = 'bold 16px "Microsoft YaHei"';
+    ctx.fillText(angleValue.toFixed(0) + '°', Ox + 44 * Math.cos(midRad) - 10, Oy - 44 * Math.sin(midRad) + 5);
+
+    // ---- 5. 顶点与标注 ----
+    ctx.fillStyle = '#4a3f8c';
+    ctx.beginPath(); ctx.arc(Ox, Oy, 5, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.arc(Ox, Oy, 2, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#4a3f8c';
+    ctx.font = 'bold 15px "Microsoft YaHei"';
+    ctx.fillText('O', Ox - 18, Oy + 16);
+
+    // 终边端点可拖拽提示（小圆）
+    ctx.fillStyle = 'rgba(102,126,234,0.25)';
+    ctx.beginPath(); ctx.arc(Tx, Ty, 10, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = '#667eea';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.arc(Tx, Ty, 10, 0, Math.PI * 2); ctx.stroke();
+
+    // 直角符号（90°时画小方块）
+    if (Math.abs(angleValue - 90) < 0.5) {
+        ctx.strokeStyle = '#888';
+        ctx.lineWidth = 1.5;
+        ctx.strokeRect(Ox + 18, Oy - 18, 14, 14);
+    }
+}
+
+// 绘制半圆量角器
+function drawProtractor(ctx, Ox, Oy, R) {
+    // 底边
+    ctx.strokeStyle = '#b8c0e0';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(Ox - R, Oy);
+    ctx.lineTo(Ox + R, Oy);
+    ctx.stroke();
+
+    // 半圆弧（上半部分）
+    ctx.strokeStyle = '#9aa6d0';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(Ox, Oy, R, Math.PI, 2 * Math.PI, false);
+    ctx.stroke();
+
+    // 刻度
+    ctx.font = '10px "Microsoft YaHei"';
+    for (let d = 0; d <= 180; d += 10) {
+        const rr = d * Math.PI / 180;
+        const x = Ox + R * Math.cos(rr);
+        const y = Oy - R * Math.sin(rr);
+        const inner = d % 30 === 0 ? 12 : 6;
+        const xi = Ox + (R - inner) * Math.cos(rr);
+        const yi = Oy - (R - inner) * Math.sin(rr);
+        ctx.strokeStyle = d % 30 === 0 ? '#6c75a8' : '#c0c8e0';
+        ctx.lineWidth = d % 30 === 0 ? 1.5 : 1;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(xi, yi);
+        ctx.stroke();
+        // 每30°标注数字
+        if (d % 30 === 0) {
+            const xl = Ox + (R - 22) * Math.cos(rr);
+            const yl = Oy - (R - 22) * Math.sin(rr);
+            ctx.fillStyle = '#6c75a8';
+            ctx.fillText(d + '', xl - 6, yl + 3);
+        }
+    }
+}
+
+// 环节2使用 Pointer Events 拖动改变角度。
+function initAngleEvents() {
+    const canvas = document.getElementById('canvasAngles');
+
+    canvas.addEventListener('pointerdown', function (e) {
+        if (currentSection !== 'angles') return;
+        angleDragging = true;
+        try { canvas.setPointerCapture(e.pointerId); } catch (captureError) { /* 合成事件可能无法捕获 */ }
+        setAngleFromMouse(e);
+        e.preventDefault();
+    });
+    canvas.addEventListener('pointermove', function (e) {
+        if (currentSection !== 'angles') return;
+        if (angleDragging) {
+            setAngleFromMouse(e);
+            e.preventDefault();
+        }
+    });
+    const finishAnglePointer = function () { angleDragging = false; };
+    canvas.addEventListener('pointerup', finishAnglePointer);
+    canvas.addEventListener('pointercancel', finishAnglePointer);
+    canvas.addEventListener('lostpointercapture', finishAnglePointer);
+}
+
+// 根据鼠标位置计算角度（限制在 0~180°）
+function setAngleFromMouse(e) {
+    const canvas = document.getElementById('canvasAngles');
+    const pos = getCanvasPos(canvas, e);
+    const Ox = angleW / 2 - 40, Oy = angleH / 2 + 40;
+    const dx = pos.x - Ox;
+    const dy = pos.y - Oy;
+    // 数学角度（逆时针为正），canvas 中 y 向下需取负
+    let deg = Math.atan2(-dy, dx) * 180 / Math.PI;
+    if (deg < 0) deg += 360;
+    // 限制在 0~180（上半平面）
+    if (deg > 180) deg = 180;
+    angleValue = Math.max(0, Math.min(180, deg));
+    // 清除类型按钮高亮（手动改变后不再属于预设类型）
+    document.querySelectorAll('.angle-type-btn').forEach(b => b.classList.remove('active'));
+    updateAngle();
+}
+
+// ============================================================
+//  环节2：度分秒换算练习
+// ============================================================
+function generateDMS() {
+    dmsQuestions = [];
+    // 2 题：度（小数）→ 度分秒
+    for (let i = 0; i < 2; i++) {
+        const d = Math.floor(Math.random() * 80) + 10;       // 10~89 度
+        const minFrac = Math.random();                        // 0~1 度的小数部分
+        const totalSec = Math.round(minFrac * 3600);
+        const m = Math.floor(totalSec / 60);
+        let s = totalSec - m * 60;
+        const decimal = +(d + totalSec / 3600).toFixed(4);
+        dmsQuestions.push({ type: 'toDMS', decimal, d, m, s });
+    }
+    // 2 题：度分秒 → 度（小数）
+    for (let i = 0; i < 2; i++) {
+        const d = Math.floor(Math.random() * 80) + 10;
+        const m = Math.floor(Math.random() * 59) + 1;
+        const s = Math.floor(Math.random() * 59) + 1;
+        const decimal = +(d + m / 60 + s / 3600).toFixed(4);
+        dmsQuestions.push({ type: 'toDeg', d, m, s, decimal });
+    }
+    renderDMS();
+}
+
+function renderDMS() {
+    const list = document.getElementById('dmsList');
+    list.innerHTML = '';
+    dmsQuestions.forEach((q, i) => {
+        const item = document.createElement('div');
+        item.className = 'dms-item';
+        if (q.type === 'toDMS') {
+            // 把小数度数转成度分秒
+            item.innerHTML = `
+                <div class="q">${i + 1}. 将 ${q.decimal}° 化为度分秒：</div>
+                <div class="dms-inputs">
+                    <input id="dms-${i}-d" type="number" placeholder="度"> <span class="unit">°</span>
+                    <input id="dms-${i}-m" type="number" placeholder="分"> <span class="unit">′</span>
+                    <input id="dms-${i}-s" type="number" placeholder="秒"> <span class="unit">″</span>
+                    <button class="btn small green" onclick="checkDMS(${i})">检查</button>
+                </div>
+                <div class="dms-feedback" id="dms-${i}-fb"></div>
+            `;
+        } else {
+            // 把度分秒转成小数度数
+            item.innerHTML = `
+                <div class="q">${i + 1}. 将 ${q.d}°${q.m}′${q.s}″ 化为度（保留两位小数）：</div>
+                <div class="dms-inputs">
+                    <input id="dms-${i}-dec" type="number" placeholder="度"> <span class="unit">°</span>
+                    <button class="btn small green" onclick="checkDMS(${i})">检查</button>
+                </div>
+                <div class="dms-feedback" id="dms-${i}-fb"></div>
+            `;
+        }
+        list.appendChild(item);
+    });
+}
+
+function checkDMS(idx) {
+    const q = dmsQuestions[idx];
+    const fb = document.getElementById('dms-' + idx + '-fb');
+    let ok = false;
+    if (q.type === 'toDMS') {
+        const d = parseInt(document.getElementById('dms-' + idx + '-d').value);
+        const m = parseInt(document.getElementById('dms-' + idx + '-m').value);
+        const s = parseInt(document.getElementById('dms-' + idx + '-s').value);
+        if (isNaN(d) || isNaN(m) || isNaN(s)) {
+            fb.className = 'dms-feedback no';
+            fb.textContent = '请填写完整的度、分、秒。';
+            return;
+        }
+        ok = (d === q.d && m === q.m && s === q.s);
+    } else {
+        const dec = parseFloat(document.getElementById('dms-' + idx + '-dec').value);
+        if (isNaN(dec)) {
+            fb.className = 'dms-feedback no';
+            fb.textContent = '请填写度数。';
+            return;
+        }
+        ok = Math.abs(dec - q.decimal) < 0.01;
+    }
+    if (ok) {
+        fb.className = 'dms-feedback ok';
+        fb.textContent = '✅ 正确！';
+    } else {
+        fb.className = 'dms-feedback no';
+        fb.textContent = '❌ 不对，再算算看。';
+    }
+}
+
+// ============================================================
+//  环节3：多边形探索
+// ============================================================
+const POLY_NAMES = { 3:'三角形', 4:'四边形', 5:'五边形', 6:'六边形', 7:'七边形', 8:'八边形', 9:'九边形', 10:'十边形', 11:'十一边形', 12:'十二边形' };
+
+function updatePolygon(n) {
+    polySides = parseInt(n);
+    document.getElementById('polySidesText').textContent = polySides;
+    document.getElementById('polyName').textContent = POLY_NAMES[polySides];
+    document.getElementById('polyN').textContent = polySides;
+    const sum = (polySides - 2) * 180;
+    document.getElementById('polySum').textContent = sum + '°';
+    document.getElementById('polyEach').textContent = (sum / polySides).toFixed(2) + '°';
+    document.getElementById('polyDiag').textContent = polySides * (polySides - 3) / 2;
+    drawPolygon();
+}
+
+function toggleDiagonals(btn) {
+    polyShowDiagonals = !polyShowDiagonals;
+    if (btn) btn.textContent = polyShowDiagonals ? '🧵 隐藏对角线' : '🧵 显示对角线（从一个顶点出发）';
+    drawPolygon();
+}
+
+function drawPolygon() {
+    if (!polyCtx) return;
+    const ctx = polyCtx, w = polyW, h = polyH;
+    ctx.clearRect(0, 0, w, h);
+
+    const cx = w / 2, cy = h / 2;
+    const R = Math.min(w, h) * 0.34;
+
+    // 计算各顶点坐标（从顶部开始顺时针排列）
+    const verts = [];
+    for (let i = 0; i < polySides; i++) {
+        const a = -Math.PI / 2 + i * 2 * Math.PI / polySides;
+        verts.push({ x: cx + R * Math.cos(a), y: cy + R * Math.sin(a) });
+    }
+
+    // 若显示对角线，先绘制从顶点 A 出发的对角线及三角形填充
+    if (polyShowDiagonals && polySides > 3) {
+        const colors = ['rgba(102,126,234,0.10)', 'rgba(79,172,254,0.10)', 'rgba(67,233,123,0.10)', 'rgba(245,87,108,0.10)', 'rgba(249,202,36,0.10)'];
+        let cIdx = 0;
+        // 从顶点0出发，向顶点2~n-2 画对角线，分割出 n-2 个三角形
+        for (let i = 2; i <= polySides - 2; i++) {
+            // 三角形 (0, i-1, i)
+            ctx.fillStyle = colors[cIdx % colors.length];
+            cIdx++;
+            ctx.beginPath();
+            ctx.moveTo(verts[0].x, verts[0].y);
+            ctx.lineTo(verts[i - 1].x, verts[i - 1].y);
+            ctx.lineTo(verts[i].x, verts[i].y);
+            ctx.closePath();
+            ctx.fill();
+            // 对角线 0-i
+            ctx.strokeStyle = '#f5576c';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([6, 4]);
+            ctx.beginPath();
+            ctx.moveTo(verts[0].x, verts[0].y);
+            ctx.lineTo(verts[i].x, verts[i].y);
+            ctx.stroke();
+        }
+        ctx.setLineDash([]);
+    }
+
+    // 绘制多边形边
+    ctx.strokeStyle = '#667eea';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    verts.forEach((v, i) => { i === 0 ? ctx.moveTo(v.x, v.y) : ctx.lineTo(v.x, v.y); });
+    ctx.closePath();
+    ctx.stroke();
+
+    // 填充淡色
+    ctx.fillStyle = 'rgba(102,126,234,0.06)';
+    ctx.fill();
+
+    // 绘制顶点与字母标注
+    ctx.font = 'bold 15px "Microsoft YaHei"';
+    verts.forEach((v, i) => {
+        ctx.fillStyle = '#4a3f8c';
+        ctx.beginPath(); ctx.arc(v.x, v.y, 5, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#fff';
+        ctx.beginPath(); ctx.arc(v.x, v.y, 2, 0, Math.PI * 2); ctx.fill();
+        // 字母标注向外偏移
+        const a = -Math.PI / 2 + i * 2 * Math.PI / polySides;
+        ctx.fillStyle = '#4a3f8c';
+        ctx.fillText(String.fromCharCode(65 + i), v.x + 10 * Math.cos(a) - 4, v.y + 10 * Math.sin(a) + 5);
+    });
+
+    // 中心点
+    ctx.fillStyle = '#aaa';
+    ctx.beginPath(); ctx.arc(cx, cy, 2, 0, Math.PI * 2); ctx.fill();
+}
+
+// ============================================================
+//  环节4：圆的认识
+// ============================================================
+function updateCircle(r) {
+    circleR = parseInt(r);
+    document.getElementById('circleRText').textContent = circleR;
+    document.getElementById('circleR').textContent = circleR;
+    document.getElementById('circleD').textContent = 2 * circleR;
+    document.getElementById('circleC').textContent = (2 * PI * circleR).toFixed(2);
+    document.getElementById('circleS').textContent = (PI * circleR * circleR).toFixed(2);
+    updateSectorDisplay();
+    drawCircle();
+}
+
+function updateSector(angle) {
+    circleSectorAngle = parseInt(angle);
+    document.getElementById('circleAngleText').textContent = circleSectorAngle + '°';
+    updateSectorDisplay();
+    drawCircle();
+}
+
+// 更新扇形面积显示
+function updateSectorDisplay() {
+    const s = circleSectorAngle * PI * circleR * circleR / 360;
+    document.getElementById('circleSector').textContent = s.toFixed(2);
+}
+
+function drawCircle() {
+    if (!circleCtx) return;
+    const ctx = circleCtx, w = circleW, h = circleH;
+    ctx.clearRect(0, 0, w, h);
+
+    const cx = w / 2, cy = h / 2;
+    const scale = 24;                        // 1 单位 = 24 像素
+    const Rpx = circleR * scale;             // 半径像素值
+    const rad = circleSectorAngle * Math.PI / 180;
+
+    // ---- 1. 扇形填充（从 0° 到 圆心角，逆时针即向上）----
+    ctx.fillStyle = 'rgba(245,87,108,0.18)';
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, Rpx, 0, -rad, true);
+    ctx.closePath();
+    ctx.fill();
+
+    // 扇形两条半径
+    ctx.strokeStyle = '#f5576c';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + Rpx, cy); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + Rpx * Math.cos(rad), cy - Rpx * Math.sin(rad)); ctx.stroke();
+
+    // ---- 2. 圆轮廓 ----
+    ctx.strokeStyle = '#667eea';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.arc(cx, cy, Rpx, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // ---- 3. 直线（直径）----
+    ctx.strokeStyle = '#4a3f8c';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([5, 4]);
+    ctx.beginPath();
+    ctx.moveTo(cx - Rpx, cy);
+    ctx.lineTo(cx + Rpx, cy);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // ---- 4. 半径标注 ----
+    ctx.strokeStyle = '#43e97b';
+    ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + Rpx, cy); ctx.stroke();
+    ctx.fillStyle = '#0b6e4f';
+    ctx.font = 'bold 15px "Microsoft YaHei"';
+    ctx.fillText('r=' + circleR, cx + Rpx / 2 - 14, cy - 10);
+
+    // 直径标注
+    ctx.fillStyle = '#4a3f8c';
+    ctx.fillText('d=' + (2 * circleR), cx - 20, cy + Rpx + 22);
+
+    // ---- 5. 圆心 O ----
+    ctx.fillStyle = '#4a3f8c';
+    ctx.beginPath(); ctx.arc(cx, cy, 5, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.arc(cx, cy, 2, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#4a3f8c';
+    ctx.fillText('O', cx - 18, cy + 16);
+
+    // ---- 6. 圆心角弧线标注 ----
+    if (circleSectorAngle > 4) {
+        ctx.strokeStyle = '#f5576c';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(cx, cy, 26, 0, -rad, true);
+        ctx.stroke();
+        const midRad = rad / 2;
+        ctx.fillStyle = '#f5576c';
+        ctx.fillText(circleSectorAngle + '°', cx + 40 * Math.cos(midRad) - 10, cy - 40 * Math.sin(midRad) + 5);
+    }
+}
+
+// ============================================================
+//  初始化
+// ============================================================
+function init() {
+    // 初始化第一个画布（其他画布在切换时再适配）
+    const c1 = document.getElementById('canvasLines');
+    const f1 = fitCanvas(c1);
+    linesCtx = f1.ctx; linesW = f1.w; linesH = f1.h;
+
+    // 绑定各画布交互事件
+    initLinesEvents();
+    initAngleEvents();
+
+    // 初始化各环节默认显示
+    setDrawMode('segment', document.querySelector('.mode-btn'));
+    generateDMS();
+    updatePolygon(6);
+    updateCircle(5);
+    updateSector(90);
+    drawLines();
+
+    // 窗口尺寸变化时重新适配当前画布并重绘
+    window.addEventListener('resize', function () {
+        if (currentSection === 'lines')    { const c = document.getElementById('canvasLines');    const f = fitCanvas(c); linesCtx = f.ctx; linesW = f.w; linesH = f.h; drawLines(); }
+        if (currentSection === 'angles')   { const c = document.getElementById('canvasAngles');   const f = fitCanvas(c); angleCtx = f.ctx; angleW = f.w; angleH = f.h; drawAngle(); }
+        if (currentSection === 'polygons') { const c = document.getElementById('canvasPolygons'); const f = fitCanvas(c); polyCtx = f.ctx; polyW = f.w; polyH = f.h; drawPolygon(); }
+        if (currentSection === 'circles')  { const c = document.getElementById('canvasCircles');  const f = fitCanvas(c); circleCtx = f.ctx; circleW = f.w; circleH = f.h; drawCircle(); }
+    });
+}
+
+// 页面加载完成后启动
+window.addEventListener('load', init);
+
+// 检测是否被 iframe 嵌入，如果是则启用精简模式（隐藏大标题）
+(function () {
+    try {
+        if (window.self !== window.top) {
+            document.body.classList.add('embedded');
+        }
+    } catch (e) { /* 跨域访问报错时忽略 */ }
+})();</script>
+
+</body>
+</html>
+

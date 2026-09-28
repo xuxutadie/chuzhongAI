@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第二章：有理数及其运算 - 互动微课</title>
+<style>
+:root {
+    --bg: #f4fbf8;
+    --surface: #ffffff;
+    --surface-strong: #e8f7f1;
+    --border: rgba(27, 123, 94, 0.2);
+    --border-strong: rgba(27, 123, 94, 0.48);
+    --text: #18332b;
+    --text-secondary: #476a5e;
+    --muted: #718d84;
+    --accent: #087d5b;
+    --accent-strong: #27c493;
+    --blue: #287fc0;
+    --gold: #c88716;
+    --danger: #c84444;
+    --step-color: #2f80ed;
+    --step-soft: #eaf3ff;
+    --step-glow: rgba(47, 128, 237, 0.13);
+}
+
+body[data-step="number-line"] {
+    --step-color: #2f80ed;
+    --step-soft: #eaf3ff;
+    --step-glow: rgba(47, 128, 237, 0.13);
+}
+body[data-step="opposite"] {
+    --step-color: #7c3aed;
+    --step-soft: #f2ebff;
+    --step-glow: rgba(124, 58, 237, 0.13);
+}
+body[data-step="absolute"] {
+    --step-color: #e89a13;
+    --step-soft: #fff5d9;
+    --step-glow: rgba(232, 154, 19, 0.15);
+}
+body[data-step="operation"] {
+    --step-color: #e65353;
+    --step-soft: #fff0ee;
+    --step-glow: rgba(230, 83, 83, 0.13);
+}
+
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body {
+    margin: 0;
+    min-width: 320px;
+    max-width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background:
+        linear-gradient(rgba(29, 128, 96, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(29, 128, 96, 0.06) 1px, transparent 1px),
+        var(--bg);
+    background-size: 48px 48px;
+    color: var(--text);
+    font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+}
+
+button,
+input { font: inherit; }
+button:focus-visible,
+input:focus-visible { outline: 2px solid var(--step-color); outline-offset: 2px; }
+
+.lesson-shell {
+    width: min(100% - 32px, 1240px);
+    min-width: 0;
+    margin: 0 auto;
+    padding: 20px 0 28px;
+}
+
+.lesson-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+}
+.lesson-header > div:first-child,
+.mission-strip > div:last-child {
+    min-width: 0;
+}
+.lesson-kicker { margin: 0 0 6px; color: #e64086; font-size: 12px; font-weight: 800; }
+.lesson-header h1 { margin: 0; font-size: clamp(24px, 4vw, 36px); letter-spacing: 0; }
+.lesson-header p { margin: 8px 0 0; color: var(--text-secondary); font-size: 14px; line-height: 1.7; }
+.lesson-score {
+    flex: 0 0 auto;
+    min-width: 150px;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.92);
+}
+.score-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 12px; color: var(--text-secondary); }
+.score-row strong { color: var(--gold); font-size: 14px; }
+.score-track { height: 6px; margin-top: 8px; overflow: hidden; border-radius: 999px; background: #d8eee6; }
+.score-track span {
+    display: block;
+    width: 0;
+    height: 100%;
+    background: linear-gradient(90deg, #2f80ed, #7c3aed, #f2b325, #e65353);
+}
+
+.step-navigation {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+    margin: 16px 0;
+}
+.step-button {
+    min-height: 44px;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.88);
+    color: var(--text-secondary);
+    cursor: pointer;
+    text-align: left;
+}
+.step-button:hover:not(:disabled) { border-color: var(--border-strong); color: var(--text); }
+.step-button:nth-child(1) { --item-color: #2f80ed; --item-soft: #eaf3ff; border-top: 3px solid #2f80ed; }
+.step-button:nth-child(2) { --item-color: #7c3aed; --item-soft: #f2ebff; border-top: 3px solid #7c3aed; }
+.step-button:nth-child(3) { --item-color: #e89a13; --item-soft: #fff5d9; border-top: 3px solid #e89a13; }
+.step-button:nth-child(4) { --item-color: #e65353; --item-soft: #fff0ee; border-top: 3px solid #e65353; }
+.step-button.active { border-color: var(--item-color); background: var(--item-soft); color: var(--text); }
+.step-button.completed::after { content: " · 已完成"; color: var(--accent); }
+.step-button:disabled { cursor: not-allowed; opacity: 0.42; }
+
+.mission-strip {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 14px;
+    align-items: center;
+    padding: 14px 16px;
+    border: 1px solid var(--step-color);
+    border-radius: 6px 6px 0 0;
+    background: var(--step-soft);
+}
+.mission-number {
+    display: grid;
+    width: 42px;
+    height: 42px;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--step-color);
+    color: #ffffff;
+    font-weight: 900;
+}
+.mission-strip h2 { margin: 0 0 4px; font-size: 18px; }
+.mission-strip p { margin: 0; color: var(--text-secondary); font-size: 13px; line-height: 1.6; }
+.mission-strip p,
+.lesson-header p {
+    overflow-wrap: anywhere;
+}
+
+.workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(270px, 0.7fr);
+    min-height: 420px;
+    border: 1px solid var(--border);
+    border-top: 0;
+    background: rgba(255, 255, 255, 0.92);
+    min-width: 0;
+}
+.visual-lab {
+    min-width: 0;
+    padding: 20px;
+    border-right: 1px solid var(--border);
+}
+.lab-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.lab-heading span { color: var(--step-color); font-size: 12px; font-weight: 800; }
+.lab-heading strong { color: var(--gold); font-size: 13px; }
+
+.number-stage {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+    height: 255px;
+    margin-top: 18px;
+    overflow: hidden;
+    border: 1px solid rgba(105, 226, 178, 0.16);
+    border-radius: 6px;
+    background:
+        radial-gradient(circle at 50% 50%, var(--step-glow), transparent 58%),
+        #f6fcfa;
+}
+.number-axis {
+    position: absolute;
+    left: 4%;
+    right: 4%;
+    top: 52%;
+    height: 2px;
+    background: #8cb6a6;
+}
+.number-axis::before,
+.number-axis::after {
+    content: "";
+    position: absolute;
+    top: -5px;
+    width: 0;
+    height: 0;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+}
+.number-axis::before { left: -1px; border-right: 9px solid #8cb6a6; }
+.number-axis::after { right: -1px; border-left: 9px solid #8cb6a6; }
+.tick {
+    position: absolute;
+    top: 52%;
+    width: 1px;
+    height: 12px;
+    transform: translate(-50%, -5px);
+    background: #8cb6a6;
+}
+.tick.zero { width: 2px; height: 18px; transform: translate(-50%, -8px); background: var(--gold); }
+.tick-label {
+    position: absolute;
+    top: calc(52% + 16px);
+    transform: translateX(-50%);
+    color: var(--muted);
+    font-size: 11px;
+}
+.tick-label.zero { color: var(--gold); font-weight: 800; }
+.number-point {
+    position: absolute;
+    top: calc(52% - 25px);
+    width: 20px;
+    height: 20px;
+    transform: translateX(-50%);
+    border: 3px solid #ffffff;
+    border-radius: 50%;
+    background: var(--step-color);
+    box-shadow: 0 0 0 6px var(--step-glow);
+    z-index: 4;
+}
+.number-point.secondary { background: var(--blue); box-shadow: 0 0 0 6px rgba(105, 184, 255, 0.14); }
+.number-point.draggable { cursor: grab; touch-action: none; }
+.number-point.draggable:active,
+.number-point.is-dragging { cursor: grabbing; transform: translateX(-50%) scale(1.1); }
+.point-label {
+    position: absolute;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 800;
+}
+.distance-band,
+.move-band {
+    position: absolute;
+    top: calc(52% - 56px);
+    height: 6px;
+    border-radius: 999px;
+    background: var(--gold);
+    opacity: 0.86;
+    z-index: 2;
+    box-shadow: 0 0 14px currentColor;
+}
+.distance-band { color: var(--gold); }
+.move-band { color: var(--blue); }
+.move-band { top: calc(52% + 55px); background: var(--blue); }
+.distance-caption,
+.move-caption {
+    position: absolute;
+    top: calc(52% - 75px);
+    transform: translateX(-50%);
+    color: var(--gold);
+    font-size: 12px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+.move-caption { top: calc(52% + 72px); color: var(--blue); }
+.stage-formula {
+    position: absolute;
+    left: 50%;
+    top: 12px;
+    transform: translateX(-50%);
+    color: var(--text);
+    font-size: clamp(20px, 4vw, 30px);
+    font-weight: 900;
+    line-height: 1.15;
+    white-space: nowrap;
+}
+.drag-cue {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 5;
+    padding: 5px 8px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.94);
+    color: var(--step-color);
+    font-size: 11px;
+    pointer-events: none;
+}
+.stage-note {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: 14px;
+    color: var(--text-secondary);
+    font-size: 12px;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.control-panel { padding: 20px; }
+.control-panel h3 { margin: 0 0 6px; font-size: 16px; }
+.control-panel > p { margin: 0 0 18px; color: var(--muted); font-size: 12px; line-height: 1.6; }
+.value-readout {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px;
+    border-left: 3px solid var(--step-color);
+    background: var(--step-soft);
+}
+.value-readout span { color: var(--text-secondary); font-size: 12px; }
+.value-readout strong { color: var(--step-color); font-size: 26px; }
+.slider-label { display: flex; justify-content: space-between; margin: 18px 0 8px; color: var(--text-secondary); font-size: 12px; }
+input[type="range"] { width: 100%; accent-color: var(--step-color); cursor: pointer; }
+.quick-values { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 14px; }
+.quick-value {
+    min-height: 38px;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    background: var(--surface);
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+.quick-value:hover { border-color: var(--border-strong); color: var(--text); }
+.quick-value:nth-child(1) { border-color: rgba(47, 128, 237, 0.34); background: #f2f7ff; }
+.quick-value:nth-child(2) { border-color: rgba(124, 58, 237, 0.3); background: #f7f2ff; }
+.quick-value:nth-child(3) { border-color: rgba(230, 64, 134, 0.28); background: #fff3f8; }
+.quick-value:nth-child(4) { border-color: rgba(39, 196, 147, 0.36); background: #effbf7; }
+.quick-value:nth-child(5) { border-color: rgba(232, 154, 19, 0.34); background: #fff8e7; }
+.quick-value:nth-child(6) { border-color: rgba(230, 83, 83, 0.3); background: #fff3f1; }
+.rule-box { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); color: var(--text-secondary); font-size: 12px; line-height: 1.7; }
+.rule-box strong { display: block; margin-bottom: 3px; color: var(--text); }
+
+.challenge {
+    margin-top: 16px;
+    padding: 18px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.94);
+}
+.challenge-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.challenge-heading span { color: #e64086; font-size: 12px; font-weight: 800; }
+.challenge-heading small { color: var(--muted); }
+.challenge h3 { margin: 8px 0 14px; font-size: 18px; }
+.answer-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.answer-button {
+    min-height: 42px;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    background: #f7fcfa;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+.answer-button:hover:not(:disabled) { border-color: var(--step-color); background: var(--step-soft); color: var(--text); }
+.answer-button:disabled { cursor: not-allowed; opacity: 0.45; }
+.answer-button.correct { border-color: var(--accent); background: #dff5ed; color: var(--text); }
+.answer-button.wrong { border-color: var(--danger); background: #fff0f0; color: #9b2f2f; }
+.challenge-footer { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 12px; }
+.feedback { min-height: 20px; margin: 0; color: var(--text-secondary); font-size: 13px; line-height: 1.6; }
+.feedback.success { color: var(--accent); }
+.next-button {
+    flex: 0 0 auto;
+    min-height: 40px;
+    padding: 0 16px;
+    border: 1px solid #e0a414;
+    border-radius: 5px;
+    background: #ffd45a;
+    color: #493400;
+    cursor: pointer;
+    font-weight: 900;
+}
+.next-button:disabled { cursor: not-allowed; opacity: 0.4; }
+
+body.embedded .lesson-header { display: none; }
+body.embedded .lesson-shell { padding-top: 8px; }
+
+@media (max-width: 800px) {
+    .lesson-shell { width: min(100% - 20px, 1240px); }
+    .lesson-header { flex-direction: column; }
+    .lesson-score { width: 100%; }
+    .step-navigation { grid-template-columns: 1fr 1fr; }
+    .workspace { grid-template-columns: 1fr; }
+    .visual-lab { border-right: 0; border-bottom: 1px solid var(--border); }
+    .number-stage { height: 300px; }
+    .answer-grid { grid-template-columns: 1fr 1fr; }
+    .challenge-footer { align-items: stretch; flex-direction: column; }
+    .next-button { width: 100%; }
+}
+
+@media (max-width: 420px) {
+    .mission-strip { grid-template-columns: 1fr; }
+    .mission-number { width: 34px; height: 34px; }
+    .step-navigation { grid-template-columns: 1fr; }
+    .visual-lab,
+    .control-panel,
+    .challenge { padding: 14px; }
+    .number-stage { height: 280px; }
+    .stage-formula {
+        top: 18px;
+        width: calc(100% - 32px);
+        font-size: 20px;
+        line-height: 1.35;
+        text-align: center;
+        white-space: normal;
+    }
+    .tick-label:nth-of-type(4n) { display: none; }
+    .drag-cue {
+        top: auto;
+        right: 10px;
+        bottom: 10px;
+        max-width: calc(100% - 20px);
+        text-align: center;
+        white-space: normal;
+    }
+    .stage-note { left: 10px; right: 10px; bottom: 42px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+</style>
+<link rel="stylesheet" href="./blueprint-theme.css">
+</head>
+<body data-theme="blueprint">
+<main class="lesson-shell">
+    <header class="lesson-header">
+        <div>
+            <p class="lesson-kicker">北师大版七年级上册 · 项目内置互动课件</p>
+            <h1>有理数及其运算</h1>
+            <p>在同一条数轴上完成观察、验证和运算，把抽象规则变成看得见的移动。</p>
+        </div>
+        <div class="lesson-score" aria-live="polite">
+            <div class="score-row"><span>学习进度</span><strong id="scoreText">0 / 4</strong></div>
+            <div class="score-track"><span id="scoreProgress"></span></div>
+        </div>
+    </header>
+
+    <nav class="step-navigation" id="stepNavigation" aria-label="学习步骤"></nav>
+
+    <section class="mission-strip" aria-live="polite">
+        <div class="mission-number" id="missionNumber">1</div>
+        <div>
+            <h2 id="missionTitle">认识数轴</h2>
+            <p id="missionInstruction"></p>
+        </div>
+    </section>
+
+    <section class="workspace">
+        <div class="visual-lab">
+            <div class="lab-heading">
+                <span id="labLabel">数轴实验台</span>
+                <strong id="relationText">A = -2</strong>
+            </div>
+            <div class="number-stage" id="numberStage" aria-label="-10 到 10 的数轴互动区域">
+                <div class="drag-cue" id="dragCue">抓住绿色点直接拖动</div>
+                <div class="stage-formula" id="stageFormula"></div>
+                <div class="number-axis" aria-hidden="true"></div>
+                <div id="tickLayer" aria-hidden="true"></div>
+                <div id="visualLayer" aria-hidden="true"></div>
+                <div class="stage-note" id="stageNote"></div>
+            </div>
+        </div>
+
+        <aside class="control-panel">
+            <h3 id="controlTitle">移动数轴上的点</h3>
+            <p id="controlDescription"></p>
+            <div class="value-readout">
+                <span id="valueName">点 A 的数值</span>
+                <strong id="valueReadout">-2</strong>
+            </div>
+            <label class="slider-label" for="numberSlider">
+                <span id="sliderLabel">拖动点 A</span>
+                <span>-10 到 10</span>
+            </label>
+            <input id="numberSlider" type="range" min="-10" max="10" value="-2" step="1">
+            <div class="quick-values" id="quickValues"></div>
+            <div class="rule-box">
+                <strong>这一操作说明</strong>
+                <span id="ruleText"></span>
+            </div>
+        </aside>
+    </section>
+
+    <section class="challenge" aria-labelledby="challengeTitle">
+        <div class="challenge-heading">
+            <span>即时挑战</span>
+            <small id="challengeStatus">完成操作后作答</small>
+        </div>
+        <h3 id="challengeTitle"></h3>
+        <div class="answer-grid" id="answerGrid"></div>
+        <div class="challenge-footer">
+            <p class="feedback" id="feedback" role="status">先改变一次上方数值，观察数轴变化。</p>
+            <button class="next-button" id="nextButton" type="button" disabled>完成本步后继续</button>
+        </div>
+    </section>
+</main>
+
+<script src="chapter2-integers-model.js"></script>
+<script>
+(function () {
+    "use strict";
+
+    const model = window.IntegerLessonModel;
+    const steps = [
+        {
+            id: "number-line",
+            title: "认识数轴",
+            instruction: "拖动点 A 到不同位置，观察负数、0 和正数在数轴上的排列方向。",
+            controlTitle: "移动数轴上的点",
+            controlDescription: "向右数值变大，向左数值变小。至少移动一次，再完成挑战。",
+            valueName: "点 A 的数值",
+            sliderLabel: "拖动点 A",
+            initial: -2,
+            question: "在数轴上，-2 和 1 比较，哪个数更小？",
+            answers: ["-2", "1", "一样大", "无法比较"],
+            success: "正确。数轴上越靠左的数越小，所以 -2 < 1。",
+            hint: "在数轴上找到 -2 和 1，看谁更靠左。",
+            rule: "数轴规定向右为正方向；右边的数总比左边的数大。"
+        },
+        {
+            id: "opposite",
+            title: "发现相反数",
+            instruction: "移动点 A，观察点 A′ 如何自动移动到原点另一侧的对称位置。",
+            controlTitle: "改变点 A 的位置",
+            controlDescription: "A 与 A′ 到原点的距离相等，方向相反。试试正数、负数和 0。",
+            valueName: "点 A 的数值",
+            sliderLabel: "拖动点 A",
+            initial: -5,
+            question: "-5 的相反数是多少？",
+            answers: ["-5", "0", "5", "10"],
+            success: "正确。-5 与 5 关于原点对称，互为相反数。",
+            hint: "相反数位于原点两侧，并且到原点距离相等。",
+            rule: "只有符号不同的两个数互为相反数；0 的相反数仍是 0。"
+        },
+        {
+            id: "absolute",
+            title: "理解绝对值",
+            instruction: "拖动点 A，观察黄色线段表示的距离。距离没有正负方向。",
+            controlTitle: "测量到原点的距离",
+            controlDescription: "不论点在原点左边还是右边，绝对值都表示它到原点的距离。",
+            valueName: "点 A 的数值",
+            sliderLabel: "拖动点 A",
+            initial: -7,
+            question: "|-7| 的结果是多少？",
+            answers: ["-7", "0", "7", "14"],
+            success: "正确。-7 到原点的距离是 7，所以 |-7| = 7。",
+            hint: "绝对值表示距离，距离不能是负数。",
+            rule: "正数的绝对值是它本身；负数的绝对值是它的相反数；0 的绝对值是 0。"
+        },
+        {
+            id: "operation",
+            title: "有理数加减",
+            instruction: "改变第二个加数，直接观察终点：加正数向右，加负数向左。",
+            controlTitle: "设置第二个加数",
+            controlDescription: "起点固定为 2。改变第二个加数后，数轴会立即标出计算终点。",
+            valueName: "第二个加数",
+            sliderLabel: "改变第二个加数",
+            initial: -5,
+            question: "2 + (-5) 的结果是多少？",
+            answers: ["-7", "-3", "3", "7"],
+            success: "正确。从 2 出发向左移动 5 个单位，到达 -3。",
+            hint: "加上 -5 表示从 2 向左移动 5 个单位。",
+            rule: "数轴上的加法可以看作移动：加正数向右，加负数向左。"
+        }
+    ];
+
+    const completed = Object.fromEntries(steps.map(step => [step.id, false]));
+    const interacted = Object.fromEntries(steps.map(step => [step.id, false]));
+    const values = Object.fromEntries(steps.map(step => [step.id, step.initial]));
+    let currentStepIndex = 0;
+    let operationEnd = 2;
+    let isDragging = false;
+
+    const elements = {
+        stepNavigation: document.getElementById("stepNavigation"),
+        missionNumber: document.getElementById("missionNumber"),
+        missionTitle: document.getElementById("missionTitle"),
+        missionInstruction: document.getElementById("missionInstruction"),
+        labLabel: document.getElementById("labLabel"),
+        relationText: document.getElementById("relationText"),
+        numberStage: document.getElementById("numberStage"),
+        dragCue: document.getElementById("dragCue"),
+        tickLayer: document.getElementById("tickLayer"),
+        visualLayer: document.getElementById("visualLayer"),
+        stageFormula: document.getElementById("stageFormula"),
+        stageNote: document.getElementById("stageNote"),
+        controlTitle: document.getElementById("controlTitle"),
+        controlDescription: document.getElementById("controlDescription"),
+        valueName: document.getElementById("valueName"),
+        valueReadout: document.getElementById("valueReadout"),
+        sliderLabel: document.getElementById("sliderLabel"),
+        numberSlider: document.getElementById("numberSlider"),
+        quickValues: document.getElementById("quickValues"),
+        ruleText: document.getElementById("ruleText"),
+        challengeTitle: document.getElementById("challengeTitle"),
+        challengeStatus: document.getElementById("challengeStatus"),
+        answerGrid: document.getElementById("answerGrid"),
+        feedback: document.getElementById("feedback"),
+        nextButton: document.getElementById("nextButton"),
+        scoreText: document.getElementById("scoreText"),
+        scoreProgress: document.getElementById("scoreProgress")
+    };
+
+    function positionFor(value) {
+        return 4 + ((model.clampNumber(value) + 10) / 20) * 92;
+    }
+
+    function renderTicks() {
+        const items = [];
+        for (let value = -10; value <= 10; value += 1) {
+            const left = positionFor(value);
+            const zeroClass = value === 0 ? " zero" : "";
+            items.push('<span class="tick' + zeroClass + '" style="left:' + left + '%"></span>');
+            if (value % 2 === 0 || value === -10 || value === 10) {
+                items.push('<span class="tick-label' + zeroClass + '" style="left:' + left + '%">' + value + '</span>');
+            }
+        }
+        elements.tickLayer.innerHTML = items.join("");
+    }
+
+    function pointMarkup(value, label, role, secondary, draggable) {
+        const classes = ["number-point"];
+        if (secondary) classes.push("secondary");
+        if (draggable) classes.push("draggable");
+        return '<span class="' + classes.join(" ") + '" data-point="' + role + '" style="left:' + positionFor(value) + '%">'
+            + '<span class="point-label">' + label + ' = ' + value + '</span></span>';
+    }
+
+    function bandMarkup(start, end, className, caption) {
+        const startPosition = positionFor(start);
+        const endPosition = positionFor(end);
+        const left = Math.min(startPosition, endPosition);
+        const width = Math.abs(endPosition - startPosition);
+        const center = left + width / 2;
+        return '<span class="' + className + '" data-band="line" style="left:' + left + '%;width:' + width + '%"></span>'
+            + '<span class="' + (className === 'distance-band' ? 'distance-caption' : 'move-caption') + '" data-band="caption" style="left:' + center + '%">' + caption + '</span>';
+    }
+
+    function ensureVisualMarkup(stepId, markup) {
+        if (elements.visualLayer.dataset.step === stepId) return;
+        elements.visualLayer.innerHTML = markup;
+        elements.visualLayer.dataset.step = stepId;
+    }
+
+    function updatePoint(role, value, label) {
+        const point = elements.visualLayer.querySelector('[data-point="' + role + '"]');
+        if (!point) return;
+        point.style.left = positionFor(value) + "%";
+        const pointLabel = point.querySelector(".point-label");
+        if (pointLabel) pointLabel.textContent = label + " = " + value;
+    }
+
+    function updateBand(start, end, caption) {
+        const startPosition = positionFor(start);
+        const endPosition = positionFor(end);
+        const left = Math.min(startPosition, endPosition);
+        const width = Math.abs(endPosition - startPosition);
+        const line = elements.visualLayer.querySelector('[data-band="line"]');
+        const label = elements.visualLayer.querySelector('[data-band="caption"]');
+        if (line) {
+            line.style.left = left + "%";
+            line.style.width = width + "%";
+        }
+        if (label) {
+            label.style.left = (left + width / 2) + "%";
+            label.textContent = caption;
+        }
+    }
+
+    function renderVisual() {
+        const step = steps[currentStepIndex];
+        const value = values[step.id];
+        let markup = "";
+
+        if (step.id === "number-line") {
+            markup = pointMarkup(value, "A", "primary", false, true);
+            ensureVisualMarkup(step.id, markup);
+            updatePoint("primary", value, "A");
+            elements.stageFormula.textContent = value < 0 ? value + " 是负数" : value > 0 ? value + " 是正数" : "0 既不是正数，也不是负数";
+            elements.stageNote.textContent = "观察：点越向右移动，表示的数越大。";
+            elements.relationText.textContent = "A = " + value;
+        }
+
+        if (step.id === "opposite") {
+            const opposite = model.getOpposite(value);
+            markup = pointMarkup(value, "A", "primary", false, true) + pointMarkup(opposite, "A′", "secondary", true, false)
+                + bandMarkup(value, opposite, "distance-band", "到原点距离相等");
+            ensureVisualMarkup(step.id, markup);
+            updatePoint("primary", value, "A");
+            updatePoint("secondary", opposite, "A′");
+            updateBand(value, opposite, "到原点距离相等");
+            elements.stageFormula.textContent = "- (" + value + ") = " + opposite;
+            elements.stageNote.textContent = "观察：两个点关于原点对称，数值只有符号不同。";
+            elements.relationText.textContent = value + " 与 " + opposite + " 互为相反数";
+        }
+
+        if (step.id === "absolute") {
+            const distance = model.getAbsoluteDistance(value);
+            markup = pointMarkup(value, "A", "primary", false, true) + bandMarkup(0, value, "distance-band", "距离 " + distance);
+            ensureVisualMarkup(step.id, markup);
+            updatePoint("primary", value, "A");
+            updateBand(0, value, "距离 " + distance);
+            elements.stageFormula.textContent = "|" + value + "| = " + distance;
+            elements.stageNote.textContent = "观察：绝对值只表示距离，所以结果不会是负数。";
+            elements.relationText.textContent = "到原点距离 = " + distance;
+        }
+
+        if (step.id === "operation") {
+            const target = model.calculateMove(2, "add", value);
+            markup = pointMarkup(2, "起点", "primary", false, false) + pointMarkup(operationEnd, "终点", "secondary", true, false)
+                + bandMarkup(2, operationEnd, "move-band", value < 0 ? "向左移动 " + Math.abs(value) : "向右移动 " + value);
+            ensureVisualMarkup(step.id, markup);
+            updatePoint("primary", 2, "起点");
+            updatePoint("secondary", operationEnd, "终点");
+            updateBand(2, operationEnd, value < 0 ? "向左移动 " + Math.abs(value) : "向右移动 " + value);
+            elements.stageFormula.textContent = "2 + (" + value + ") = " + target;
+            elements.stageNote.textContent = "终点是 " + target + "，表示计算结果为 " + target + "。";
+            elements.relationText.textContent = "目标终点 = " + target;
+        }
+    }
+
+    function renderNavigation() {
+        const unlockedThrough = model.getUnlockedStepIndex(steps.map(step => completed[step.id]));
+        elements.stepNavigation.innerHTML = steps.map((step, index) => {
+            const classes = ["step-button"];
+            if (index === currentStepIndex) classes.push("active");
+            if (completed[step.id]) classes.push("completed");
+            const isLocked = index > unlockedThrough;
+            return '<button class="' + classes.join(" ") + '" type="button" data-step="' + index + '"'
+                + (isLocked ? ' disabled aria-label="完成前一步后解锁"' : '') + '>' + (index + 1) + '. ' + step.title + '</button>';
+        }).join("");
+        elements.stepNavigation.querySelectorAll("[data-step]").forEach(button => {
+            button.addEventListener("click", function () {
+                switchStep(Number(button.dataset.step));
+            });
+        });
+    }
+
+    function renderQuickValues() {
+        const presets = [-7, -5, -2, 2, 5, 7];
+        elements.quickValues.innerHTML = presets.map(value => '<button class="quick-value" type="button" data-value="' + value + '">' + value + '</button>').join("");
+        elements.quickValues.querySelectorAll("[data-value]").forEach(button => {
+            button.addEventListener("click", function () {
+                setCurrentValue(Number(button.dataset.value), true);
+            });
+        });
+    }
+
+    function renderChallenge() {
+        const step = steps[currentStepIndex];
+        elements.challengeTitle.textContent = step.question;
+        elements.challengeStatus.textContent = completed[step.id] ? "本步已完成" : interacted[step.id] ? "现在选择答案" : "完成操作后作答";
+        elements.answerGrid.innerHTML = step.answers.map(answer => {
+            const correctClass = completed[step.id] && model.checkChallenge(step.id, answer) ? " correct" : "";
+            return '<button class="answer-button' + correctClass + '" type="button" data-answer="' + answer + '"'
+                + (!interacted[step.id] && !completed[step.id] ? " disabled" : "") + '>' + answer + '</button>';
+        }).join("");
+        elements.answerGrid.querySelectorAll("[data-answer]").forEach(button => {
+            button.addEventListener("click", function () {
+                answerChallenge(button.dataset.answer, button);
+            });
+        });
+        elements.nextButton.disabled = !completed[step.id];
+        elements.nextButton.textContent = currentStepIndex === steps.length - 1 ? (completed[step.id] ? "完成本节互动课" : "完成本步后继续") : (completed[step.id] ? "进入下一步" : "完成本步后继续");
+        if (completed[step.id]) {
+            elements.feedback.className = "feedback success";
+            elements.feedback.textContent = step.success;
+        } else {
+            elements.feedback.className = "feedback";
+            elements.feedback.textContent = interacted[step.id] ? "已经记录你的操作，现在选择答案。" : "先改变一次上方数值，观察数轴变化。";
+        }
+    }
+
+    function renderStep() {
+        const step = steps[currentStepIndex];
+        document.body.dataset.step = step.id;
+        elements.missionNumber.textContent = String(currentStepIndex + 1);
+        elements.missionTitle.textContent = step.title;
+        elements.missionInstruction.textContent = step.instruction;
+        elements.labLabel.textContent = currentStepIndex === 3 ? "数轴运算演示" : "数轴实验台";
+        elements.controlTitle.textContent = step.controlTitle;
+        elements.controlDescription.textContent = step.controlDescription;
+        elements.valueName.textContent = step.valueName;
+        elements.sliderLabel.textContent = step.sliderLabel;
+        elements.ruleText.textContent = step.rule;
+        elements.numberSlider.value = String(values[step.id]);
+        elements.numberSlider.min = "-10";
+        elements.numberSlider.max = step.id === "operation" ? "8" : "10";
+        elements.valueReadout.textContent = String(values[step.id]);
+        elements.dragCue.textContent = step.id === "operation" ? "调整加数，终点立即更新" : "抓住绿色点直接拖动";
+        if (step.id === "operation") {
+            operationEnd = model.calculateMove(2, "add", values[step.id]);
+        }
+        renderNavigation();
+        renderQuickValues();
+        renderVisual();
+        renderChallenge();
+        updateScore();
+    }
+
+    function setCurrentValue(value, shouldMarkInteraction) {
+        const step = steps[currentStepIndex];
+        values[step.id] = model.clampNumber(value);
+        elements.numberSlider.value = String(values[step.id]);
+        elements.valueReadout.textContent = String(values[step.id]);
+        if (step.id === "operation") operationEnd = model.calculateMove(2, "add", values[step.id]);
+        if (shouldMarkInteraction) interacted[step.id] = true;
+        renderVisual();
+        renderChallenge();
+    }
+
+    function answerChallenge(answer, button) {
+        const step = steps[currentStepIndex];
+        elements.answerGrid.querySelectorAll(".answer-button").forEach(item => item.classList.remove("correct", "wrong"));
+        if (model.checkChallenge(step.id, answer)) {
+            completed[step.id] = true;
+            button.classList.add("correct");
+            renderStep();
+            return;
+        }
+        button.classList.add("wrong");
+        elements.feedback.className = "feedback";
+        elements.feedback.textContent = "再想一想：" + step.hint;
+    }
+
+    function switchStep(index) {
+        if (index < 0 || index >= steps.length) return;
+        const unlockedThrough = model.getUnlockedStepIndex(steps.map(step => completed[step.id]));
+        if (index > unlockedThrough) return;
+        currentStepIndex = index;
+        operationEnd = 2;
+        renderStep();
+        document.querySelector(".mission-strip").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function updateScore() {
+        const count = steps.filter(step => completed[step.id]).length;
+        elements.scoreText.textContent = count + " / " + steps.length;
+        elements.scoreProgress.style.width = (count / steps.length * 100) + "%";
+    }
+
+    elements.numberSlider.addEventListener("input", function () {
+        setCurrentValue(elements.numberSlider.value, true);
+    });
+
+    function pointerValue(event) {
+        const rect = elements.numberStage.getBoundingClientRect();
+        const relative = (event.clientX - rect.left) / rect.width;
+        const axisRelative = Math.max(0, Math.min(1, (relative - 0.04) / 0.92));
+        return Math.round(axisRelative * 20 - 10);
+    }
+
+    elements.numberStage.addEventListener("pointerdown", function (event) {
+        const point = event.target.closest(".number-point.draggable");
+        if (!point) return;
+        isDragging = true;
+        point.classList.add("is-dragging");
+        point.setPointerCapture(event.pointerId);
+        setCurrentValue(pointerValue(event), true);
+    });
+
+    elements.numberStage.addEventListener("pointermove", function (event) {
+        if (!isDragging) return;
+        setCurrentValue(pointerValue(event), true);
+    });
+
+    function finishDragging(event) {
+        if (!isDragging) return;
+        isDragging = false;
+        const point = elements.visualLayer.querySelector(".number-point.is-dragging");
+        if (point) {
+            point.classList.remove("is-dragging");
+            if (point.hasPointerCapture(event.pointerId)) point.releasePointerCapture(event.pointerId);
+        }
+    }
+
+    elements.numberStage.addEventListener("pointerup", finishDragging);
+    elements.numberStage.addEventListener("pointercancel", finishDragging);
+
+    elements.nextButton.addEventListener("click", function () {
+        const step = steps[currentStepIndex];
+        if (!completed[step.id]) return;
+        if (currentStepIndex < steps.length - 1) {
+            switchStep(currentStepIndex + 1);
+            return;
+        }
+        elements.feedback.className = "feedback success";
+        elements.feedback.textContent = "本节已完成。你已经用数轴验证了大小、相反数、绝对值和加法移动。";
+        elements.nextButton.disabled = true;
+        elements.nextButton.textContent = "本节已完成";
+        try {
+            window.parent.postMessage({ type: "interactive-lesson-complete", lessonId: "g7-upper-integers" }, window.location.origin);
+        } catch (error) { /* 独立打开时不影响课件使用。 */ }
+    });
+
+    try {
+        if (window.self !== window.top) document.body.classList.add("embedded");
+    } catch (error) { /* 跨域嵌入时保持默认布局。 */ }
+
+    renderTicks();
+    renderStep();
+})();
+</script>
+</body>
+</html>

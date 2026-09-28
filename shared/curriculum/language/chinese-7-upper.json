@@ -1,0 +1,1258 @@
+{
+  "id": "chinese-7-upper",
+  "subject": "语文",
+  "semester": "上册",
+  "edition": "人教部编版（2024）",
+  "grade": 7,
+  "sourceFile": "最新【人教版】7年级语文课本•上册.pdf",
+  "units": [
+    {
+      "id": "chinese-7-upper-u1",
+      "title": "第一单元",
+      "page": 1,
+      "pdfPage": 7,
+      "focus": "四时景物与语言品味",
+      "writingPrompt": "观察身边一处景物，写三四句话；写出具体感官细节，并尝试恰当的比喻或拟人。",
+      "skills": [
+        {
+          "id": "chinese-7-upper-u1-k1",
+          "title": "景物特点",
+          "guide": "从雨丝、滴水、湿亮提取共同特点，用文中细节支持概括。 薄雾、淡金色以及从一点到整条的变化，表现晨光逐渐照亮山脊。"
+        },
+        {
+          "id": "chinese-7-upper-u1-k2",
+          "title": "修辞效果",
+          "guide": "唱歌、跑把人的行为赋予溪水，表现溪水流动的欢快。 将湖面比作玻璃，突出平静、清亮等特征；要联系具体相似点分析。"
+        },
+        {
+          "id": "chinese-7-upper-u1-k3",
+          "title": "古诗意象",
+          "guide": "枯、老、昏共同传递衰飒之感；体会意象组合，不能只孤立看一个名词。 澹澹写水波荡漾，竦峙写耸立，两者呈现大海与山岛的景象。"
+        },
+        {
+          "id": "chinese-7-upper-u1-k4",
+          "title": "观察与描写",
+          "guide": "观察提供具体可感的材料，修饰语应服务于真实特点。 触觉表现冷暖、软硬等身体感受；具体细节比笼统评价更可感。"
+        }
+      ],
+      "questions": [
+        {
+          "id": "chinese-7-upper-u1-d1",
+          "skillId": "chinese-7-upper-u1-k1",
+          "prompt": "读原创片段：雨丝斜斜地织着，屋檐滴水，石阶泛着湿亮的光。最能概括景物特点的是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "细密湿润"
+            },
+            {
+              "id": "b",
+              "text": "烈日炎炎"
+            },
+            {
+              "id": "c",
+              "text": "冰封雪覆"
+            }
+          ],
+          "answer": "a",
+          "explanation": "从雨丝、滴水、湿亮提取共同特点，用文中细节支持概括。"
+        },
+        {
+          "id": "chinese-7-upper-u1-d2",
+          "skillId": "chinese-7-upper-u1-k2",
+          "prompt": "“溪水唱着歌跑下山去。”主要运用了什么修辞？",
+          "options": [
+            {
+              "id": "a",
+              "text": "反问"
+            },
+            {
+              "id": "b",
+              "text": "拟人"
+            },
+            {
+              "id": "c",
+              "text": "排比"
+            }
+          ],
+          "answer": "b",
+          "explanation": "唱歌、跑把人的行为赋予溪水，表现溪水流动的欢快。"
+        },
+        {
+          "id": "chinese-7-upper-u1-d3",
+          "skillId": "chinese-7-upper-u1-k3",
+          "prompt": "读“枯藤老树昏鸦”，这一组意象主要营造怎样的氛围？",
+          "options": [
+            {
+              "id": "a",
+              "text": "热闹喜庆"
+            },
+            {
+              "id": "b",
+              "text": "明亮欢快"
+            },
+            {
+              "id": "c",
+              "text": "萧瑟凄清"
+            }
+          ],
+          "answer": "c",
+          "explanation": "枯、老、昏共同传递衰飒之感；体会意象组合，不能只孤立看一个名词。"
+        },
+        {
+          "id": "chinese-7-upper-u1-d4",
+          "skillId": "chinese-7-upper-u1-k4",
+          "prompt": "要写出雨后花园的真实特点，最合适的准备是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "观察颜色、气味与水珠等细节"
+            },
+            {
+              "id": "b",
+              "text": "只查找华丽词语"
+            },
+            {
+              "id": "c",
+              "text": "直接套用别人的景物段落"
+            }
+          ],
+          "answer": "a",
+          "explanation": "观察提供具体可感的材料，修饰语应服务于真实特点。"
+        }
+      ],
+      "retestQuestions": [
+        {
+          "id": "chinese-7-upper-u1-r1",
+          "skillId": "chinese-7-upper-u1-k1",
+          "prompt": "读原创片段：风吹开薄雾，山尖露出一点淡金色；片刻后，整条山脊亮了起来。写的是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "深夜星光突然消失"
+            },
+            {
+              "id": "b",
+              "text": "晨光渐渐照亮山脊"
+            },
+            {
+              "id": "c",
+              "text": "暴雨冲毁山路"
+            }
+          ],
+          "answer": "b",
+          "explanation": "薄雾、淡金色以及从一点到整条的变化，表现晨光逐渐照亮山脊。"
+        },
+        {
+          "id": "chinese-7-upper-u1-r2",
+          "skillId": "chinese-7-upper-u1-k2",
+          "prompt": "“湖面像一块碧绿的玻璃。”主要运用了什么修辞？",
+          "options": [
+            {
+              "id": "a",
+              "text": "反复"
+            },
+            {
+              "id": "b",
+              "text": "设问"
+            },
+            {
+              "id": "c",
+              "text": "比喻"
+            }
+          ],
+          "answer": "c",
+          "explanation": "将湖面比作玻璃，突出平静、清亮等特征；要联系具体相似点分析。"
+        },
+        {
+          "id": "chinese-7-upper-u1-r3",
+          "skillId": "chinese-7-upper-u1-k3",
+          "prompt": "读“水何澹澹，山岛竦峙”，这两句描绘的景象是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "海水荡漾，山岛耸立"
+            },
+            {
+              "id": "b",
+              "text": "大雪覆盖，河流冰封"
+            },
+            {
+              "id": "c",
+              "text": "花开满园，鸟语喧闹"
+            }
+          ],
+          "answer": "a",
+          "explanation": "澹澹写水波荡漾，竦峙写耸立，两者呈现大海与山岛的景象。"
+        },
+        {
+          "id": "chinese-7-upper-u1-r4",
+          "skillId": "chinese-7-upper-u1-k4",
+          "prompt": "哪一句更具体地写出了触觉感受？",
+          "options": [
+            {
+              "id": "a",
+              "text": "景色非常美丽。"
+            },
+            {
+              "id": "b",
+              "text": "风从袖口钻进来，手腕一阵凉。"
+            },
+            {
+              "id": "c",
+              "text": "这里真的很好。"
+            }
+          ],
+          "answer": "b",
+          "explanation": "触觉表现冷暖、软硬等身体感受；具体细节比笼统评价更可感。"
+        }
+      ],
+      "lessons": [
+        "春",
+        "济南的冬天",
+        "雨的四季",
+        "古代诗歌四首"
+      ]
+    },
+    {
+      "id": "chinese-7-upper-u2",
+      "title": "第二单元",
+      "page": 23,
+      "pdfPage": 30,
+      "focus": "亲情阅读与记事",
+      "writingPrompt": "写一件家人相互关爱的事，交代起因、经过和结果，用行动表现感情。",
+      "skills": [
+        {
+          "id": "chinese-7-upper-u2-k1",
+          "title": "细节与情感",
+          "guide": "塞伞、确认放稳是关心孩子出行的行动，分析感情要依据动作。 把唯一的厚围巾给孙子，体现关爱；语言与行动需要结合理解。"
+        },
+        {
+          "id": "chinese-7-upper-u2-k2",
+          "title": "概括事件",
+          "guide": "概括保留人物、主要行动和结果，删去次要细节。 选择的原因是照顾奶奶，不能从一次选择推出绝对结论。"
+        },
+        {
+          "id": "chinese-7-upper-u2-k3",
+          "title": "文言词义",
+          "guide": "这里是与朋友约定同行，期作动词“约定”。 文言文的去在该语境中指离开，不能机械套用现代“去某处”。"
+        },
+        {
+          "id": "chinese-7-upper-u2-k4",
+          "title": "记事选材与结构",
+          "guide": "记事要交代起因、经过、结果，感受应从事件中自然生发。 具体行动能承载感情，家具多少和笼统赞美不能替代事件。"
+        }
+      ],
+      "questions": [
+        {
+          "id": "chinese-7-upper-u2-d1",
+          "skillId": "chinese-7-upper-u2-k1",
+          "prompt": "读原创片段：出门前，妈妈把伞塞进我的书包，又摸了摸侧袋，确认放稳了。细节主要表现？",
+          "options": [
+            {
+              "id": "a",
+              "text": "对书包颜色不满"
+            },
+            {
+              "id": "b",
+              "text": "细致的关心"
+            },
+            {
+              "id": "c",
+              "text": "故意拖延时间"
+            }
+          ],
+          "answer": "b",
+          "explanation": "塞伞、确认放稳是关心孩子出行的行动，分析感情要依据动作。"
+        },
+        {
+          "id": "chinese-7-upper-u2-d2",
+          "skillId": "chinese-7-upper-u2-k2",
+          "prompt": "读：外婆找不到眼镜，我陪她回忆刚才做过的事，最后在书下找到眼镜。最完整的概括是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "外婆有一本书"
+            },
+            {
+              "id": "b",
+              "text": "我不喜欢找东西"
+            },
+            {
+              "id": "c",
+              "text": "我帮外婆回忆并找到眼镜"
+            }
+          ],
+          "answer": "c",
+          "explanation": "概括保留人物、主要行动和结果，删去次要细节。"
+        },
+        {
+          "id": "chinese-7-upper-u2-d3",
+          "skillId": "chinese-7-upper-u2-k3",
+          "prompt": "“与友期行”中的“期”在句中应解释为？",
+          "options": [
+            {
+              "id": "a",
+              "text": "约定"
+            },
+            {
+              "id": "b",
+              "text": "期限结束"
+            },
+            {
+              "id": "c",
+              "text": "盼望考试"
+            }
+          ],
+          "answer": "a",
+          "explanation": "这里是与朋友约定同行，期作动词“约定”。"
+        },
+        {
+          "id": "chinese-7-upper-u2-d4",
+          "skillId": "chinese-7-upper-u2-k4",
+          "prompt": "写“我第一次为家人做饭”，哪种组织更清楚？",
+          "options": [
+            {
+              "id": "a",
+              "text": "只列菜名"
+            },
+            {
+              "id": "b",
+              "text": "为什么做—如何做—结果和感受"
+            },
+            {
+              "id": "c",
+              "text": "只反复说家人很感动"
+            }
+          ],
+          "answer": "b",
+          "explanation": "记事要交代起因、经过、结果，感受应从事件中自然生发。"
+        }
+      ],
+      "retestQuestions": [
+        {
+          "id": "chinese-7-upper-u2-r1",
+          "skillId": "chinese-7-upper-u2-k1",
+          "prompt": "读原创片段：爷爷嘴上说不冷，却把唯一的厚围巾绕在孙子的脖子上。最恰当的理解是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "他不喜欢围巾"
+            },
+            {
+              "id": "b",
+              "text": "他在责怪孙子"
+            },
+            {
+              "id": "c",
+              "text": "把温暖留给孙子"
+            }
+          ],
+          "answer": "c",
+          "explanation": "把唯一的厚围巾给孙子，体现关爱；语言与行动需要结合理解。"
+        },
+        {
+          "id": "chinese-7-upper-u2-r2",
+          "skillId": "chinese-7-upper-u2-k2",
+          "prompt": "读：一家人散步，弟弟想走小路，奶奶走不稳；大家商量后选择平坦的路。概括重点应是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "一家人商量并照顾奶奶选路"
+            },
+            {
+              "id": "b",
+              "text": "小路一定比大路坏"
+            },
+            {
+              "id": "c",
+              "text": "弟弟不再喜欢散步"
+            }
+          ],
+          "answer": "a",
+          "explanation": "选择的原因是照顾奶奶，不能从一次选择推出绝对结论。"
+        },
+        {
+          "id": "chinese-7-upper-u2-r3",
+          "skillId": "chinese-7-upper-u2-k3",
+          "prompt": "“相委而去”中的“去”在句中应解释为？",
+          "options": [
+            {
+              "id": "a",
+              "text": "前往现代商场"
+            },
+            {
+              "id": "b",
+              "text": "离开"
+            },
+            {
+              "id": "c",
+              "text": "已经到达"
+            }
+          ],
+          "answer": "b",
+          "explanation": "文言文的去在该语境中指离开，不能机械套用现代“去某处”。"
+        },
+        {
+          "id": "chinese-7-upper-u2-r4",
+          "skillId": "chinese-7-upper-u2-k4",
+          "prompt": "表现亲情时，哪项材料最具体？",
+          "options": [
+            {
+              "id": "a",
+              "text": "父亲很好，非常好"
+            },
+            {
+              "id": "b",
+              "text": "我们家有许多家具"
+            },
+            {
+              "id": "c",
+              "text": "父亲深夜陪我修好第二天要用的模型"
+            }
+          ],
+          "answer": "c",
+          "explanation": "具体行动能承载感情，家具多少和笼统赞美不能替代事件。"
+        }
+      ],
+      "lessons": [
+        "秋天的怀念",
+        "散步",
+        "散文诗二首",
+        "《世说新语》二则"
+      ]
+    },
+    {
+      "id": "chinese-7-upper-u3",
+      "title": "第三单元",
+      "page": 45,
+      "pdfPage": 52,
+      "focus": "成长回忆与学习方法",
+      "writingPrompt": "围绕“我学会了坚持”确定一个中心，写出最能体现中心的两件具体行动。",
+      "skills": [
+        {
+          "id": "chinese-7-upper-u3-k1",
+          "title": "阅读方法",
+          "guide": "分析关键语句需要细读、推敲和联系上下文；浏览适合快速了解概貌。 先浏览有助于形成整体印象，再根据阅读目标选择精读篇目。"
+        },
+        {
+          "id": "chinese-7-upper-u3-k2",
+          "title": "人物变化",
+          "guide": "抓住起初、后来、逐渐等标记，比较前后行动和心理。 句中明确交代练习与表现变化之间的联系。"
+        },
+        {
+          "id": "chinese-7-upper-u3-k3",
+          "title": "学习与思考",
+          "guide": "两个分句从不同方向提醒学与思不能偏废。 温故是复习，知新强调在复习中产生新的理解。"
+        },
+        {
+          "id": "chinese-7-upper-u3-k4",
+          "title": "突出中心",
+          "guide": "详略应由中心决定，最能表现坚持的行动应写充分。 结尾应回应事件与中心，认识的变化要在正文中有依据。"
+        }
+      ],
+      "questions": [
+        {
+          "id": "chinese-7-upper-u3-d1",
+          "skillId": "chinese-7-upper-u3-k1",
+          "prompt": "要弄清一段关键文字的表达效果，最适合采用？",
+          "options": [
+            {
+              "id": "a",
+              "text": "只浏览标题"
+            },
+            {
+              "id": "b",
+              "text": "只数段落"
+            },
+            {
+              "id": "c",
+              "text": "精读并圈画关键词"
+            }
+          ],
+          "answer": "c",
+          "explanation": "分析关键语句需要细读、推敲和联系上下文；浏览适合快速了解概貌。"
+        },
+        {
+          "id": "chinese-7-upper-u3-d2",
+          "skillId": "chinese-7-upper-u3-k2",
+          "prompt": "读原创片段：起初我总把难题跳过，后来每天整理一道错题，逐渐敢举手了。变化主线是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "由回避困难到主动尝试"
+            },
+            {
+              "id": "b",
+              "text": "由热爱学习到厌学"
+            },
+            {
+              "id": "c",
+              "text": "由勤奋到懒惰"
+            }
+          ],
+          "answer": "a",
+          "explanation": "抓住起初、后来、逐渐等标记，比较前后行动和心理。"
+        },
+        {
+          "id": "chinese-7-upper-u3-d3",
+          "skillId": "chinese-7-upper-u3-k3",
+          "prompt": "“学而不思则罔，思而不学则殆”强调？",
+          "options": [
+            {
+              "id": "a",
+              "text": "只学习不用思考"
+            },
+            {
+              "id": "b",
+              "text": "学习与思考应结合"
+            },
+            {
+              "id": "c",
+              "text": "只空想不用学习"
+            }
+          ],
+          "answer": "b",
+          "explanation": "两个分句从不同方向提醒学与思不能偏废。"
+        },
+        {
+          "id": "chinese-7-upper-u3-d4",
+          "skillId": "chinese-7-upper-u3-k4",
+          "prompt": "文章中心是“在失败中学会坚持”，哪项更应详写？",
+          "options": [
+            {
+              "id": "a",
+              "text": "成功后获得的表扬和奖励"
+            },
+            {
+              "id": "b",
+              "text": "练习开始前列出的目标清单"
+            },
+            {
+              "id": "c",
+              "text": "失败后怎样调整方法继续练习"
+            }
+          ],
+          "answer": "c",
+          "explanation": "详略应由中心决定，最能表现坚持的行动应写充分。"
+        }
+      ],
+      "retestQuestions": [
+        {
+          "id": "chinese-7-upper-u3-r1",
+          "skillId": "chinese-7-upper-u3-k1",
+          "prompt": "想先了解一本回忆散文集的篇目和大致内容，首先可以？",
+          "options": [
+            {
+              "id": "a",
+              "text": "浏览目录和各篇开头"
+            },
+            {
+              "id": "b",
+              "text": "逐字抄写全书"
+            },
+            {
+              "id": "c",
+              "text": "只背作者出生日期"
+            }
+          ],
+          "answer": "a",
+          "explanation": "先浏览有助于形成整体印象，再根据阅读目标选择精读篇目。"
+        },
+        {
+          "id": "chinese-7-upper-u3-r2",
+          "skillId": "chinese-7-upper-u3-k2",
+          "prompt": "读原创片段：第一次演讲时她声音发抖；反复练习后，她能从容讲完。进步主要来自？",
+          "options": [
+            {
+              "id": "a",
+              "text": "换了一件衣服"
+            },
+            {
+              "id": "b",
+              "text": "反复练习"
+            },
+            {
+              "id": "c",
+              "text": "完全不再准备"
+            }
+          ],
+          "answer": "b",
+          "explanation": "句中明确交代练习与表现变化之间的联系。"
+        },
+        {
+          "id": "chinese-7-upper-u3-r3",
+          "skillId": "chinese-7-upper-u3-k3",
+          "prompt": "“温故而知新”所说的学习方法是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "只记新词不复习"
+            },
+            {
+              "id": "b",
+              "text": "反复抄写却不理解"
+            },
+            {
+              "id": "c",
+              "text": "复习旧知并获得新理解"
+            }
+          ],
+          "answer": "c",
+          "explanation": "温故是复习，知新强调在复习中产生新的理解。"
+        },
+        {
+          "id": "chinese-7-upper-u3-r4",
+          "skillId": "chinese-7-upper-u3-k4",
+          "prompt": "写成长经历时，哪种结尾与正文联系更紧密？",
+          "options": [
+            {
+              "id": "a",
+              "text": "结合文中行动写出自己认识的改变"
+            },
+            {
+              "id": "b",
+              "text": "突然介绍无关景点"
+            },
+            {
+              "id": "c",
+              "text": "只堆叠与事件无关的名言"
+            }
+          ],
+          "answer": "a",
+          "explanation": "结尾应回应事件与中心，认识的变化要在正文中有依据。"
+        }
+      ],
+      "lessons": [
+        "从百草园到三味书屋",
+        "往事依依",
+        "再塑生命的人",
+        "《论语》十二章"
+      ]
+    },
+    {
+      "id": "chinese-7-upper-u4",
+      "title": "第四单元",
+      "page": 77,
+      "pdfPage": 84,
+      "focus": "品格修养与思路梳理",
+      "writingPrompt": "用一件具体的小事表现一个人的品质，再写一句有依据的评价。",
+      "skills": [
+        {
+          "id": "chinese-7-upper-u4-k1",
+          "title": "观点与材料",
+          "guide": "评价表达作者的判断；提前到校、帮助过路是支撑评价的事实。 证据要与评价的品质直接相关，位置和物品新旧不能证明认真。"
+        },
+        {
+          "id": "chinese-7-upper-u4-k2",
+          "title": "记叙与议论",
+          "guide": "先叙事再评议，读者能看见评价的事实依据。 对照使差异鲜明，理解时要找到比较的方面和作者倾向。"
+        },
+        {
+          "id": "chinese-7-upper-u4-k3",
+          "title": "文言理解",
+          "guide": "静指内心宁静、专一，俭指节俭，分别联系修身与养德。 无以是没有办法；整句强调学习对增长才干的作用。"
+        },
+        {
+          "id": "chinese-7-upper-u4-k4",
+          "title": "思路清晰",
+          "guide": "按操作先后组织，让读者能够依照步骤理解和执行。 阶段或时间有助于梳理发展过程；其他顺序也需有明确逻辑。"
+        }
+      ],
+      "questions": [
+        {
+          "id": "chinese-7-upper-u4-d1",
+          "skillId": "chinese-7-upper-u4-k1",
+          "prompt": "读原创片段：志愿者每天提前到校，帮助低年级学生过马路。他的责任心值得我们学习。哪句是评价？",
+          "options": [
+            {
+              "id": "a",
+              "text": "他的责任心值得我们学习。"
+            },
+            {
+              "id": "b",
+              "text": "每天提前到校。"
+            },
+            {
+              "id": "c",
+              "text": "帮助低年级学生过马路。"
+            }
+          ],
+          "answer": "a",
+          "explanation": "评价表达作者的判断；提前到校、帮助过路是支撑评价的事实。"
+        },
+        {
+          "id": "chinese-7-upper-u4-d2",
+          "skillId": "chinese-7-upper-u4-k2",
+          "prompt": "叙述母亲如何辛勤劳动，再写自己由此学到的品质，这样安排的作用是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "用议论代替全部事实"
+            },
+            {
+              "id": "b",
+              "text": "让评价建立在具体事例之上"
+            },
+            {
+              "id": "c",
+              "text": "证明记叙不能带感情"
+            }
+          ],
+          "answer": "b",
+          "explanation": "先叙事再评议，读者能看见评价的事实依据。"
+        },
+        {
+          "id": "chinese-7-upper-u4-d3",
+          "skillId": "chinese-7-upper-u4-k3",
+          "prompt": "“静以修身，俭以养德”强调的修养方式是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "奢侈攀比与浮躁"
+            },
+            {
+              "id": "b",
+              "text": "只追求外表华丽"
+            },
+            {
+              "id": "c",
+              "text": "宁静专一与节俭"
+            }
+          ],
+          "answer": "c",
+          "explanation": "静指内心宁静、专一，俭指节俭，分别联系修身与养德。"
+        },
+        {
+          "id": "chinese-7-upper-u4-d4",
+          "skillId": "chinese-7-upper-u4-k4",
+          "prompt": "写“整理书桌的方法”，哪种顺序清楚？",
+          "options": [
+            {
+              "id": "a",
+              "text": "先分类，再摆放，最后检查"
+            },
+            {
+              "id": "b",
+              "text": "先写结果，再随机插入步骤"
+            },
+            {
+              "id": "c",
+              "text": "只写一句要整齐"
+            }
+          ],
+          "answer": "a",
+          "explanation": "按操作先后组织，让读者能够依照步骤理解和执行。"
+        }
+      ],
+      "retestQuestions": [
+        {
+          "id": "chinese-7-upper-u4-r1",
+          "skillId": "chinese-7-upper-u4-k1",
+          "prompt": "要支持“他做事认真”的评价，哪项证据最有力？",
+          "options": [
+            {
+              "id": "a",
+              "text": "他的书包是新的"
+            },
+            {
+              "id": "b",
+              "text": "交作业前逐项核对并改正漏项"
+            },
+            {
+              "id": "c",
+              "text": "他坐在教室前排"
+            }
+          ],
+          "answer": "b",
+          "explanation": "证据要与评价的品质直接相关，位置和物品新旧不能证明认真。"
+        },
+        {
+          "id": "chinese-7-upper-u4-r2",
+          "skillId": "chinese-7-upper-u4-k2",
+          "prompt": "文章列出两种对待工作的态度并加以比较，主要有助于？",
+          "options": [
+            {
+              "id": "a",
+              "text": "证明两种态度完全相同"
+            },
+            {
+              "id": "b",
+              "text": "取消文章的中心"
+            },
+            {
+              "id": "c",
+              "text": "通过对照突出作者赞成的态度"
+            }
+          ],
+          "answer": "c",
+          "explanation": "对照使差异鲜明，理解时要找到比较的方面和作者倾向。"
+        },
+        {
+          "id": "chinese-7-upper-u4-r3",
+          "skillId": "chinese-7-upper-u4-k3",
+          "prompt": "“非学无以广才”表达的意思是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "不学习就不能增长才干"
+            },
+            {
+              "id": "b",
+              "text": "只有天赋无需学习"
+            },
+            {
+              "id": "c",
+              "text": "学习一定使人自满"
+            }
+          ],
+          "answer": "a",
+          "explanation": "无以是没有办法；整句强调学习对增长才干的作用。"
+        },
+        {
+          "id": "chinese-7-upper-u4-r4",
+          "skillId": "chinese-7-upper-u4-k4",
+          "prompt": "讲述一个人多年的成长，最适合先采用哪种组织线索？",
+          "options": [
+            {
+              "id": "a",
+              "text": "任意打乱年代"
+            },
+            {
+              "id": "b",
+              "text": "按阶段或时间梳理经历"
+            },
+            {
+              "id": "c",
+              "text": "只按句子长短排列"
+            }
+          ],
+          "answer": "b",
+          "explanation": "阶段或时间有助于梳理发展过程；其他顺序也需有明确逻辑。"
+        }
+      ],
+      "lessons": [
+        "纪念白求恩",
+        "回忆我的母亲",
+        "梅岭三章",
+        "诫子书"
+      ]
+    },
+    {
+      "id": "chinese-7-upper-u5",
+      "title": "第五单元",
+      "page": 105,
+      "pdfPage": 112,
+      "focus": "人与动物的关系",
+      "writingPrompt": "记录一次观察动物的经历，分清看到的行为、自己的推测和后来获得的证据。",
+      "skills": [
+        {
+          "id": "chinese-7-upper-u5-k1",
+          "title": "事实与推测",
+          "guide": "爪印只能表明猫可能到过附近，不能单独证明它打碎杯子。 停在窗外是观察事实，动机属于推测，不能用一定掩盖证据不足。"
+        },
+        {
+          "id": "chinese-7-upper-u5-k2",
+          "title": "动物描写",
+          "guide": "压低、拨动呈现具体动作，能让读者想象情景。 可核对的观察记录需有时间地点及具体事实。"
+        },
+        {
+          "id": "chinese-7-upper-u5-k3",
+          "title": "文言叙事",
+          "guide": "此处洞作动词，表示挖洞，解释词义要看句子中承担的作用。 假寐指假装睡觉，结合后续认识理解狼的行为。"
+        },
+        {
+          "id": "chinese-7-upper-u5-k4",
+          "title": "公平与关爱",
+          "guide": "兼顾人的安全与对动物的尊重，不能用传闻替代调查。 反思要联系具体经历并修正判断，避免绝对化和以爱之名伤害。"
+        }
+      ],
+      "questions": [
+        {
+          "id": "chinese-7-upper-u5-d1",
+          "skillId": "chinese-7-upper-u5-k1",
+          "prompt": "读原创片段：桌边有爪印，我便认定猫打碎了杯子；后来录像显示是风吹倒了花盆。原先的判断有什么问题？",
+          "options": [
+            {
+              "id": "a",
+              "text": "调查证据过于充分"
+            },
+            {
+              "id": "b",
+              "text": "仅凭局部现象草率下结论"
+            },
+            {
+              "id": "c",
+              "text": "完全没有任何现象"
+            }
+          ],
+          "answer": "b",
+          "explanation": "爪印只能表明猫可能到过附近，不能单独证明它打碎杯子。"
+        },
+        {
+          "id": "chinese-7-upper-u5-d2",
+          "skillId": "chinese-7-upper-u5-k2",
+          "prompt": "哪句以具体动作描写动物？",
+          "options": [
+            {
+              "id": "a",
+              "text": "小猫特别好。"
+            },
+            {
+              "id": "b",
+              "text": "动物都差不多。"
+            },
+            {
+              "id": "c",
+              "text": "小猫压低身子，轻轻拨动滚来的线团。"
+            }
+          ],
+          "answer": "c",
+          "explanation": "压低、拨动呈现具体动作，能让读者想象情景。"
+        },
+        {
+          "id": "chinese-7-upper-u5-d3",
+          "skillId": "chinese-7-upper-u5-k3",
+          "prompt": "“一狼洞其中”中的“洞”在句中表示？",
+          "options": [
+            {
+              "id": "a",
+              "text": "挖洞"
+            },
+            {
+              "id": "b",
+              "text": "洞口的颜色"
+            },
+            {
+              "id": "c",
+              "text": "躲进现成山洞"
+            }
+          ],
+          "answer": "a",
+          "explanation": "此处洞作动词，表示挖洞，解释词义要看句子中承担的作用。"
+        },
+        {
+          "id": "chinese-7-upper-u5-d4",
+          "skillId": "chinese-7-upper-u5-k4",
+          "prompt": "听说一只流浪猫伤人，最合适的处理是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "未经核实就伤害它"
+            },
+            {
+              "id": "b",
+              "text": "保持安全距离并核实情况，寻求专业帮助"
+            },
+            {
+              "id": "c",
+              "text": "直接徒手抓住它"
+            }
+          ],
+          "answer": "b",
+          "explanation": "兼顾人的安全与对动物的尊重，不能用传闻替代调查。"
+        }
+      ],
+      "retestQuestions": [
+        {
+          "id": "chinese-7-upper-u5-r1",
+          "skillId": "chinese-7-upper-u5-k1",
+          "prompt": "看到鸟停在窗外，就断定“它一定想让我带它回家”。应如何看待？",
+          "options": [
+            {
+              "id": "a",
+              "text": "这是可直接观察到的事实"
+            },
+            {
+              "id": "b",
+              "text": "这是唯一可能的解释"
+            },
+            {
+              "id": "c",
+              "text": "这是缺少证据的推测"
+            }
+          ],
+          "answer": "c",
+          "explanation": "停在窗外是观察事实，动机属于推测，不能用一定掩盖证据不足。"
+        },
+        {
+          "id": "chinese-7-upper-u5-r2",
+          "skillId": "chinese-7-upper-u5-k2",
+          "prompt": "记录鸟类观察时，哪项最便于核对？",
+          "options": [
+            {
+              "id": "a",
+              "text": "日期、地点、数量和可见行为"
+            },
+            {
+              "id": "b",
+              "text": "只写我觉得它很开心"
+            },
+            {
+              "id": "c",
+              "text": "直接编造一次飞行"
+            }
+          ],
+          "answer": "a",
+          "explanation": "可核对的观察记录需有时间地点及具体事实。"
+        },
+        {
+          "id": "chinese-7-upper-u5-r3",
+          "skillId": "chinese-7-upper-u5-k3",
+          "prompt": "“乃悟前狼假寐”中的“假寐”指？",
+          "options": [
+            {
+              "id": "a",
+              "text": "真正死亡"
+            },
+            {
+              "id": "b",
+              "text": "假装睡觉"
+            },
+            {
+              "id": "c",
+              "text": "快速奔跑"
+            }
+          ],
+          "answer": "b",
+          "explanation": "假寐指假装睡觉，结合后续认识理解狼的行为。"
+        },
+        {
+          "id": "chinese-7-upper-u5-r4",
+          "skillId": "chinese-7-upper-u5-k4",
+          "prompt": "写人与动物相处的反思，哪种表达最有依据？",
+          "options": [
+            {
+              "id": "a",
+              "text": "所有动物都永远不会伤人。"
+            },
+            {
+              "id": "b",
+              "text": "只要喜欢就可以随意捕捉。"
+            },
+            {
+              "id": "c",
+              "text": "我误把抓痕当证据，后来核实才知判断错误。"
+            }
+          ],
+          "answer": "c",
+          "explanation": "反思要联系具体经历并修正判断，避免绝对化和以爱之名伤害。"
+        }
+      ],
+      "lessons": [
+        "猫",
+        "我的白鸽",
+        "大雁归来",
+        "狼"
+      ]
+    },
+    {
+      "id": "chinese-7-upper-u6",
+      "title": "第六单元",
+      "page": 131,
+      "pdfPage": 138,
+      "focus": "想象、童话与寓言",
+      "writingPrompt": "写一个想象片段，设定一个明确规则，并让后续行动符合这个规则。",
+      "skills": [
+        {
+          "id": "chinese-7-upper-u6-k1",
+          "title": "想象与情节",
+          "guide": "想象可以新奇，但前后规则应自洽；改变规则需要合理交代。 童话可通过想象赋予动物人的语言，不能把文体特点当科学事实。"
+        },
+        {
+          "id": "chinese-7-upper-u6-k2",
+          "title": "人物与讽刺",
+          "guide": "题目明确他明知空白，言行不一致来自失去职位的恐惧。 孩子的实话与众人的附和形成对照，突出虚假。"
+        },
+        {
+          "id": "chinese-7-upper-u6-k3",
+          "title": "寓意边界",
+          "guide": "一次雷声不足以推出永远不能住，但也不能反向否定一切危险。 故事的失败原因是固守旧方法而拒绝学习。"
+        },
+        {
+          "id": "chinese-7-upper-u6-k4",
+          "title": "信息核实",
+          "guide": "传闻易在转述中变形，应追溯来源并理解语境。 转述要准确，并标明不确定的信息，不能把猜测包装为事实。"
+        }
+      ],
+      "questions": [
+        {
+          "id": "chinese-7-upper-u6-d1",
+          "skillId": "chinese-7-upper-u6-k1",
+          "prompt": "故事设定“钥匙只能打开昨天经过的门”，哪种续写最符合设定？",
+          "options": [
+            {
+              "id": "a",
+              "text": "钥匙忽然能无条件打开任何东西且无解释"
+            },
+            {
+              "id": "b",
+              "text": "直接删掉此前设定"
+            },
+            {
+              "id": "c",
+              "text": "主人公回忆昨天路线，寻找可打开的门"
+            }
+          ],
+          "answer": "c",
+          "explanation": "想象可以新奇，但前后规则应自洽；改变规则需要合理交代。"
+        },
+        {
+          "id": "chinese-7-upper-u6-d2",
+          "skillId": "chinese-7-upper-u6-k2",
+          "prompt": "原创故事中，大臣明知画布空白，却因怕失去职位而赞美。最能解释其行为的是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "畏惧权势而说假话"
+            },
+            {
+              "id": "b",
+              "text": "真看到画布有图案"
+            },
+            {
+              "id": "c",
+              "text": "想帮助画家改错"
+            }
+          ],
+          "answer": "a",
+          "explanation": "题目明确他明知空白，言行不一致来自失去职位的恐惧。"
+        },
+        {
+          "id": "chinese-7-upper-u6-d3",
+          "skillId": "chinese-7-upper-u6-k3",
+          "prompt": "读原创寓言：小兔听见一次雷声，便断定森林永远不能住。最合理的启示是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "所有危险都不必理会"
+            },
+            {
+              "id": "b",
+              "text": "判断应依据充分事实，避免扩大个别现象"
+            },
+            {
+              "id": "c",
+              "text": "任何声音都绝对安全"
+            }
+          ],
+          "answer": "b",
+          "explanation": "一次雷声不足以推出永远不能住，但也不能反向否定一切危险。"
+        },
+        {
+          "id": "chinese-7-upper-u6-d4",
+          "skillId": "chinese-7-upper-u6-k4",
+          "prompt": "听到“挖井得到一个人”的传闻，正确的求证方式是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "每转述一次添一个细节"
+            },
+            {
+              "id": "b",
+              "text": "因为多人转发就当事实"
+            },
+            {
+              "id": "c",
+              "text": "询问当事人并核对完整语境"
+            }
+          ],
+          "answer": "c",
+          "explanation": "传闻易在转述中变形，应追溯来源并理解语境。"
+        }
+      ],
+      "retestQuestions": [
+        {
+          "id": "chinese-7-upper-u6-r1",
+          "skillId": "chinese-7-upper-u6-k1",
+          "prompt": "童话中让动物说话，主要体现？",
+          "options": [
+            {
+              "id": "a",
+              "text": "想象与拟人化表达"
+            },
+            {
+              "id": "b",
+              "text": "所有事实记录都应照此写"
+            },
+            {
+              "id": "c",
+              "text": "作者必须见过会说话的动物"
+            }
+          ],
+          "answer": "a",
+          "explanation": "童话可通过想象赋予动物人的语言，不能把文体特点当科学事实。"
+        },
+        {
+          "id": "chinese-7-upper-u6-r2",
+          "skillId": "chinese-7-upper-u6-k2",
+          "prompt": "面对众人附和的假话，孩子直接说出看到的事实。孩子的作用主要是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "证明多数意见永远正确"
+            },
+            {
+              "id": "b",
+              "text": "揭破虚假，形成对照"
+            },
+            {
+              "id": "c",
+              "text": "使事实变得不可知"
+            }
+          ],
+          "answer": "b",
+          "explanation": "孩子的实话与众人的附和形成对照，突出虚假。"
+        },
+        {
+          "id": "chinese-7-upper-u6-r3",
+          "skillId": "chinese-7-upper-u6-k3",
+          "prompt": "读原创寓言：小鸟学会一种方法后拒绝再学习，遇到新问题束手无策。寓意更接近？",
+          "options": [
+            {
+              "id": "a",
+              "text": "学会一种方法就够了"
+            },
+            {
+              "id": "b",
+              "text": "新问题一定无法解决"
+            },
+            {
+              "id": "c",
+              "text": "方法要随情况调整，继续学习"
+            }
+          ],
+          "answer": "c",
+          "explanation": "故事的失败原因是固守旧方法而拒绝学习。"
+        },
+        {
+          "id": "chinese-7-upper-u6-r4",
+          "skillId": "chinese-7-upper-u6-k4",
+          "prompt": "转述同学的故事时，哪种做法最负责？",
+          "options": [
+            {
+              "id": "a",
+              "text": "保留关键信息，分清原话和自己的猜测"
+            },
+            {
+              "id": "b",
+              "text": "把不确定处说成亲眼所见"
+            },
+            {
+              "id": "c",
+              "text": "为了有趣随意改变事实"
+            }
+          ],
+          "answer": "a",
+          "explanation": "转述要准确，并标明不确定的信息，不能把猜测包装为事实。"
+        }
+      ],
+      "lessons": [
+        "小圣施威降大圣",
+        "皇帝的新装",
+        "女娲造人",
+        "寓言四则"
+      ]
+    }
+  ]
+}

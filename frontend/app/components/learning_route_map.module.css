@@ -1,0 +1,69 @@
+/* 首页独立蓝图画布，不覆盖学习页共用的步骤卡样式。 */
+.map {
+  --map-line: var(--bp-yellow, #ffdb43);
+  --map-ink: var(--bp-ink, #152b56);
+  container-type: inline-size;
+  border: 2px solid var(--map-ink);
+  border-radius: 24px;
+  box-shadow: 5px 6px 0 var(--map-ink);
+  background-color: var(--bp-blue, #2255ee);
+  background-image: linear-gradient(#ffffff0d 1px, transparent 1px), linear-gradient(90deg, #ffffff0d 1px, transparent 1px);
+  background-size: 28px 28px;
+  color: white;
+  padding: 16px 24px;
+  overflow: hidden;
+}
+.mapHeader { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 16px; }
+.eyebrow { font-size: .75rem; letter-spacing: .14em; color: #e1eaff; }
+.mapHeader p { margin: 4px 0 0; font-size: 1.15rem; font-weight: 750; color: white; }
+.counter { padding: 8px 14px; border: 1px solid #ffffff80; border-radius: 24px; font-size: .85rem; white-space: nowrap; color: white; }
+.stations { list-style: none; padding: 0; margin: 0; }
+.station { --station-color: #ff9976; position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 120px minmax(0, 1fr); min-height: 100px; padding-bottom: 12px; }
+.station:nth-child(2) { --station-color: #78e8bd; }
+.station:nth-child(3) { --station-color: #d4baff; }
+.station:nth-child(4) { --station-color: #ffca78; }
+.station:nth-child(5) { --station-color: #94e7fa; }
+.connector { position: absolute; pointer-events: none; left: calc(50% - 60px); top: 36px; width: 120px; height: 100%; overflow: visible; }
+.connector path { fill: none; stroke: var(--map-line); stroke-width: 6; vector-effect: non-scaling-stroke; stroke-linecap: round; }
+.station[data-state="locked"] .connector path, .station[data-state="pending"] .connector path { stroke-dasharray: 5 10; stroke: #b8ceff; }
+.node { grid-column: 2; grid-row: 1; z-index: 1; position: relative; justify-self: start; margin-left: 16px; margin-top: 14px; display: grid; place-items: center; width: 44px; height: 44px; border: 2px solid var(--map-ink); border-radius: 50%; box-shadow: 0 4px 0 var(--map-ink); background: var(--station-color); color: var(--map-ink); font-weight: 800; font-size: 1.15rem; }
+.station:nth-child(even) .node { margin-left: 60px; }
+.stationCard { grid-column: 1; grid-row: 1; align-self: start; display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 12px; padding: 10px 14px; border: 2px solid var(--map-ink); border-radius: 12px; background: #f5f8ff; color: var(--map-ink); box-shadow: 3px 4px 0 var(--map-ink); position: relative; }
+.station:nth-child(even) .stationCard { grid-column: 3; }
+.stationMeta { grid-column: 1; display: flex; flex-wrap: wrap; gap: 4px 10px; font-size: .75rem; font-weight: 600; color: var(--bp-muted, #455675); }
+.stateLabel { display: inline-flex; align-items: center; gap: 4px; }
+.stationCard h2 { grid-column: 1; font-size: 1.05rem; margin: 4px 0; color: var(--map-ink); line-height: 1.4; }
+.stationBottom { display: contents; }
+.stationBottom p { grid-column: 1; margin: 0; font-size: .8rem; color: var(--bp-muted, #455675); line-height: 1.6; }
+.stationBottom .action { grid-column: 2; grid-row: 1 / span 3; align-self: center; }
+.action { flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; gap: 4px; min-height: 44px; padding: 7px 14px; border: 1px solid var(--map-ink); border-radius: 10px; background: white; color: var(--map-ink); font: inherit; font-size: .9rem; font-weight: 750; cursor: pointer; box-shadow: 2px 3px 0 var(--map-ink); transition: transform .18s, box-shadow .18s; }
+.action:disabled { color: #586580; background: #e8eef8; border-color: #b4c4e0; box-shadow: none; cursor: not-allowed; }
+.action:focus-visible { outline: 3px solid var(--map-line); outline-offset: 4px; }
+.action:active:not(:disabled) { transform: translate(2px, 3px); box-shadow: none; }
+.station[data-state="current"] .stationCard { background: var(--station-color); box-shadow: 5px 6px 0 var(--map-ink); }
+.station[data-state="current"] .action { background: var(--map-ink); color: white; }
+.station[data-state="current"] .stateLabel { color: var(--map-ink); font-weight: 800; }
+.station[data-state="current"] .node { outline: 4px solid var(--map-line); outline-offset: 5px; }
+.station[data-state="current"] .node::after { content: ''; position: absolute; inset: -12px; border-radius: 50%; border: 2px solid var(--map-line); animation: currentPulse 2.6s ease-out infinite; pointer-events: none; }
+.station[data-state="locked"] .stationCard, .station[data-state="pending"] .stationCard { background: #e3ecff; box-shadow: none; border-color: #bad0ff; }
+.station[data-state="locked"] .node, .station[data-state="pending"] .node { background: color-mix(in srgb, var(--station-color) 50%, white); box-shadow: none; }
+.finish { display: flex; align-items: center; justify-content: center; gap: 10px; border-top: 1px dashed #ffffff66; padding-top: 10px; text-align: center; font-size: .85rem; color: white; }
+.finish > span { color: var(--map-line); font-size: 1.5rem; }
+@keyframes currentPulse { 0% { transform: scale(.9); opacity: .7; } 85%, 100% { transform: scale(1.35); opacity: 0; } }
+@media (hover: hover) { .action:hover:not(:disabled) { transform: translateY(-2px); } }
+/* 按画布宽度切换，兼容侧栏展开后的窄桌面和手机。 */
+@container (max-width: 640px) {
+  .station { grid-template-columns: 64px minmax(0, 1fr); min-height: 100px; }
+  .node, .station:nth-child(even) .node { grid-column: 1; margin-left: 6px; margin-top: 14px; }
+  .stationCard, .station:nth-child(even) .stationCard { grid-column: 2; }
+  .connector { left: 10px; width: 40px; }
+  .stationCard { padding: 10px 12px; }
+  .mapHeader { align-items: flex-start; flex-wrap: wrap; gap: 12px; }
+  .mapHeader p { font-size: 1.2rem; }
+}
+@container (max-width: 360px) {
+  .stationCard { display: block; }
+  .stationBottom { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; }
+}
+@media (max-width: 600px) { .map { padding: 16px 12px; border-radius: 18px; } }
+@media (prefers-reduced-motion: reduce) { .station[data-state="current"] .node::after { animation: none; display: none; } .action { transition: none; } }

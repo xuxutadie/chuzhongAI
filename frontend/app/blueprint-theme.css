@@ -1,0 +1,153 @@
+/* 多巴胺蓝图：亮色用于定位，深色负责文字，白底负责阅读。 */
+:root {
+  --bp-ink: #152b56;
+  --bp-muted: #455675;
+  --bp-paper: #f4f8ff;
+  --bp-blue: #2255ee;
+  --bp-green: #007b60;
+  --bp-orange: #bd3e19;
+  --bp-purple: #6d37cf;
+  --bp-cyan: #00758f;
+  --bp-danger: #b72d4b;
+  --bp-yellow: #ffdb43;
+  --bp-blue-soft: #e3ecff;
+  --bp-green-soft: #c9f5e3;
+  --bp-orange-soft: #ffdecf;
+  --bp-purple-soft: #ece1ff;
+  --bp-cyan-soft: #cff2fa;
+  --bp-grid: linear-gradient(#2255ee09 1px, transparent 1px), linear-gradient(90deg, #2255ee09 1px, transparent 1px);
+  --bp-shadow: 4px 4px 0 var(--bp-ink);
+  --bp-shadow-sm: 2px 3px 0 var(--bp-ink);
+  --page-bg: var(--bp-paper);
+  --surface: #fff;
+  --surface-strong: var(--bp-blue-soft);
+  --surface-soft: var(--bp-green-soft);
+  --text-primary: var(--bp-ink);
+  --text-secondary: var(--bp-muted);
+  --text-muted: var(--bp-muted);
+  --border: #b4c4e0;
+  --blue: var(--bp-blue);
+  --accent: var(--bp-green);
+  --accent-strong: var(--bp-green);
+  --coral: var(--bp-orange);
+  --purple: var(--bp-purple);
+  --danger: var(--bp-danger);
+  --gold: #855000;
+  --study-blue: var(--bp-blue);
+  --study-green: var(--bp-green);
+  --study-orange: var(--bp-orange);
+  --study-purple: var(--bp-purple);
+  --study-cyan: var(--bp-cyan);
+  --study-blue-soft: var(--bp-blue-soft);
+  --study-green-soft: var(--bp-green-soft);
+  --study-orange-soft: var(--bp-orange-soft);
+  --study-purple-soft: var(--bp-purple-soft);
+  --study-cyan-soft: var(--bp-cyan-soft);
+  --ui-blue-soft: var(--bp-blue-soft);
+  --ui-green-soft: var(--bp-green-soft);
+  --ui-orange-soft: var(--bp-orange-soft);
+  --ui-purple-soft: var(--bp-purple-soft);
+  --ui-navy: var(--bp-ink);
+  --ui-card-radius: 16px;
+  --ui-card-shadow: var(--bp-shadow);
+  --ui-focus: var(--bp-blue);
+  --dopamine-yellow: var(--bp-yellow);
+  --dopamine-cyan: var(--bp-cyan);
+  --dopamine-cyan-soft: var(--bp-cyan-soft);
+}
+
+body, .student-workbench, .student-workspace-refined {
+  background-color: var(--bp-paper);
+  background-image: var(--bp-grid);
+  background-size: 28px 28px;
+}
+.student-workbench { --workspace-radius: 16px; --page-accent: var(--bp-blue); --page-soft: var(--bp-blue-soft); }
+.student-sidebar {
+  background-color: var(--bp-ink);
+  background-image: linear-gradient(#ffffff06 1px, transparent 1px), linear-gradient(90deg, #ffffff06 1px, transparent 1px);
+  background-size: 28px 28px;
+  border-right: 2px solid var(--bp-ink);
+}
+.student-sidebar .brand-mark { color: var(--bp-ink); background: var(--bp-yellow); border: 2px solid white; box-shadow: 3px 3px 0 #08162f; border-radius: 12px; }
+.student-sidebar .sidebar-group-title { color: #c0d2f4; }
+.student-sidebar .nav-link { border: 1px solid transparent; }
+.student-sidebar .nav-link[data-nav-tone="teal"] .nav-link-icon { color: #71edc9; }
+.student-sidebar .nav-link[data-nav-tone="amber"] .nav-link-icon { color: #ffbf9b; }
+.student-sidebar .nav-link[data-nav-tone="violet"] .nav-link-icon { color: #d6b9ff; }
+.student-sidebar .sidebar-group :is(.nav-link-is-selected, .nav-link[aria-current="page"]) {
+  color: var(--bp-ink); background: var(--bp-yellow); border: 1px solid var(--bp-ink);
+  box-shadow: 3px 3px 0 #091830; border-radius: 10px;
+}
+.student-sidebar .sidebar-group .nav-link[aria-current="page"] .nav-link-icon { color: var(--bp-ink); }
+.student-sidebar :is(a, button):focus-visible { outline-color: var(--bp-yellow); }
+.workbench-header { border-bottom: 2px solid var(--bp-ink); }
+.workbench-header :is(.growth-status, .header-ai-action, .header-logout-action) { border: 1px solid var(--bp-ink); box-shadow: 2px 2px 0 var(--bp-ink); }
+.workbench-header .header-ai-action { background: var(--bp-purple-soft); color: var(--bp-purple); }
+.mobile-nav-shortcut[aria-current="page"] { background: var(--bp-yellow); color: var(--bp-ink); border-color: var(--bp-ink); }
+.student-workspace-refined .workbench-page-intro > p { color: var(--bp-ink); background: var(--bp-yellow); border: 1px solid var(--bp-ink); box-shadow: 2px 2px 0 var(--bp-ink); }
+.student-workspace-refined .workbench-page-intro h1 { border-left: 6px solid var(--page-accent); }
+
+/* 外框统一为蓝图描边；不改变答题区域、图表和课件的几何尺寸。 */
+.student-workbench :is(.workbench-panel, .workspace-item-card, .task-card, .profile-card, .report-card, .guided-stage, .guided-task-header, .math-phase-stage, .wrong-upload-panel, .wrong-record-section, .teacher-account-panel, .teacher-students-panel, .materials-workspace) {
+  border: 2px solid var(--bp-ink); border-radius: 16px; box-shadow: var(--bp-shadow);
+}
+.student-workbench :is(.resource-feature, .resource-row, .textbook-entry, .interactive-lesson-card) {
+  border: 2px solid var(--bp-ink); border-radius: 16px; box-shadow: var(--bp-shadow);
+}
+.student-workbench :is(.resource-daily-link, .report-context-bar, .interactive-player-intro, .interactive-checkpoint, .course-context-selector) {
+  border: 1px solid var(--bp-ink); border-radius: 12px; box-shadow: var(--bp-shadow-sm);
+}
+.resource-feature { background-color: var(--bp-blue); background-image: linear-gradient(#ffffff0c 1px, transparent 1px), linear-gradient(90deg, #ffffff0c 1px, transparent 1px); background-size: 24px 24px; }
+.resource-feature .resource-icon { background: var(--bp-yellow); color: var(--bp-ink); border: 1px solid var(--bp-ink); box-shadow: 3px 3px 0 var(--bp-ink); }
+.resource-feature > strong { color: var(--bp-ink); background: var(--bp-yellow); border: 1px solid var(--bp-ink); box-shadow: var(--bp-shadow-sm); }
+.resource-row h2 { color: var(--bp-ink); }
+.resource-row strong, .resource-row .resource-icon, .textbook-mark { border: 1px solid var(--bp-ink); box-shadow: var(--bp-shadow-sm); }
+.student-workspace-refined .interactive-lesson-card:nth-child(6n + 4) { --lesson-color: var(--bp-purple); --lesson-soft: var(--bp-purple-soft); }
+.student-workspace-refined .interactive-lesson-card:nth-child(6n + 5) { --lesson-color: var(--bp-cyan); --lesson-soft: var(--bp-cyan-soft); }
+.student-workspace-refined .interactive-lesson-card:nth-child(6n) { --lesson-color: var(--bp-ink); --lesson-soft: var(--bp-yellow); }
+.student-workspace-refined .interactive-card-body > strong { border: 1px solid var(--bp-ink); box-shadow: var(--bp-shadow-sm); }
+.student-workspace-refined .interactive-lesson-card.is-disabled { background: #edf1f7; border-color: #b4c4e0; box-shadow: none; }
+.student-workspace-refined .interactive-lesson-card.is-disabled .interactive-card-body > strong { box-shadow: none; border-color: #b4c4e0; }
+.student-workspace-refined .workbench-content .module.assistant { border: 2px solid var(--bp-ink); box-shadow: var(--bp-shadow); }
+.student-workspace-refined .assistant-reply { border: 1px solid var(--bp-ink); border-left: 5px solid var(--bp-purple); }
+.student-workspace-refined .assistant-suggestions button:nth-child(3n + 1) { color: var(--bp-ink); background: var(--bp-green-soft); }
+.student-workspace-refined .assistant-suggestions button:nth-child(3n + 2) { color: var(--bp-ink); background: var(--bp-yellow); }
+.student-workspace-refined .assistant-suggestions button:nth-child(3n) { color: var(--bp-ink); background: var(--bp-orange-soft); }
+.student-workspace-refined .wrong-upload-panel { background: #fffaf6; }
+.student-workspace-refined .wrong-drop-zone { border: 2px dashed var(--bp-orange); }
+.student-workspace-refined .math-study-guide { border: 1px solid var(--bp-ink); border-left: 5px solid var(--bp-green); }
+.student-workspace-refined .math-study-example { border: 1px solid var(--bp-ink); border-top: 5px solid var(--bp-blue); background: white; }
+.student-workbench :is(.math-flow-header, .math-sticky-action, .math-course-adjustment, .model-config-section, .session-error-panel) { border: 1px solid var(--bp-ink); box-shadow: var(--bp-shadow-sm); }
+.student-workbench .math-knowledge-options > button { border-color: var(--bp-ink); box-shadow: var(--bp-shadow-sm); }
+.student-workbench .math-knowledge-options > button.is-selected { box-shadow: 0 0 0 3px var(--item-tint), 2px 3px 0 var(--bp-ink); }
+.student-workbench .math-answer-options button.is-selected { background: var(--bp-blue-soft); border-color: var(--bp-blue); box-shadow: inset 4px 0 var(--bp-blue); }
+.student-workbench .math-sticky-action > button, .student-workbench .math-round-ready > button,
+.student-workbench .math-finish-screen > button, .student-workbench .guided-primary-action,
+.student-workbench .course-context-actions button { border: 1px solid var(--bp-ink); box-shadow: var(--bp-shadow-sm); }
+.student-workbench .math-sticky-action > button:disabled, .student-workbench .math-round-ready > button:disabled,
+.student-workbench .math-finish-screen > button:disabled, .student-workbench .guided-primary-action:disabled,
+.student-workbench .course-context-actions button:disabled { box-shadow: none; }
+.student-workbench .workbench-content .module.teacher-account-panel,
+.student-workbench .workbench-content .module.teacher-students-panel { border: 2px solid var(--bp-ink); box-shadow: var(--bp-shadow); }
+
+/* 主操作有明确的按压反馈，锁定操作保持中性，不用颜色代替状态文字。 */
+.student-workbench :is(.workspace-button, .workspace-card-action, .dashboard-main-action, .wrong-save-button, .wrong-primary-action),
+.student-workspace-refined .assistant-layout > button,
+.student-workbench .config-action-row button {
+  border: 1px solid var(--bp-ink); box-shadow: var(--bp-shadow-sm); border-radius: 10px;
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+.student-workspace-refined .workspace-button.secondary { color: var(--bp-ink); background: var(--page-soft); border-color: var(--bp-ink); box-shadow: var(--bp-shadow-sm); }
+.student-workbench :is(.workspace-button, .workspace-card-action, .dashboard-main-action, .wrong-save-button, .wrong-primary-action):active:not(:disabled) { transform: translate(2px, 2px); box-shadow: none; }
+.student-workbench :is(.workspace-button, .workspace-card-action, .dashboard-main-action, .wrong-save-button, .wrong-primary-action):disabled,
+.student-workspace-refined .assistant-layout > button:disabled { box-shadow: none; transform: none; background: #edf1f7; color: #657386; border-color: #b4c4e0; opacity: 1; cursor: not-allowed; }
+.student-workbench :is(input:not([type="radio"]):not([type="checkbox"]):not([type="range"]):not([type="file"]), textarea, select) { border-color: #92a7ce; background-color: white; color: var(--bp-ink); }
+.student-workbench :is(a, button, input, textarea, select, summary):focus-visible { outline: 3px solid var(--bp-blue); outline-offset: 4px; }
+.student-workbench .student-sidebar :is(a, button):focus-visible { outline-color: var(--bp-yellow); }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .student-workbench :is(.resource-feature, .resource-row, a.interactive-lesson-card):hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--bp-ink); }
+}
+@media (max-width: 600px) { :root { --bp-shadow: 3px 3px 0 var(--bp-ink); } }
+@media (prefers-reduced-motion: reduce) {
+  .student-workbench :is(.workspace-button, .workspace-card-action, .dashboard-main-action, .resource-feature, .resource-row, .interactive-lesson-card) { transition: none; transform: none; }
+}

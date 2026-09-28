@@ -1,0 +1,2030 @@
+{
+  "id": "english-7-upper",
+  "subject": "英语",
+  "semester": "上册",
+  "edition": "人教版（2024）",
+  "grade": 7,
+  "sourceFile": "最新【人教版】7年级英语课本•上册.pdf",
+  "units": [
+    {
+      "id": "english-7-upper-s1",
+      "title": "Starter Unit 1 Hello!",
+      "page": 1,
+      "pdfPage": 8,
+      "focus": "打招呼与拼写姓名",
+      "writingPrompt": "用两三句英语介绍自己，并写出第一次见面时的问候。",
+      "skills": [
+        {
+          "id": "english-7-upper-s1-k1",
+          "title": "问候",
+          "guide": "早晨见面用 Good morning；Good night 通常在晚间告别或睡前使用。 根据见面的时间选择问候语，afternoon 是下午。"
+        },
+        {
+          "id": "english-7-upper-s1-k2",
+          "title": "询问姓名",
+          "guide": "name 表示姓名；What's your name 用于询问对方的名字。 回答姓名可用 My name is… 或 I'm…，不要把询问姓名和问候身体状况混淆。"
+        },
+        {
+          "id": "english-7-upper-s1-k3",
+          "title": "拼写",
+          "guide": "spell 要求按顺序说出字母，而不是说年龄或问候语。 拼写需要同时核对字母及先后顺序。"
+        },
+        {
+          "id": "english-7-upper-s1-k4",
+          "title": "对话理解",
+          "guide": "How are you 用于问候近况，fine 表示状态不错。 初次认识时用 Nice to meet you，回答可加 too 表示同样的感受。"
+        }
+      ],
+      "questions": [
+        {
+          "id": "english-7-upper-s1-d1",
+          "skillId": "english-7-upper-s1-k1",
+          "prompt": "早晨见到老师，适合说什么？",
+          "options": [
+            {
+              "id": "a",
+              "text": "Good morning."
+            },
+            {
+              "id": "b",
+              "text": "Good night."
+            },
+            {
+              "id": "c",
+              "text": "Goodbye."
+            }
+          ],
+          "answer": "a",
+          "explanation": "早晨见面用 Good morning；Good night 通常在晚间告别或睡前使用。"
+        },
+        {
+          "id": "english-7-upper-s1-d2",
+          "skillId": "english-7-upper-s1-k2",
+          "prompt": "询问对方姓名，应说哪一句？",
+          "options": [
+            {
+              "id": "a",
+              "text": "How old is he?"
+            },
+            {
+              "id": "b",
+              "text": "What's your name?"
+            },
+            {
+              "id": "c",
+              "text": "What colour is it?"
+            }
+          ],
+          "answer": "b",
+          "explanation": "name 表示姓名；What's your name 用于询问对方的名字。"
+        },
+        {
+          "id": "english-7-upper-s1-d3",
+          "skillId": "english-7-upper-s1-k3",
+          "prompt": "对方说 Spell your name, please.，你应怎样回答？",
+          "options": [
+            {
+              "id": "a",
+              "text": "I'm twelve."
+            },
+            {
+              "id": "b",
+              "text": "Good morning."
+            },
+            {
+              "id": "c",
+              "text": "L-I-N."
+            }
+          ],
+          "answer": "c",
+          "explanation": "spell 要求按顺序说出字母，而不是说年龄或问候语。"
+        },
+        {
+          "id": "english-7-upper-s1-d4",
+          "skillId": "english-7-upper-s1-k4",
+          "prompt": "读对话：A: How are you? B: I'm fine, thanks. B 在回答什么？",
+          "options": [
+            {
+              "id": "a",
+              "text": "自己的近况"
+            },
+            {
+              "id": "b",
+              "text": "自己的姓名"
+            },
+            {
+              "id": "c",
+              "text": "物品的颜色"
+            }
+          ],
+          "answer": "a",
+          "explanation": "How are you 用于问候近况，fine 表示状态不错。"
+        }
+      ],
+      "retestQuestions": [
+        {
+          "id": "english-7-upper-s1-r1",
+          "skillId": "english-7-upper-s1-k1",
+          "prompt": "下午见到同学，适合说什么？",
+          "options": [
+            {
+              "id": "a",
+              "text": "Good night."
+            },
+            {
+              "id": "b",
+              "text": "Good afternoon."
+            },
+            {
+              "id": "c",
+              "text": "See you tomorrow."
+            }
+          ],
+          "answer": "b",
+          "explanation": "根据见面的时间选择问候语，afternoon 是下午。"
+        },
+        {
+          "id": "english-7-upper-s1-r2",
+          "skillId": "english-7-upper-s1-k2",
+          "prompt": "对方问 What's your name?，恰当回答是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "I'm fine, thanks."
+            },
+            {
+              "id": "b",
+              "text": "It's red."
+            },
+            {
+              "id": "c",
+              "text": "My name is Lin."
+            }
+          ],
+          "answer": "c",
+          "explanation": "回答姓名可用 My name is… 或 I'm…，不要把询问姓名和问候身体状况混淆。"
+        },
+        {
+          "id": "english-7-upper-s1-r3",
+          "skillId": "english-7-upper-s1-k3",
+          "prompt": "哪一组字母按顺序组成单词 cat？",
+          "options": [
+            {
+              "id": "a",
+              "text": "C-A-T."
+            },
+            {
+              "id": "b",
+              "text": "C-T-A."
+            },
+            {
+              "id": "c",
+              "text": "A-C-T."
+            }
+          ],
+          "answer": "a",
+          "explanation": "拼写需要同时核对字母及先后顺序。"
+        },
+        {
+          "id": "english-7-upper-s1-r4",
+          "skillId": "english-7-upper-s1-k4",
+          "prompt": "读对话：A: Nice to meet you. B: Nice to meet you too. 这段对话适用于？",
+          "options": [
+            {
+              "id": "a",
+              "text": "询问价格"
+            },
+            {
+              "id": "b",
+              "text": "初次相识"
+            },
+            {
+              "id": "c",
+              "text": "描述位置"
+            }
+          ],
+          "answer": "b",
+          "explanation": "初次认识时用 Nice to meet you，回答可加 too 表示同样的感受。"
+        }
+      ]
+    },
+    {
+      "id": "english-7-upper-s2",
+      "title": "Starter Unit 2 Keep Tidy!",
+      "page": 7,
+      "pdfPage": 15,
+      "focus": "物品、颜色与位置",
+      "writingPrompt": "用英语写出你书桌上两件物品的位置。",
+      "skills": [
+        {
+          "id": "english-7-upper-s2-k1",
+          "title": "物品词汇",
+          "guide": "pen 是笔；根据 write（写）选择对应物品。 schoolbag 是书包，可以装书；ruler 是尺子。"
+        },
+        {
+          "id": "english-7-upper-s2-k2",
+          "title": "颜色问答",
+          "guide": "What colour 询问颜色，blue 是蓝色。 rulers 为复数，用 They're；green 回答颜色。"
+        },
+        {
+          "id": "english-7-upper-s2-k3",
+          "title": "位置介词",
+          "guide": "under 表示在……下面，与 on 和 in 区分。 in 表示在内部，判断时抓住位置介词。"
+        },
+        {
+          "id": "english-7-upper-s2-k4",
+          "title": "整理阅读",
+          "guide": "后半句 shoes under the bed 给出鞋的位置，不要套用书的位置。 题目问桌上是什么，定位 ruler is on the desk。"
+        }
+      ],
+      "questions": [
+        {
+          "id": "english-7-upper-s2-d1",
+          "skillId": "english-7-upper-s2-k1",
+          "prompt": "We write with a ____.",
+          "options": [
+            {
+              "id": "a",
+              "text": "cap"
+            },
+            {
+              "id": "b",
+              "text": "pen"
+            },
+            {
+              "id": "c",
+              "text": "chair"
+            }
+          ],
+          "answer": "b",
+          "explanation": "pen 是笔；根据 write（写）选择对应物品。"
+        },
+        {
+          "id": "english-7-upper-s2-d2",
+          "skillId": "english-7-upper-s2-k2",
+          "prompt": "What colour is your cap? 的恰当回答是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "It's on the desk."
+            },
+            {
+              "id": "b",
+              "text": "I have two."
+            },
+            {
+              "id": "c",
+              "text": "It's blue."
+            }
+          ],
+          "answer": "c",
+          "explanation": "What colour 询问颜色，blue 是蓝色。"
+        },
+        {
+          "id": "english-7-upper-s2-d3",
+          "skillId": "english-7-upper-s2-k3",
+          "prompt": "The ball is under the chair. 球在哪里？",
+          "options": [
+            {
+              "id": "a",
+              "text": "椅子下面"
+            },
+            {
+              "id": "b",
+              "text": "椅子上面"
+            },
+            {
+              "id": "c",
+              "text": "盒子里面"
+            }
+          ],
+          "answer": "a",
+          "explanation": "under 表示在……下面，与 on 和 in 区分。"
+        },
+        {
+          "id": "english-7-upper-s2-d4",
+          "skillId": "english-7-upper-s2-k4",
+          "prompt": "读：Mei puts her books on the shelf and her shoes under the bed. Where are her shoes?",
+          "options": [
+            {
+              "id": "a",
+              "text": "On the shelf."
+            },
+            {
+              "id": "b",
+              "text": "Under the bed."
+            },
+            {
+              "id": "c",
+              "text": "In her schoolbag."
+            }
+          ],
+          "answer": "b",
+          "explanation": "后半句 shoes under the bed 给出鞋的位置，不要套用书的位置。"
+        }
+      ],
+      "retestQuestions": [
+        {
+          "id": "english-7-upper-s2-r1",
+          "skillId": "english-7-upper-s2-k1",
+          "prompt": "We put books in a ____.",
+          "options": [
+            {
+              "id": "a",
+              "text": "ruler"
+            },
+            {
+              "id": "b",
+              "text": "cap"
+            },
+            {
+              "id": "c",
+              "text": "schoolbag"
+            }
+          ],
+          "answer": "c",
+          "explanation": "schoolbag 是书包，可以装书；ruler 是尺子。"
+        },
+        {
+          "id": "english-7-upper-s2-r2",
+          "skillId": "english-7-upper-s2-k2",
+          "prompt": "What colour are the rulers? 的恰当回答是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "They're green."
+            },
+            {
+              "id": "b",
+              "text": "It's a book."
+            },
+            {
+              "id": "c",
+              "text": "They're under the chair."
+            }
+          ],
+          "answer": "a",
+          "explanation": "rulers 为复数，用 They're；green 回答颜色。"
+        },
+        {
+          "id": "english-7-upper-s2-r3",
+          "skillId": "english-7-upper-s2-k3",
+          "prompt": "The pencils are in the box. 铅笔在哪里？",
+          "options": [
+            {
+              "id": "a",
+              "text": "盒子后面"
+            },
+            {
+              "id": "b",
+              "text": "盒子里面"
+            },
+            {
+              "id": "c",
+              "text": "盒子下面"
+            }
+          ],
+          "answer": "b",
+          "explanation": "in 表示在内部，判断时抓住位置介词。"
+        },
+        {
+          "id": "english-7-upper-s2-r4",
+          "skillId": "english-7-upper-s2-k4",
+          "prompt": "读：Tom puts a cap in his bag. His ruler is on the desk. What is on the desk?",
+          "options": [
+            {
+              "id": "a",
+              "text": "A cap."
+            },
+            {
+              "id": "b",
+              "text": "A bag."
+            },
+            {
+              "id": "c",
+              "text": "A ruler."
+            }
+          ],
+          "answer": "c",
+          "explanation": "题目问桌上是什么，定位 ruler is on the desk。"
+        }
+      ]
+    },
+    {
+      "id": "english-7-upper-s3",
+      "title": "Starter Unit 3 Welcome!",
+      "page": 13,
+      "pdfPage": 21,
+      "focus": "农场事物与数量",
+      "writingPrompt": "用英语写两句介绍一个农场，包含动物名称和数量。",
+      "skills": [
+        {
+          "id": "english-7-upper-s3-k1",
+          "title": "动物词汇",
+          "guide": "鸭子 duck 的叫声常写作 quack；注意动物名与情境对应。 rabbit 是兔子，carrot 是胡萝卜，yard 是院子。"
+        },
+        {
+          "id": "english-7-upper-s3-k2",
+          "title": "指示代词",
+          "guide": "近处单数用 this；these 和 those 用于复数。 远处复数用 those，并与 are 搭配。"
+        },
+        {
+          "id": "english-7-upper-s3-k3",
+          "title": "单复数",
+          "guide": "rabbit 的规则复数加 s。 these 指复数，回答用 They are 加复数名词。"
+        },
+        {
+          "id": "english-7-upper-s3-k4",
+          "title": "数量阅读",
+          "guide": "题目问总数，白兔三只加黑兔两只，共五只。 题目只问鸡，不需要把鸭子的数量加进来。"
+        }
+      ],
+      "questions": [
+        {
+          "id": "english-7-upper-s3-d1",
+          "skillId": "english-7-upper-s3-k1",
+          "prompt": "Which animal says 'quack'?",
+          "options": [
+            {
+              "id": "a",
+              "text": "A cat."
+            },
+            {
+              "id": "b",
+              "text": "A dog."
+            },
+            {
+              "id": "c",
+              "text": "A duck."
+            }
+          ],
+          "answer": "c",
+          "explanation": "鸭子 duck 的叫声常写作 quack；注意动物名与情境对应。"
+        },
+        {
+          "id": "english-7-upper-s3-d2",
+          "skillId": "english-7-upper-s3-k2",
+          "prompt": "指着近处的一只鸡：____ is a chicken.",
+          "options": [
+            {
+              "id": "a",
+              "text": "This"
+            },
+            {
+              "id": "b",
+              "text": "These"
+            },
+            {
+              "id": "c",
+              "text": "Those"
+            }
+          ],
+          "answer": "a",
+          "explanation": "近处单数用 this；these 和 those 用于复数。"
+        },
+        {
+          "id": "english-7-upper-s3-d3",
+          "skillId": "english-7-upper-s3-k3",
+          "prompt": "One rabbit, two ____.",
+          "options": [
+            {
+              "id": "a",
+              "text": "rabbit"
+            },
+            {
+              "id": "b",
+              "text": "rabbits"
+            },
+            {
+              "id": "c",
+              "text": "rabbites"
+            }
+          ],
+          "answer": "b",
+          "explanation": "rabbit 的规则复数加 s。"
+        },
+        {
+          "id": "english-7-upper-s3-d4",
+          "skillId": "english-7-upper-s3-k4",
+          "prompt": "读：There are three white rabbits and two black rabbits. How many rabbits are there?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Three."
+            },
+            {
+              "id": "b",
+              "text": "Two."
+            },
+            {
+              "id": "c",
+              "text": "Five."
+            }
+          ],
+          "answer": "c",
+          "explanation": "题目问总数，白兔三只加黑兔两只，共五只。"
+        }
+      ],
+      "retestQuestions": [
+        {
+          "id": "english-7-upper-s3-r1",
+          "skillId": "english-7-upper-s3-k1",
+          "prompt": "Which word means 兔子？",
+          "options": [
+            {
+              "id": "a",
+              "text": "rabbit"
+            },
+            {
+              "id": "b",
+              "text": "carrot"
+            },
+            {
+              "id": "c",
+              "text": "yard"
+            }
+          ],
+          "answer": "a",
+          "explanation": "rabbit 是兔子，carrot 是胡萝卜，yard 是院子。"
+        },
+        {
+          "id": "english-7-upper-s3-r2",
+          "skillId": "english-7-upper-s3-k2",
+          "prompt": "指着远处的几头牛：____ are cows.",
+          "options": [
+            {
+              "id": "a",
+              "text": "That"
+            },
+            {
+              "id": "b",
+              "text": "Those"
+            },
+            {
+              "id": "c",
+              "text": "This"
+            }
+          ],
+          "answer": "b",
+          "explanation": "远处复数用 those，并与 are 搭配。"
+        },
+        {
+          "id": "english-7-upper-s3-r3",
+          "skillId": "english-7-upper-s3-k3",
+          "prompt": "What are these? 的恰当回答是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "It is a duck."
+            },
+            {
+              "id": "b",
+              "text": "This is duck."
+            },
+            {
+              "id": "c",
+              "text": "They are ducks."
+            }
+          ],
+          "answer": "c",
+          "explanation": "these 指复数，回答用 They are 加复数名词。"
+        },
+        {
+          "id": "english-7-upper-s3-r4",
+          "skillId": "english-7-upper-s3-k4",
+          "prompt": "读：The farm has four ducks and six chickens. How many chickens are there?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Six."
+            },
+            {
+              "id": "b",
+              "text": "Ten."
+            },
+            {
+              "id": "c",
+              "text": "Four."
+            }
+          ],
+          "answer": "a",
+          "explanation": "题目只问鸡，不需要把鸭子的数量加进来。"
+        }
+      ]
+    },
+    {
+      "id": "english-7-upper-u1",
+      "title": "Unit 1 You and Me",
+      "page": 19,
+      "pdfPage": 27,
+      "focus": "人称代词与 be 动词",
+      "writingPrompt": "写三句自我介绍，包括姓名、年龄或来自哪里。",
+      "skills": [
+        {
+          "id": "english-7-upper-u1-k1",
+          "title": "be 动词",
+          "guide": "主语 I 与 am 搭配：I am。 my new friend 是单数第三人称，搭配 is。"
+        },
+        {
+          "id": "english-7-upper-u1-k2",
+          "title": "人称代词",
+          "guide": "Tom and I 包含说话人且是复数，用 We。 Lily 是题目中的单个人，用 she 指代。"
+        },
+        {
+          "id": "english-7-upper-u1-k3",
+          "title": "否定与疑问",
+          "guide": "be 动词的否定在 be 后加 not，is not 可缩写 isn't。 you 问到自己时回答用 I；am 不随 you 使用 are。"
+        },
+        {
+          "id": "english-7-upper-u1-k4",
+          "title": "交友阅读",
+          "guide": "定位 I like drawing，区分年龄信息和爱好。 in Class 3 表示班级，from Australia 表示来自哪里。"
+        }
+      ],
+      "questions": [
+        {
+          "id": "english-7-upper-u1-d1",
+          "skillId": "english-7-upper-u1-k1",
+          "prompt": "I ____ a new student.",
+          "options": [
+            {
+              "id": "a",
+              "text": "am"
+            },
+            {
+              "id": "b",
+              "text": "is"
+            },
+            {
+              "id": "c",
+              "text": "are"
+            }
+          ],
+          "answer": "a",
+          "explanation": "主语 I 与 am 搭配：I am。"
+        },
+        {
+          "id": "english-7-upper-u1-d2",
+          "skillId": "english-7-upper-u1-k2",
+          "prompt": "Tom and I are classmates. ____ are in Class 2.",
+          "options": [
+            {
+              "id": "a",
+              "text": "He"
+            },
+            {
+              "id": "b",
+              "text": "We"
+            },
+            {
+              "id": "c",
+              "text": "It"
+            }
+          ],
+          "answer": "b",
+          "explanation": "Tom and I 包含说话人且是复数，用 We。"
+        },
+        {
+          "id": "english-7-upper-u1-d3",
+          "skillId": "english-7-upper-u1-k3",
+          "prompt": "将 He is new. 改为否定句，正确的是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "He don't new."
+            },
+            {
+              "id": "b",
+              "text": "He not is new."
+            },
+            {
+              "id": "c",
+              "text": "He isn't new."
+            }
+          ],
+          "answer": "c",
+          "explanation": "be 动词的否定在 be 后加 not，is not 可缩写 isn't。"
+        },
+        {
+          "id": "english-7-upper-u1-d4",
+          "skillId": "english-7-upper-u1-k4",
+          "prompt": "读：I'm Nina. I'm thirteen. I like drawing. What is Nina's hobby?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Drawing."
+            },
+            {
+              "id": "b",
+              "text": "Swimming."
+            },
+            {
+              "id": "c",
+              "text": "Reading."
+            }
+          ],
+          "answer": "a",
+          "explanation": "定位 I like drawing，区分年龄信息和爱好。"
+        }
+      ],
+      "retestQuestions": [
+        {
+          "id": "english-7-upper-u1-r1",
+          "skillId": "english-7-upper-u1-k1",
+          "prompt": "My new friend ____ twelve.",
+          "options": [
+            {
+              "id": "a",
+              "text": "am"
+            },
+            {
+              "id": "b",
+              "text": "is"
+            },
+            {
+              "id": "c",
+              "text": "are"
+            }
+          ],
+          "answer": "b",
+          "explanation": "my new friend 是单数第三人称，搭配 is。"
+        },
+        {
+          "id": "english-7-upper-u1-r2",
+          "skillId": "english-7-upper-u1-k2",
+          "prompt": "Lily is my friend. ____ is from China.",
+          "options": [
+            {
+              "id": "a",
+              "text": "They"
+            },
+            {
+              "id": "b",
+              "text": "We"
+            },
+            {
+              "id": "c",
+              "text": "She"
+            }
+          ],
+          "answer": "c",
+          "explanation": "Lily 是题目中的单个人，用 she 指代。"
+        },
+        {
+          "id": "english-7-upper-u1-r3",
+          "skillId": "english-7-upper-u1-k3",
+          "prompt": "Are you in Class 1? 的肯定回答是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "Yes, I am."
+            },
+            {
+              "id": "b",
+              "text": "Yes, I is."
+            },
+            {
+              "id": "c",
+              "text": "Yes, you are."
+            }
+          ],
+          "answer": "a",
+          "explanation": "you 问到自己时回答用 I；am 不随 you 使用 are。"
+        },
+        {
+          "id": "english-7-upper-u1-r4",
+          "skillId": "english-7-upper-u1-k4",
+          "prompt": "读：Ben is from Australia. He is in Class 3 with Ling. Which class is Ben in?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Class 1."
+            },
+            {
+              "id": "b",
+              "text": "Class 3."
+            },
+            {
+              "id": "c",
+              "text": "Class 2."
+            }
+          ],
+          "answer": "b",
+          "explanation": "in Class 3 表示班级，from Australia 表示来自哪里。"
+        }
+      ]
+    },
+    {
+      "id": "english-7-upper-u2",
+      "title": "Unit 2 We're Family!",
+      "page": 27,
+      "pdfPage": 35,
+      "focus": "一般现在时与名词所有格",
+      "writingPrompt": "介绍一位家人的爱好，并举一件体现家庭关爱的事情。",
+      "skills": [
+        {
+          "id": "english-7-upper-u2-k1",
+          "title": "家庭关系",
+          "guide": "母亲的姐妹是 aunt；cousin 是同辈的堂表亲。 父亲的兄弟是 uncle，与 aunt 区分。"
+        },
+        {
+          "id": "english-7-upper-u2-k2",
+          "title": "动词形式",
+          "guide": "一般现在时中，单数第三人称肯定句用 plays。 parents 是复数，肯定句用动词原形 cook。"
+        },
+        {
+          "id": "english-7-upper-u2-k3",
+          "title": "疑问与所有格",
+          "guide": "like 是实义动词，单数第三人称疑问句用 Does，后面的 like 用原形。 单个人的名词所有格通常在名词后加 's。"
+        },
+        {
+          "id": "english-7-upper-u2-k4",
+          "title": "家庭阅读",
+          "guide": "I 对应 clean the table，不要与 Dad 的动作混淆。 第二句的主语 Mia 对应 waters；种花和浇花是不同动作。"
+        }
+      ],
+      "questions": [
+        {
+          "id": "english-7-upper-u2-d1",
+          "skillId": "english-7-upper-u2-k1",
+          "prompt": "My mother's sister is my ____.",
+          "options": [
+            {
+              "id": "a",
+              "text": "uncle"
+            },
+            {
+              "id": "b",
+              "text": "aunt"
+            },
+            {
+              "id": "c",
+              "text": "cousin"
+            }
+          ],
+          "answer": "b",
+          "explanation": "母亲的姐妹是 aunt；cousin 是同辈的堂表亲。"
+        },
+        {
+          "id": "english-7-upper-u2-d2",
+          "skillId": "english-7-upper-u2-k2",
+          "prompt": "My brother ____ football after school.",
+          "options": [
+            {
+              "id": "a",
+              "text": "play"
+            },
+            {
+              "id": "b",
+              "text": "playing"
+            },
+            {
+              "id": "c",
+              "text": "plays"
+            }
+          ],
+          "answer": "c",
+          "explanation": "一般现在时中，单数第三人称肯定句用 plays。"
+        },
+        {
+          "id": "english-7-upper-u2-d3",
+          "skillId": "english-7-upper-u2-k3",
+          "prompt": "____ your sister like music?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Does"
+            },
+            {
+              "id": "b",
+              "text": "Do"
+            },
+            {
+              "id": "c",
+              "text": "Is"
+            }
+          ],
+          "answer": "a",
+          "explanation": "like 是实义动词，单数第三人称疑问句用 Does，后面的 like 用原形。"
+        },
+        {
+          "id": "english-7-upper-u2-d4",
+          "skillId": "english-7-upper-u2-k4",
+          "prompt": "读：Dad washes the dishes. I clean the table. We help each other. What do I do?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Wash the dishes."
+            },
+            {
+              "id": "b",
+              "text": "Clean the table."
+            },
+            {
+              "id": "c",
+              "text": "Buy food."
+            }
+          ],
+          "answer": "b",
+          "explanation": "I 对应 clean the table，不要与 Dad 的动作混淆。"
+        }
+      ],
+      "retestQuestions": [
+        {
+          "id": "english-7-upper-u2-r1",
+          "skillId": "english-7-upper-u2-k1",
+          "prompt": "My father's brother is my ____.",
+          "options": [
+            {
+              "id": "a",
+              "text": "aunt"
+            },
+            {
+              "id": "b",
+              "text": "sister"
+            },
+            {
+              "id": "c",
+              "text": "uncle"
+            }
+          ],
+          "answer": "c",
+          "explanation": "父亲的兄弟是 uncle，与 aunt 区分。"
+        },
+        {
+          "id": "english-7-upper-u2-r2",
+          "skillId": "english-7-upper-u2-k2",
+          "prompt": "My parents ____ dinner together.",
+          "options": [
+            {
+              "id": "a",
+              "text": "cook"
+            },
+            {
+              "id": "b",
+              "text": "cooks"
+            },
+            {
+              "id": "c",
+              "text": "cooking"
+            }
+          ],
+          "answer": "a",
+          "explanation": "parents 是复数，肯定句用动词原形 cook。"
+        },
+        {
+          "id": "english-7-upper-u2-r3",
+          "skillId": "english-7-upper-u2-k3",
+          "prompt": "This is ____ room.（这是我哥哥的房间。）",
+          "options": [
+            {
+              "id": "a",
+              "text": "my brother"
+            },
+            {
+              "id": "b",
+              "text": "my brother's"
+            },
+            {
+              "id": "c",
+              "text": "my brothers"
+            }
+          ],
+          "answer": "b",
+          "explanation": "单个人的名词所有格通常在名词后加 's。"
+        },
+        {
+          "id": "english-7-upper-u2-r4",
+          "skillId": "english-7-upper-u2-k4",
+          "prompt": "读：Mia's grandma grows flowers. Mia waters them every Sunday. Who waters the flowers on Sundays?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Her grandma only."
+            },
+            {
+              "id": "b",
+              "text": "Her father."
+            },
+            {
+              "id": "c",
+              "text": "Mia."
+            }
+          ],
+          "answer": "c",
+          "explanation": "第二句的主语 Mia 对应 waters；种花和浇花是不同动作。"
+        }
+      ]
+    },
+    {
+      "id": "english-7-upper-u3",
+      "title": "Unit 3 My School",
+      "page": 35,
+      "pdfPage": 43,
+      "focus": "There be 与方位表达",
+      "writingPrompt": "用 There is/are 和方位词介绍校园中的两个地点。",
+      "skills": [
+        {
+          "id": "english-7-upper-u3-k1",
+          "title": "校园词汇",
+          "guide": "library 是图书馆；borrow books 指借书。 dining hall 是食堂，与吃午饭情境对应。"
+        },
+        {
+          "id": "english-7-upper-u3-k2",
+          "title": "There be",
+          "guide": "后面紧接单数 a library，使用 There is。 two computer rooms 是复数，使用 There are。"
+        },
+        {
+          "id": "english-7-upper-u3-k3",
+          "title": "方位",
+          "guide": "between A and B 表示在 A 和 B 之间。 across from 表示在……对面。"
+        },
+        {
+          "id": "english-7-upper-u3-k4",
+          "title": "校园阅读",
+          "guide": "behind the library 直接说明花园的位置。 sing there 中 there 指音乐教室。"
+        }
+      ],
+      "questions": [
+        {
+          "id": "english-7-upper-u3-d1",
+          "skillId": "english-7-upper-u3-k1",
+          "prompt": "We borrow books from the ____.",
+          "options": [
+            {
+              "id": "a",
+              "text": "gym"
+            },
+            {
+              "id": "b",
+              "text": "dining hall"
+            },
+            {
+              "id": "c",
+              "text": "library"
+            }
+          ],
+          "answer": "c",
+          "explanation": "library 是图书馆；borrow books 指借书。"
+        },
+        {
+          "id": "english-7-upper-u3-d2",
+          "skillId": "english-7-upper-u3-k2",
+          "prompt": "There ____ a library in our school.",
+          "options": [
+            {
+              "id": "a",
+              "text": "is"
+            },
+            {
+              "id": "b",
+              "text": "are"
+            },
+            {
+              "id": "c",
+              "text": "am"
+            }
+          ],
+          "answer": "a",
+          "explanation": "后面紧接单数 a library，使用 There is。"
+        },
+        {
+          "id": "english-7-upper-u3-d3",
+          "skillId": "english-7-upper-u3-k3",
+          "prompt": "The library is between the gym and the hall. 图书馆在哪里？",
+          "options": [
+            {
+              "id": "a",
+              "text": "体育馆里面"
+            },
+            {
+              "id": "b",
+              "text": "体育馆和大厅之间"
+            },
+            {
+              "id": "c",
+              "text": "大厅对面"
+            }
+          ],
+          "answer": "b",
+          "explanation": "between A and B 表示在 A 和 B 之间。"
+        },
+        {
+          "id": "english-7-upper-u3-d4",
+          "skillId": "english-7-upper-u3-k4",
+          "prompt": "读：Our school has a garden behind the library. We read there on Fridays. Where is the garden?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Inside the gym."
+            },
+            {
+              "id": "b",
+              "text": "Next to the gate."
+            },
+            {
+              "id": "c",
+              "text": "Behind the library."
+            }
+          ],
+          "answer": "c",
+          "explanation": "behind the library 直接说明花园的位置。"
+        }
+      ],
+      "retestQuestions": [
+        {
+          "id": "english-7-upper-u3-r1",
+          "skillId": "english-7-upper-u3-k1",
+          "prompt": "We have lunch in the ____.",
+          "options": [
+            {
+              "id": "a",
+              "text": "dining hall"
+            },
+            {
+              "id": "b",
+              "text": "library"
+            },
+            {
+              "id": "c",
+              "text": "playground"
+            }
+          ],
+          "answer": "a",
+          "explanation": "dining hall 是食堂，与吃午饭情境对应。"
+        },
+        {
+          "id": "english-7-upper-u3-r2",
+          "skillId": "english-7-upper-u3-k2",
+          "prompt": "There ____ two computer rooms.",
+          "options": [
+            {
+              "id": "a",
+              "text": "is"
+            },
+            {
+              "id": "b",
+              "text": "are"
+            },
+            {
+              "id": "c",
+              "text": "be"
+            }
+          ],
+          "answer": "b",
+          "explanation": "two computer rooms 是复数，使用 There are。"
+        },
+        {
+          "id": "english-7-upper-u3-r3",
+          "skillId": "english-7-upper-u3-k3",
+          "prompt": "The office is across from the library. 办公室在哪里？",
+          "options": [
+            {
+              "id": "a",
+              "text": "图书馆里面"
+            },
+            {
+              "id": "b",
+              "text": "图书馆上方"
+            },
+            {
+              "id": "c",
+              "text": "图书馆对面"
+            }
+          ],
+          "answer": "c",
+          "explanation": "across from 表示在……对面。"
+        },
+        {
+          "id": "english-7-upper-u3-r4",
+          "skillId": "english-7-upper-u3-k4",
+          "prompt": "读：There is a music room next to our classroom. We sing there after school. What do students do in the music room?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Sing."
+            },
+            {
+              "id": "b",
+              "text": "Have lunch."
+            },
+            {
+              "id": "c",
+              "text": "Play football."
+            }
+          ],
+          "answer": "a",
+          "explanation": "sing there 中 there 指音乐教室。"
+        }
+      ]
+    },
+    {
+      "id": "english-7-upper-u4",
+      "title": "Unit 4 My Favourite Subject",
+      "page": 43,
+      "pdfPage": 51,
+      "focus": "学科喜好与连词",
+      "writingPrompt": "写出你喜欢的学科、原因及一个课堂活动。",
+      "skills": [
+        {
+          "id": "english-7-upper-u4-k1",
+          "title": "学科词汇",
+          "guide": "numbers 指数，与 maths 对应。 past events 指过去发生的事件，对应 history。"
+        },
+        {
+          "id": "english-7-upper-u4-k2",
+          "title": "因果关系",
+          "guide": "because 引出原因，回答为什么喜欢科学。 because 后面的内容解释前面的喜好。"
+        },
+        {
+          "id": "english-7-upper-u4-k3",
+          "title": "并列与转折",
+          "guide": "困难却喜欢，有转折关系，用 but。 and 连接并列的两个学科；此处没有转折或因果。"
+        },
+        {
+          "id": "english-7-upper-u4-k4",
+          "title": "课程阅读",
+          "guide": "同时核对日期 Tuesday 和时段 afternoon。 because 后面的原文是原因，不根据常识另猜。"
+        }
+      ],
+      "questions": [
+        {
+          "id": "english-7-upper-u4-d1",
+          "skillId": "english-7-upper-u4-k1",
+          "prompt": "We learn about numbers in ____.",
+          "options": [
+            {
+              "id": "a",
+              "text": "maths"
+            },
+            {
+              "id": "b",
+              "text": "music"
+            },
+            {
+              "id": "c",
+              "text": "PE"
+            }
+          ],
+          "answer": "a",
+          "explanation": "numbers 指数，与 maths 对应。"
+        },
+        {
+          "id": "english-7-upper-u4-d2",
+          "skillId": "english-7-upper-u4-k2",
+          "prompt": "I like science ____ it is interesting.",
+          "options": [
+            {
+              "id": "a",
+              "text": "but"
+            },
+            {
+              "id": "b",
+              "text": "because"
+            },
+            {
+              "id": "c",
+              "text": "or"
+            }
+          ],
+          "answer": "b",
+          "explanation": "because 引出原因，回答为什么喜欢科学。"
+        },
+        {
+          "id": "english-7-upper-u4-d3",
+          "skillId": "english-7-upper-u4-k3",
+          "prompt": "Maths is difficult, ____ I still enjoy it.",
+          "options": [
+            {
+              "id": "a",
+              "text": "because"
+            },
+            {
+              "id": "b",
+              "text": "and"
+            },
+            {
+              "id": "c",
+              "text": "but"
+            }
+          ],
+          "answer": "c",
+          "explanation": "困难却喜欢，有转折关系，用 but。"
+        },
+        {
+          "id": "english-7-upper-u4-d4",
+          "skillId": "english-7-upper-u4-k4",
+          "prompt": "读：On Tuesday, Lin has English in the morning and art in the afternoon. When is art?",
+          "options": [
+            {
+              "id": "a",
+              "text": "On Tuesday afternoon."
+            },
+            {
+              "id": "b",
+              "text": "On Monday morning."
+            },
+            {
+              "id": "c",
+              "text": "On Tuesday morning."
+            }
+          ],
+          "answer": "a",
+          "explanation": "同时核对日期 Tuesday 和时段 afternoon。"
+        }
+      ],
+      "retestQuestions": [
+        {
+          "id": "english-7-upper-u4-r1",
+          "skillId": "english-7-upper-u4-k1",
+          "prompt": "We learn about past events in ____.",
+          "options": [
+            {
+              "id": "a",
+              "text": "art"
+            },
+            {
+              "id": "b",
+              "text": "history"
+            },
+            {
+              "id": "c",
+              "text": "PE"
+            }
+          ],
+          "answer": "b",
+          "explanation": "past events 指过去发生的事件，对应 history。"
+        },
+        {
+          "id": "english-7-upper-u4-r2",
+          "skillId": "english-7-upper-u4-k2",
+          "prompt": "I like art because I enjoy drawing. 哪部分说明原因？",
+          "options": [
+            {
+              "id": "a",
+              "text": "I like art."
+            },
+            {
+              "id": "b",
+              "text": "没有说明原因"
+            },
+            {
+              "id": "c",
+              "text": "I enjoy drawing."
+            }
+          ],
+          "answer": "c",
+          "explanation": "because 后面的内容解释前面的喜好。"
+        },
+        {
+          "id": "english-7-upper-u4-r3",
+          "skillId": "english-7-upper-u4-k3",
+          "prompt": "I like music ____ art. 两门都喜欢，应选？",
+          "options": [
+            {
+              "id": "a",
+              "text": "and"
+            },
+            {
+              "id": "b",
+              "text": "but"
+            },
+            {
+              "id": "c",
+              "text": "because"
+            }
+          ],
+          "answer": "a",
+          "explanation": "and 连接并列的两个学科；此处没有转折或因果。"
+        },
+        {
+          "id": "english-7-upper-u4-r4",
+          "skillId": "english-7-upper-u4-k4",
+          "prompt": "读：Jia likes geography because she enjoys learning about places. Why does she like geography?",
+          "options": [
+            {
+              "id": "a",
+              "text": "She dislikes maps."
+            },
+            {
+              "id": "b",
+              "text": "She enjoys learning about places."
+            },
+            {
+              "id": "c",
+              "text": "She wants fewer lessons."
+            }
+          ],
+          "answer": "b",
+          "explanation": "because 后面的原文是原因，不根据常识另猜。"
+        }
+      ]
+    },
+    {
+      "id": "english-7-upper-u5",
+      "title": "Unit 5 Fun Clubs",
+      "page": 51,
+      "pdfPage": 59,
+      "focus": "can 与社团申请",
+      "writingPrompt": "写一封简短的社团申请，说明想加入的社团、能力和学习愿望。",
+      "skills": [
+        {
+          "id": "english-7-upper-u5-k1",
+          "title": "社团词汇",
+          "guide": "painting 表示绘画，对应 art club。 singing 对应音乐活动，选择 music club。"
+        },
+        {
+          "id": "english-7-upper-u5-k2",
+          "title": "can 结构",
+          "guide": "情态动词 can 后接动词原形，不随 she 加 s。 疑问句中 can 后也接动词原形 play。"
+        },
+        {
+          "id": "english-7-upper-u5-k3",
+          "title": "能力问答",
+          "guide": "由 can 提问的能力问题，用 can/can't 回答。 把 can 提到主语前，sing 保持原形。"
+        },
+        {
+          "id": "english-7-upper-u5-k4",
+          "title": "申请阅读",
+          "guide": "to learn 表示学习目的；不会画好并不妨碍申请学习。 beginners welcome 明确欢迎初学者。"
+        }
+      ],
+      "questions": [
+        {
+          "id": "english-7-upper-u5-d1",
+          "skillId": "english-7-upper-u5-k1",
+          "prompt": "You enjoy painting. Which club matches this interest?",
+          "options": [
+            {
+              "id": "a",
+              "text": "The running club."
+            },
+            {
+              "id": "b",
+              "text": "The art club."
+            },
+            {
+              "id": "c",
+              "text": "The chess club."
+            }
+          ],
+          "answer": "b",
+          "explanation": "painting 表示绘画，对应 art club。"
+        },
+        {
+          "id": "english-7-upper-u5-d2",
+          "skillId": "english-7-upper-u5-k2",
+          "prompt": "She can ____ well.",
+          "options": [
+            {
+              "id": "a",
+              "text": "swims"
+            },
+            {
+              "id": "b",
+              "text": "swimming"
+            },
+            {
+              "id": "c",
+              "text": "swim"
+            }
+          ],
+          "answer": "c",
+          "explanation": "情态动词 can 后接动词原形，不随 she 加 s。"
+        },
+        {
+          "id": "english-7-upper-u5-d3",
+          "skillId": "english-7-upper-u5-k3",
+          "prompt": "Can you dance? 若不会，应该回答？",
+          "options": [
+            {
+              "id": "a",
+              "text": "No, I can't."
+            },
+            {
+              "id": "b",
+              "text": "No, I don't."
+            },
+            {
+              "id": "c",
+              "text": "No, I am not."
+            }
+          ],
+          "answer": "a",
+          "explanation": "由 can 提问的能力问题，用 can/can't 回答。"
+        },
+        {
+          "id": "english-7-upper-u5-d4",
+          "skillId": "english-7-upper-u5-k4",
+          "prompt": "读：I can draw, but I can't paint well. I'd like to join the art club to learn. Why does the writer want to join?",
+          "options": [
+            {
+              "id": "a",
+              "text": "To teach football."
+            },
+            {
+              "id": "b",
+              "text": "To learn to paint better."
+            },
+            {
+              "id": "c",
+              "text": "To avoid learning."
+            }
+          ],
+          "answer": "b",
+          "explanation": "to learn 表示学习目的；不会画好并不妨碍申请学习。"
+        }
+      ],
+      "retestQuestions": [
+        {
+          "id": "english-7-upper-u5-r1",
+          "skillId": "english-7-upper-u5-k1",
+          "prompt": "You like singing with others. Which club is most suitable?",
+          "options": [
+            {
+              "id": "a",
+              "text": "The science club."
+            },
+            {
+              "id": "b",
+              "text": "The football club."
+            },
+            {
+              "id": "c",
+              "text": "The music club."
+            }
+          ],
+          "answer": "c",
+          "explanation": "singing 对应音乐活动，选择 music club。"
+        },
+        {
+          "id": "english-7-upper-u5-r2",
+          "skillId": "english-7-upper-u5-k2",
+          "prompt": "Can Tom ____ the guitar?",
+          "options": [
+            {
+              "id": "a",
+              "text": "play"
+            },
+            {
+              "id": "b",
+              "text": "plays"
+            },
+            {
+              "id": "c",
+              "text": "playing"
+            }
+          ],
+          "answer": "a",
+          "explanation": "疑问句中 can 后也接动词原形 play。"
+        },
+        {
+          "id": "english-7-upper-u5-r3",
+          "skillId": "english-7-upper-u5-k3",
+          "prompt": "将 He can sing. 改为一般疑问句，正确的是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "Does he can sing?"
+            },
+            {
+              "id": "b",
+              "text": "Can he sing?"
+            },
+            {
+              "id": "c",
+              "text": "Can he sings?"
+            }
+          ],
+          "answer": "b",
+          "explanation": "把 can 提到主语前，sing 保持原形。"
+        },
+        {
+          "id": "english-7-upper-u5-r4",
+          "skillId": "english-7-upper-u5-k4",
+          "prompt": "读：Chess Club: beginners welcome; Tuesday, 4 p.m., Room 5. Can a student new to chess join?",
+          "options": [
+            {
+              "id": "a",
+              "text": "No, only experts can join."
+            },
+            {
+              "id": "b",
+              "text": "Only on Friday."
+            },
+            {
+              "id": "c",
+              "text": "Yes, beginners are welcome."
+            }
+          ],
+          "answer": "c",
+          "explanation": "beginners welcome 明确欢迎初学者。"
+        }
+      ]
+    },
+    {
+      "id": "english-7-upper-u6",
+      "title": "Unit 6 A Day in the Life",
+      "page": 59,
+      "pdfPage": 67,
+      "focus": "时间表达与日常作息",
+      "writingPrompt": "按时间顺序介绍自己的上学日，至少写两个时间和对应活动。",
+      "skills": [
+        {
+          "id": "english-7-upper-u6-k1",
+          "title": "时间表达",
+          "guide": "half 表示半小时，past 表示过了七点。 a quarter 是十五分钟，to eight 表示差十五分钟八点。"
+        },
+        {
+          "id": "english-7-upper-u6-k2",
+          "title": "时间介词",
+          "guide": "具体时刻前用 at。 星期几前通常用 on。"
+        },
+        {
+          "id": "english-7-upper-u6-k3",
+          "title": "作息问句",
+          "guide": "回答是时刻，所以用 What time 询问。 What do you do 问活动，不是时刻或日期。"
+        },
+        {
+          "id": "english-7-upper-u6-k4",
+          "title": "日程阅读",
+          "guide": "将八点与 reads 配对，不选七点的活动。 从 7:10 到 7:30 相差二十分钟。"
+        }
+      ],
+      "questions": [
+        {
+          "id": "english-7-upper-u6-d1",
+          "skillId": "english-7-upper-u6-k1",
+          "prompt": "half past seven 是几点？",
+          "options": [
+            {
+              "id": "a",
+              "text": "7:15"
+            },
+            {
+              "id": "b",
+              "text": "6:30"
+            },
+            {
+              "id": "c",
+              "text": "7:30"
+            }
+          ],
+          "answer": "c",
+          "explanation": "half 表示半小时，past 表示过了七点。"
+        },
+        {
+          "id": "english-7-upper-u6-d2",
+          "skillId": "english-7-upper-u6-k2",
+          "prompt": "I get up ____ 6:30.",
+          "options": [
+            {
+              "id": "a",
+              "text": "at"
+            },
+            {
+              "id": "b",
+              "text": "on"
+            },
+            {
+              "id": "c",
+              "text": "in"
+            }
+          ],
+          "answer": "a",
+          "explanation": "具体时刻前用 at。"
+        },
+        {
+          "id": "english-7-upper-u6-d3",
+          "skillId": "english-7-upper-u6-k3",
+          "prompt": "____ do you get up? — At seven.",
+          "options": [
+            {
+              "id": "a",
+              "text": "How many"
+            },
+            {
+              "id": "b",
+              "text": "What time"
+            },
+            {
+              "id": "c",
+              "text": "What colour"
+            }
+          ],
+          "answer": "b",
+          "explanation": "回答是时刻，所以用 What time 询问。"
+        },
+        {
+          "id": "english-7-upper-u6-d4",
+          "skillId": "english-7-upper-u6-k4",
+          "prompt": "读：Kai finishes homework at seven and reads at eight. What does he do at eight?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Starts school."
+            },
+            {
+              "id": "b",
+              "text": "Finishes homework."
+            },
+            {
+              "id": "c",
+              "text": "Reads."
+            }
+          ],
+          "answer": "c",
+          "explanation": "将八点与 reads 配对，不选七点的活动。"
+        }
+      ],
+      "retestQuestions": [
+        {
+          "id": "english-7-upper-u6-r1",
+          "skillId": "english-7-upper-u6-k1",
+          "prompt": "a quarter to eight 是几点？",
+          "options": [
+            {
+              "id": "a",
+              "text": "7:45"
+            },
+            {
+              "id": "b",
+              "text": "8:15"
+            },
+            {
+              "id": "c",
+              "text": "8:45"
+            }
+          ],
+          "answer": "a",
+          "explanation": "a quarter 是十五分钟，to eight 表示差十五分钟八点。"
+        },
+        {
+          "id": "english-7-upper-u6-r2",
+          "skillId": "english-7-upper-u6-k2",
+          "prompt": "We have no classes ____ Sunday.",
+          "options": [
+            {
+              "id": "a",
+              "text": "at"
+            },
+            {
+              "id": "b",
+              "text": "on"
+            },
+            {
+              "id": "c",
+              "text": "under"
+            }
+          ],
+          "answer": "b",
+          "explanation": "星期几前通常用 on。"
+        },
+        {
+          "id": "english-7-upper-u6-r3",
+          "skillId": "english-7-upper-u6-k3",
+          "prompt": "What do you do after dinner? 应回答？",
+          "options": [
+            {
+              "id": "a",
+              "text": "At six."
+            },
+            {
+              "id": "b",
+              "text": "It's Monday."
+            },
+            {
+              "id": "c",
+              "text": "I read a book."
+            }
+          ],
+          "answer": "c",
+          "explanation": "What do you do 问活动，不是时刻或日期。"
+        },
+        {
+          "id": "english-7-upper-u6-r4",
+          "skillId": "english-7-upper-u6-k4",
+          "prompt": "读：Lena leaves home at 7:10 and gets to school at 7:30. How long does the trip take?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Twenty minutes."
+            },
+            {
+              "id": "b",
+              "text": "Ten minutes."
+            },
+            {
+              "id": "c",
+              "text": "Thirty minutes."
+            }
+          ],
+          "answer": "a",
+          "explanation": "从 7:10 到 7:30 相差二十分钟。"
+        }
+      ]
+    },
+    {
+      "id": "english-7-upper-u7",
+      "title": "Unit 7 Happy Birthday!",
+      "page": 67,
+      "pdfPage": 75,
+      "focus": "日期、序数词与生日表达",
+      "writingPrompt": "写出生日日期及一项有意义的庆祝活动。",
+      "skills": [
+        {
+          "id": "english-7-upper-u7-k1",
+          "title": "序数词",
+          "guide": "日期和顺序常用序数词，one 对应 first。 three 的序数词是不规则的 third。"
+        },
+        {
+          "id": "english-7-upper-u7-k2",
+          "title": "日期",
+          "guide": "具体到某月某日用 on；只有月份时一般用 in。 按 January 起数，May 是第五个月，序数词 fifth。"
+        },
+        {
+          "id": "english-7-upper-u7-k3",
+          "title": "疑问词",
+          "guide": "日期回答对应 When。 How old 询问年龄，而不是生日日期或地点。"
+        },
+        {
+          "id": "english-7-upper-u7-k4",
+          "title": "生日阅读",
+          "guide": "定位 makes 后的宾语 a thank-you card。 instead of 引出被替代的活动，真正的计划是 plant a tree。"
+        }
+      ],
+      "questions": [
+        {
+          "id": "english-7-upper-u7-d1",
+          "skillId": "english-7-upper-u7-k1",
+          "prompt": "one 的序数词是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "first"
+            },
+            {
+              "id": "b",
+              "text": "one"
+            },
+            {
+              "id": "c",
+              "text": "once"
+            }
+          ],
+          "answer": "a",
+          "explanation": "日期和顺序常用序数词，one 对应 first。"
+        },
+        {
+          "id": "english-7-upper-u7-d2",
+          "skillId": "english-7-upper-u7-k2",
+          "prompt": "My birthday is ____ May 6th.",
+          "options": [
+            {
+              "id": "a",
+              "text": "at"
+            },
+            {
+              "id": "b",
+              "text": "on"
+            },
+            {
+              "id": "c",
+              "text": "in"
+            }
+          ],
+          "answer": "b",
+          "explanation": "具体到某月某日用 on；只有月份时一般用 in。"
+        },
+        {
+          "id": "english-7-upper-u7-d3",
+          "skillId": "english-7-upper-u7-k3",
+          "prompt": "____ is your birthday? — On June 2nd.",
+          "options": [
+            {
+              "id": "a",
+              "text": "Where"
+            },
+            {
+              "id": "b",
+              "text": "Who"
+            },
+            {
+              "id": "c",
+              "text": "When"
+            }
+          ],
+          "answer": "c",
+          "explanation": "日期回答对应 When。"
+        },
+        {
+          "id": "english-7-upper-u7-d4",
+          "skillId": "english-7-upper-u7-k4",
+          "prompt": "读：On his birthday, Leo makes a thank-you card for his parents. What does Leo make?",
+          "options": [
+            {
+              "id": "a",
+              "text": "A thank-you card."
+            },
+            {
+              "id": "b",
+              "text": "A cake."
+            },
+            {
+              "id": "c",
+              "text": "A toy."
+            }
+          ],
+          "answer": "a",
+          "explanation": "定位 makes 后的宾语 a thank-you card。"
+        }
+      ],
+      "retestQuestions": [
+        {
+          "id": "english-7-upper-u7-r1",
+          "skillId": "english-7-upper-u7-k1",
+          "prompt": "three 的序数词是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "threeth"
+            },
+            {
+              "id": "b",
+              "text": "third"
+            },
+            {
+              "id": "c",
+              "text": "three"
+            }
+          ],
+          "answer": "b",
+          "explanation": "three 的序数词是不规则的 third。"
+        },
+        {
+          "id": "english-7-upper-u7-r2",
+          "skillId": "english-7-upper-u7-k2",
+          "prompt": "May is the ____ month of the year.",
+          "options": [
+            {
+              "id": "a",
+              "text": "fourth"
+            },
+            {
+              "id": "b",
+              "text": "sixth"
+            },
+            {
+              "id": "c",
+              "text": "fifth"
+            }
+          ],
+          "answer": "c",
+          "explanation": "按 January 起数，May 是第五个月，序数词 fifth。"
+        },
+        {
+          "id": "english-7-upper-u7-r3",
+          "skillId": "english-7-upper-u7-k3",
+          "prompt": "How old are you? 的合适回答是？",
+          "options": [
+            {
+              "id": "a",
+              "text": "I'm thirteen."
+            },
+            {
+              "id": "b",
+              "text": "On May 1st."
+            },
+            {
+              "id": "c",
+              "text": "At home."
+            }
+          ],
+          "answer": "a",
+          "explanation": "How old 询问年龄，而不是生日日期或地点。"
+        },
+        {
+          "id": "english-7-upper-u7-r4",
+          "skillId": "english-7-upper-u7-k4",
+          "prompt": "读：Amy plans to plant a tree on her birthday instead of buying more toys. What is her plan?",
+          "options": [
+            {
+              "id": "a",
+              "text": "To buy many toys."
+            },
+            {
+              "id": "b",
+              "text": "To plant a tree."
+            },
+            {
+              "id": "c",
+              "text": "To miss school."
+            }
+          ],
+          "answer": "b",
+          "explanation": "instead of 引出被替代的活动，真正的计划是 plant a tree。"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+/* 独立课件只共享外观，不覆盖图形坐标、画布颜色、显示状态或交互脚本。 */
+body[data-theme="blueprint"] {
+  --lesson-ink: #152b56;
+  --lesson-blue: #2255ee;
+  background-color: #f4f8ff;
+  background-image: linear-gradient(#2255ee09 1px, transparent 1px), linear-gradient(90deg, #2255ee09 1px, transparent 1px);
+  background-size: 28px 28px;
+  color: var(--lesson-ink);
+}
+body[data-theme="blueprint"] :is(.header, .lesson-header) { border-bottom: 2px solid var(--lesson-ink); }
+body[data-theme="blueprint"] :is(.workspace, .mission-board, .card, .quiz-section) {
+  /* 保持原有 1px 边框，避免挤占手机画布的可绘制宽度。 */
+  border: 1px solid var(--lesson-ink); border-radius: 14px;
+  box-shadow: 3px 3px 0 var(--lesson-ink);
+}
+body[data-theme="blueprint"] :is(.mission-board, .mission-strip) { background: #e3ecff; }
+body[data-theme="blueprint"] :is(.mission-kicker, .lesson-kicker) { color: #6d37cf; }
+body[data-theme="blueprint"] :is(.panel, .control-panel) { background: #fff; }
+body[data-theme="blueprint"] :is(.tab, .step-button, .shape-btn, .btn, .actions button) {
+  border: 1px solid var(--lesson-ink); border-radius: 8px;
+  box-shadow: 2px 2px 0 var(--lesson-ink);
+}
+body[data-theme="blueprint"] .tab { background: #e3ecff; color: var(--lesson-ink); }
+body[data-theme="blueprint"] .tab:nth-child(3n+2) { background: #c9f5e3; }
+body[data-theme="blueprint"] .tab:nth-child(3n) { background: #ffdecf; }
+body[data-theme="blueprint"] .tab-btn { background: #e3ecff; color: var(--lesson-ink); border-color: var(--lesson-ink); box-shadow: 2px 2px 0 var(--lesson-ink); }
+body[data-theme="blueprint"] .tab-btn:nth-child(3n+2) { background: #c9f5e3; }
+body[data-theme="blueprint"] .tab-btn:nth-child(3n) { background: #ffdecf; }
+body[data-theme="blueprint"] .tab-btn.active { background: #ffdb43; color: var(--lesson-ink); border-color: var(--lesson-ink); }
+body[data-theme="blueprint"] .tab.active,
+body[data-theme="blueprint"] .step-button.active,
+body[data-theme="blueprint"] .shape-btn.active { background: #ffdb43; color: var(--lesson-ink); border-color: var(--lesson-ink); }
+body[data-theme="blueprint"] :is(.btn.blue, .btn-primary, .actions .primary) { background: var(--lesson-blue); color: white; }
+body[data-theme="blueprint"] .btn.green { background: #007b60; color: white; }
+body[data-theme="blueprint"] .btn.orange { background: #bd3e19; color: white; }
+body[data-theme="blueprint"] .btn-danger { background: #b72d4b; color: white; }
+body[data-theme="blueprint"] :is(.btn-secondary, .btn.gray, .btn.ghost) { background: #ece1ff; color: var(--lesson-ink); }
+body[data-theme="blueprint"] :is(.tab, .step-button, .shape-btn, .btn, .actions button):disabled { box-shadow: none; cursor: not-allowed; }
+body[data-theme="blueprint"] :is(button, a, input, select, summary):focus-visible { outline: 3px solid var(--lesson-blue); outline-offset: 3px; }
+@media (prefers-reduced-motion: no-preference) {
+  body[data-theme="blueprint"] :is(.tab, .step-button, .shape-btn, .btn, .actions button):active:not(:disabled) { transform: translate(1px, 1px); box-shadow: none; }
+}
+@media (max-width: 600px) {
+  body[data-theme="blueprint"] :is(.workspace, .mission-board, .card, .quiz-section) { box-shadow: 2px 2px 0 var(--lesson-ink); }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* 切换嵌入模式时不动画缩放控件，避免字号和间距短暂处于中间态。 */
+  body[data-theme="blueprint"] :is(button, input, select) { transition: none; animation: none; }
+  body[data-theme="blueprint"] button:hover { transform: none; }
+}
