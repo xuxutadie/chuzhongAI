@@ -1,0 +1,20 @@
+FROM python:3.14-slim-bookworm
+
+# PDF 导出使用开放授权字体，不复制本机 Windows 字体。
+RUN apt-get update && apt-get install -y --no-install-recommends fonts-wqy-zenhei fonts-dejavu-core \
+    && rm -rf /var/lib/apt/lists/* \
+    && useradd --create-home --uid 10001 coach
+WORKDIR /app/backend
+COPY backend/requirements.txt ./requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+COPY backend/app ./app
+COPY backend/scripts ./scripts
+COPY shared /app/shared
+COPY deploy/backend-start.sh /app/backend-start.sh
+RUN mkdir /data && chown coach:coach /data && chmod 755 /app/backend-start.sh
+ENV PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 APP_ENV=production \
+    APP_DATA_ROOT=/data STUDENT_WORKSPACE_DATABASE_PATH=/data/ai_coach.db \
+    API_VAULT_BACKEND=aes_gcm PORT=8080
+USER coach
+EXPOSE 8080
+CMD ["sh", "/app/backend-start.sh"]

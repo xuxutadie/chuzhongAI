@@ -18,7 +18,9 @@ export async function GET(_request: Request, { params }: { params: Promise<{ boo
     return Response.json({ detail: "没有找到这本教材。" }, { status: 404 });
   }
 
-  const filePath = path.resolve(process.cwd(), "..", "教材", textbook.fileName);
+  // 云端教材走独立私有挂载，仍先验证登录、只接受目录中的已知书目。
+  const materialsRoot = process.env.MATERIALS_DIRECTORY || path.resolve(process.cwd(), "..", "教材");
+  const filePath = path.resolve(materialsRoot, textbook.fileName);
 
   try {
     const fileStat = await stat(filePath);
