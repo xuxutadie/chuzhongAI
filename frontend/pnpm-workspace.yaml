@@ -1,2 +1,7 @@
 allowBuilds:
   sharp: true
+# 固定现有间接依赖的安全补丁，不引入新框架。
+overrides:
+  postcss: 8.5.28
+  sharp: 0.35.5
+  nanoid: 3.3.19
