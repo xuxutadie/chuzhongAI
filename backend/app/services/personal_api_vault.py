@@ -1,12 +1,9 @@
-"""使用 Windows 当前运行账号的 DPAPI 加密保存个人 API 配置。
-
-加密对象是完整配置，不仅是密钥。磁盘永远只接收密文，数据库和 API 响应中
-均不存放密钥；更换 Windows 运行账号或搬移数据库后必须重新配置。
-"""
+"""完整配置只以密文落盘；本机默认 DPAPI，云端显式启用 AES-GCM。"""
 
 from __future__ import annotations
 
 import ctypes
+import base64
 import hashlib
 import json
 import os
@@ -29,6 +26,38 @@ class PersonalConfigCipher(Protocol):
     def encrypt(self, plaintext: bytes, entropy: bytes) -> bytes: ...
 
     def decrypt(self, ciphertext: bytes, entropy: bytes) -> bytes: ...
+
+
+class AESGCMCipher:
+    """带认证的标准加密；随机 nonce 和账号上下文共同防止篡改、串用。"""
+
+    storage = "aes_gcm"
+    available = True
+    header = b"COACH-VAULT-AESGCM-1\0"
+
+    def __init__(self, encoded_key: str) -> None:
+        from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+        try:
+            key = base64.b64decode(encoded_key, validate=True)
+            if len(key) != 32:
+                raise ValueError("invalid key length")
+            self._cipher = AESGCM(key)
+        except (ValueError, TypeError):
+            raise PersonalAPIStorageError("云端加密主密钥未正确配置，请联系部署管理员。") from None
+
+    def encrypt(self, plaintext: bytes, entropy: bytes) -> bytes:
+        nonce = os.urandom(12)
+        return self.header + nonce + self._cipher.encrypt(nonce, plaintext, self.header + entropy)
+
+    def decrypt(self, ciphertext: bytes, entropy: bytes) -> bytes:
+        from cryptography.exceptions import InvalidTag
+        try:
+            if not ciphertext.startswith(self.header) or len(ciphertext) < len(self.header) + 28:
+                raise ValueError("unsupported encrypted envelope")
+            payload = ciphertext[len(self.header):]
+            return self._cipher.decrypt(payload[:12], payload[12:], self.header + entropy)
+        except (InvalidTag, ValueError):
+            raise PersonalAPIStorageError("云端配置无法解密，请检查主密钥和部署标识；旧本机配置需先迁移。") from None
 
 
 class WindowsDPAPICipher:
@@ -91,11 +120,24 @@ class PersonalAPIVault:
     def __init__(self, database_path: str | Path, *, cipher: PersonalConfigCipher | None = None) -> None:
         self.database_path = Path(database_path).resolve()
         self.directory = self.database_path.parent / f".{self.database_path.name}.personal-api"
-        self.cipher = cipher or WindowsDPAPICipher()
+        self.cloud_context = ""
+        if cipher is not None:
+            self.cipher = cipher
+        else:
+            backend = os.environ.get("API_VAULT_BACKEND", "windows_dpapi")
+            if backend == "windows_dpapi":
+                self.cipher = WindowsDPAPICipher()
+            elif backend == "aes_gcm":
+                self.cloud_context = os.environ.get("API_VAULT_CONTEXT", "").strip()
+                if not self.cloud_context or len(self.cloud_context) > 128:
+                    raise PersonalAPIStorageError("云端加密部署标识未正确配置，请联系部署管理员。")
+                self.cipher = AESGCMCipher(os.environ.get("API_VAULT_KEY", ""))
+            else:
+                raise PersonalAPIStorageError("不支持的密钥存储方式，请联系部署管理员。")
 
     @property
     def storage(self) -> str:
-        return "windows_dpapi" if self.cipher.available else "unavailable"
+        return getattr(self.cipher, "storage", "windows_dpapi") if self.cipher.available else "unavailable"
 
     def _path(self, user_id: int) -> Path:
         if type(user_id) is not int or not 0 < user_id <= 9_223_372_036_854_775_807:
@@ -103,6 +145,10 @@ class PersonalAPIVault:
         return self.directory / f"user-{user_id}.dpapi"
 
     def _entropy(self, user_id: int) -> bytes:
+        if self.cloud_context:
+            # 云端绑定唯一部署标识和账号，不依赖容器的绝对挂载路径。
+            scope = f"student-personal-api-cloud-v1\0{self.cloud_context}\0{user_id}"
+            return hashlib.sha256(scope.encode("utf-8")).digest()
         scope = f"student-personal-api-v1\0{os.path.normcase(str(self.database_path))}\0{user_id}"
         return hashlib.sha256(scope.encode("utf-8")).digest()
 

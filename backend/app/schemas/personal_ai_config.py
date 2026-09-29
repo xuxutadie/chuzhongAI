@@ -38,7 +38,7 @@ class PersonalAIProviderOption(BaseModel):
 
 class PersonalAIConfigStatus(BaseModel):
     mode: Literal["personal", "managed"]
-    storage: Literal["windows_dpapi", "unavailable"]
+    storage: Literal["windows_dpapi", "aes_gcm", "unavailable"]
     llm: PersonalAIProviderStatus
     ocr: PersonalAIProviderStatus
     providers: list[PersonalAIProviderOption]

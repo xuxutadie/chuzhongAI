@@ -9,6 +9,11 @@ const response = {
   ocr: { enabled: false, configured: false, provider: null, model: null, api_base_url: null, has_api_key: false },
 };
 
+test("云端安全存储可编辑，未知存储方式仍拒绝", () => {
+  assert.equal(normalizePersonalAIConfig({ ...response, storage: "aes_gcm" }).storage, "aes_gcm");
+  assert.equal(normalizePersonalAIConfig({ ...response, storage: "plaintext" }).storage, "unavailable");
+});
+
 test("个人配置解析只保留公开状态，不携带密钥", () => {
   const config = normalizePersonalAIConfig(response);
   assert.equal(config.mode, "personal");

@@ -18,7 +18,7 @@ export function PersonalConfigForm({ kind, config, onSaved }: { kind: AIConfigKi
   const pendingRef = useRef(false);
   const provider = config.providers.find((item) => item.provider === draft.provider);
   const canKeepKey = capability.hasAPIKey && capability.provider === draft.provider && capability.apiBaseURL === provider?.apiBaseURL;
-  const editable = config.storage === "windows_dpapi" && config.providers.length > 0;
+  const editable = config.storage !== "unavailable" && config.providers.length > 0;
   const name = kind === "llm" ? "AI 答疑与错因分析" : "OCR 拍照识题";
 
   async function save(event: React.FormEvent<HTMLFormElement>) {

@@ -5,7 +5,7 @@ export type PersonalCapabilityConfig = {
 };
 export type PersonalAIConfig = {
   mode: "personal" | "managed";
-  storage: "windows_dpapi" | "unavailable";
+  storage: "windows_dpapi" | "aes_gcm" | "unavailable";
   providers: AIProviderOption[];
   llm: PersonalCapabilityConfig;
   ocr: PersonalCapabilityConfig;
@@ -28,7 +28,7 @@ export function normalizePersonalAIConfig(value: unknown): PersonalAIConfig {
     const option = record(item);
     return { provider: text(option.provider), apiBaseURL: text(option.api_base_url) };
   }).filter((item) => item.provider && item.apiBaseURL.startsWith("https://")) : [];
-  return { mode: source.mode === "personal" ? "personal" : "managed", storage: source.storage === "windows_dpapi" ? "windows_dpapi" : "unavailable", providers, llm: normalizeCapability(source.llm), ocr: normalizeCapability(source.ocr) };
+  return { mode: source.mode === "personal" ? "personal" : "managed", storage: source.storage === "windows_dpapi" || source.storage === "aes_gcm" ? source.storage : "unavailable", providers, llm: normalizeCapability(source.llm), ocr: normalizeCapability(source.ocr) };
 }
 export function createPersonalConfigDraft(capability: PersonalCapabilityConfig, providers: AIProviderOption[]): PersonalConfigDraft {
   return { enabled: capability.hasAPIKey ? capability.enabled : true, provider: capability.provider || providers[0]?.provider || "", model: capability.model, apiKey: "" };

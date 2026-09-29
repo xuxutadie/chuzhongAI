@@ -1,4 +1,4 @@
-"""沿用 DPAPI 加密算法，学校配置使用独立目录和加密上下文。"""
+"""复用配置加密算法，学校配置使用独立目录和加密上下文。"""
 import hashlib
 from uuid import UUID
 from app.services.personal_api_vault import PersonalAPIVault, PersonalAPIStorageError
