@@ -2,7 +2,7 @@
 
 ## 架构与边界
 
-- 同一项目两项服务：`coach-web`（公网 HTTPS）和 `coach-api`（仅内网）。
+- 同一项目两项服务：`frontend`（公网 HTTPS）和 `backend`（仅内网）。
 - 仓库根目录作为两项服务的构建上下文，不能只选 frontend/backend 子目录；两端需要 shared。
 - 本版本继续使用 SQLite，后端固定一个副本、一个工作进程，不支持多实例共享写入。
 - 先无真实数据验收，完成权限测试与恢复演练后再开放真实学生使用。
@@ -12,8 +12,8 @@
 
 | 服务 | 构建变量 | 运行变量 | 存储 |
 | --- | --- | --- | --- |
-| coach-web | `ZBPACK_DOCKERFILE_NAME=frontend` | `BACKEND_API_ORIGIN=http://实际后端内网主机:8080`、`MATERIALS_DIRECTORY=/materials` | `/materials` 私有教材卷 |
-| coach-api | `ZBPACK_DOCKERFILE_NAME=backend` | 见下方 | `/data` 持久卷 |
+| frontend | `ZBPACK_DOCKERFILE_PATH=Dockerfile.frontend` | `BACKEND_API_ORIGIN=http://backend.zeabur.internal:8080`、`MATERIALS_DIRECTORY=/materials`、`PORT=8080` | `/materials` 私有教材卷 |
+| backend | `ZBPACK_DOCKERFILE_PATH=Dockerfile.backend` | 见下方，另显式设置 `PORT=8080` | `/data` 持久卷 |
 
 Dockerfile 已设置后端 `APP_ENV=production`、`PORT=8080`、`APP_DATA_ROOT=/data`、
 `STUDENT_WORKSPACE_DATABASE_PATH=/data/ai_coach.db`、`API_VAULT_BACKEND=aes_gcm`。
@@ -56,5 +56,34 @@ AES-GCM 密文保留旧 `user-<id>.dpapi` 文件名以避免漏读遗留文件�
 
 ## 当前验收记录
 
-这里只记录可复现步骤，不记录账号密码、学生信息或云端密钥。
-实际服务地址、云端验收结果与正式数据迁移结果，须在部署完成后另行交付。
+### 2026-09-29 首次云端部署
+
+- 项目：`chuzhong-ai`；网页入口：`https://chuzhong-ai.zeabur.app/login`。
+- 两项服务均已通过 Linux Docker 构建；后端无公网域名、无公网端口转发。
+- 前端 355 项测试、后端 487 项测试通过；前端类型检查和生产依赖漏洞检查通过。
+- 本机停机后生成一致性快照，完整性、外键和恢复到新目录的演练通过。
+- 数据库经官方认证文件接口私有上传，启用前比对 SHA-256 一致；没有进入 Git 仓库或镜像。
+- 六本既有教材逐份经私有上传和 SHA-256 校验，存放在独立教材卷中。
+- 云端启动预检通过：数据库完整、学校隔离启用、AES-GCM 配置有效、PDF 字体可用。
+- 服务重启后，数据库仍含 50 张表；学校数量和有效授权数量与本机只读盘点一致。
+- HTTPS 登录页返回 200；未登录账号接口和教材接口返回 401；数据库和 `.env` 的公开路径返回 404。
+- 首次初始化状态为关闭，未创建替代管理员或重置既有账号密码。
+
+本机原库、迁移快照和恢复副本均保留在被 Git 忽略的 `backend/data/` 内。
+云端加密密钥的本机备份为同目录内的 `zeabur-production-secrets.clixml`，由当前 Windows 用户的
+DPAPI 保护，不含可直接读取的明文密钥。它不能直接在另一台电脑或另一 Windows 用户下解密；
+请另行通过安全渠道保管可用于灾难恢复的密钥，不要上传本机备份到代码仓库。
+
+### 仍需区分的上线边界
+
+- 当前未配置全局大模型和 OCR 服务；需要在对应学校/账号的 AI 设置中配置并测试，不能宣称 AI 调用已经验收。
+- 学校隔离启动检查和已有自动化测试通过，不等于已对所有角色的云端页面逐一完成业务验收。
+- 未配置自动定期异地备份；当前只有本次迁移的一致性备份与恢复演练记录。
+- 正式大规模使用前，应完成角色登录、完整学习流程、上传、PDF 导出、实际 AI 调用和容量测试。
+
+### 部署操作注意
+
+Zeabur 的新增变量操作不能同时包含已存在的变量（如平台预置的 `PORT`），否则整批不保存。
+应保留已有配置并使用更新接口；更新后回读比对，再重启服务验证实际运行环境，不能仅依据 CLI 的退出码。
+涉及变量的命令可能回显全部密钥，必须捕获结果且只输出校验状态。
+不使用会回显服务器密码的 SSH 快捷命令；数据迁移使用官方认证文件接口。
